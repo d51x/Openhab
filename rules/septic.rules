@@ -1,0 +1,12 @@
+rule "Septic group label update"
+ when
+    Item Septic_sTemperature received update  or
+	Item Septic_aHeating received command
+then
+	var String str;
+	val f = (Septic_sTemperature.state as DecimalType).doubleValue
+	val s = (Septic_aHeating.state.toString)
+	str = String::format("%s\u202F,\u202F%.1f°C", s, f)
+	Septic_vText.postUpdate(str)
+end
+

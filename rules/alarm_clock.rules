@@ -1,0 +1,21 @@
+rule "Alarm Trigger"
+when
+	Time cron "*/10 * * * * ?" // Every 10 seconds 
+then
+    if (AlarmClock.state == NULL) { return; }
+	
+	if (AlarmClock.state as Number == 0) {
+        // Alarm is turned off
+        return;
+    } 
+	
+	val diff = AlarmClock.state as Number - now().millis
+    if (diff <= 15000) {
+        // Turn on stuff, e.g. radio or light
+        //logInfo('AlarmLogger', 'Turn on something')
+        //Light.sendCommand(ON)
+    }
+	
+end
+
+

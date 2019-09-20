@@ -1,0 +1,20 @@
+rule "Update virtual house temperature"
+when
+	Item gTemp_House_Min changed	or
+	Item gTemp_House_Max changed	//or
+	//Time cron "0/15 * * * * ?" 
+	
+then
+	var String str;
+	var Double t1 = (gTemp_House_Min.state as DecimalType).doubleValue
+	var Double t2 = (gTemp_House_Max.state as DecimalType).doubleValue
+	str = String::format("%.1f ~ %.1f", t1, t2)
+	vHouse_Temperature.postUpdate(str) 
+end
+
+rule "test"
+when 
+	Member of gHeaters received update
+then
+		//gHeaters.label = gHeaters.state.toString
+end

@@ -1,0 +1,155 @@
+var Timer outdoorLightTimer
+
+rule "OpenHAB system started - outdoor lights"
+when
+    System started
+then
+	if (( OutdoorLightsAll.state == NULL ) || (OutdoorLightsAll.state == UNDEF)) {
+		postUpdate(OutdoorLightsAll, "all_off")
+	}
+	//postUpdate(OutdoorLight_Back, OFF)
+	//postUpdate(OutdoorLight_Front, OFF)
+
+end
+
+rule "Вкл/выкл все уличное освещение"
+when
+	Item OutdoorLightsAll received command
+then
+	val rule_name = "OutdoorLightsAll"
+	switch(receivedCommand) {
+	    case "all_off": 
+		{
+			val msg = "Получена команда на выключение уличного освещения" 
+			sendBroadcastNotification(msg)	
+			executeCommandLine(Telegram_Command.state + msg)
+	
+			sendCommand(OutdoorLight_oldHouse, OFF)
+			createTimer(now.plusSeconds(2),  [ |
+				sendCommand(OutdoorLight_Back, OFF)
+				createTimer(now.plusSeconds(2),  [ |
+					sendCommand(OutdoorLight_Side, OFF)
+					createTimer(now.plusSeconds(2), [ |
+						sendCommand(OutdoorLight_Front, OFF)
+						postUpdate(OutdoorLightsAll, "all_off")
+					])
+				])				
+			])					
+        }
+	    case "all_on": 
+		{
+			val msg2 = "Получена команда на включение уличного освещения" 
+			sendBroadcastNotification(msg2)	
+			executeCommandLine(Telegram_Command.state + msg2)
+			sendCommand(OutdoorLight_Front, ON)
+			createTimer(now.plusSeconds(2),  [ |
+				sendCommand(OutdoorLight_Side, ON)
+				createTimer(now.plusSeconds(2), [ |
+					sendCommand(OutdoorLight_Back, ON)
+					postUpdate(OutdoorLightsAll, "all_on")
+				])
+			])
+        }	
+		default: logError(rule_name, "do nothing")
+	}
+end	
+
+rule "Вкл/выкл освещение улицы/двора"
+when
+	Item gLightOutdoor changed 
+then
+	switch(gLightOutdoor.state) {
+		case ON: postUpdate(OutdoorLightsAll, "all_on")
+		case OFF: postUpdate(OutdoorLightsAll, "all_off")
+	}
+end
+
+
+rule "Авто Включение освещение улицы/двора, когда кто-то есть/появился в доме и на улице вечер"
+when
+	Item gPresent changed from OFF to ON  // кто то появился в доме  // и время менее 23^00???
+then
+	val TAG = "Outdoorlights"
+	if ( Night_State.state == OFF) { 
+		return;
+	} 
+	// и на улице темно, включим все ???
+	val ToD = now.getMinuteOfDay()
+	if ( (ToD >= 16*60 ) && (ToD <= 23*60) ) {
+		if ( outdoorLightTimer !== null ) {
+			val msg = "Отмена таймера автоматического отключения уличного освещения" 
+			sendBroadcastNotification(msg)	
+			executeCommandLine(Telegram_Command.state + msg)
+			outdoorLightTimer.cancel()
+		}
+		OutdoorLightsAll.sendCommand("all_on")
+	}
+end
+
+rule "Авто выкл освещение улицы/двора, когда все ушли из дома"
+when
+	Item gPresent changed from ON to OFF  // все ушли из дома
+then
+	val msg = "Запущен таймер (20 минут) на автоматическое выключение уличного освещения" 
+	sendBroadcastNotification(msg)	
+	executeCommandLine(Telegram_Command.state + msg)
+	outdoorLightTimer = createTimer(now.plusMinutes(20), [ |
+		OutdoorLightsAll.sendCommand("all_off")
+	])
+end
+
+rule "Включить освещение на улице при наступлении заката"
+when
+    Item Night_State changed to ON
+then
+	if (gPresent.state == OFF ) {
+		return;
+	}  
+	// только если кто-то есть дома
+	val msg = "Включение уличного освещения по наступлению заката" 
+	sendBroadcastNotification(msg)	
+	executeCommandLine(Telegram_Command.state + msg)
+	sendCommand(OutdoorLightsAll, "all_on")
+end
+
+rule "Выключить освещение на улице при наступлении рассвета"
+when
+    Item Night_State changed to OFF
+then
+	
+	if ( OutdoorLightsAll.state == "all_on") 
+	{
+		val msg = "Выключение уличного освещения по наступлению рассвета" 
+		sendBroadcastNotification(msg)	
+		executeCommandLine(Telegram_Command.state + msg)
+		OutdoorLightsAll.sendCommand("all_off")
+	}	
+end
+
+rule "Member of gLightOutdoor changed"
+when
+	Member of gLightOutdoor changed
+then
+	val item = triggeringItem
+	val name = item.name
+	val text_state = if (item.state == ON) "включен" else "выключен"
+	var String msg
+
+	if ( name == "OutdoorLight_Front") {
+		msg = "Прожектор улицы был " + text_state 
+		sendBroadcastNotification(msg)	
+		executeCommandLine(Telegram_Command.state + msg)
+	} else if ( name == "OutdoorLight_Side") {
+		msg = "Прожектор бокового освещение был " + text_state 
+		sendBroadcastNotification(msg)	
+		executeCommandLine(Telegram_Command.state + msg)
+	} else if ( name == "OutdoorLight_Back") {
+		msg = "Прожектор во дворе был " + text_state 
+		sendBroadcastNotification(msg)	
+		executeCommandLine(Telegram_Command.state + msg)
+	} else if ( name == "OutdoorLight_oldHouse") {
+		msg = "Прожектор за старым домом был " + text_state 
+		sendBroadcastNotification(msg)	
+		executeCommandLine(Telegram_Command.state + msg)
+	} 
+end

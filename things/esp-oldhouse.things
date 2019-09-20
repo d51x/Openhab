@@ -1,0 +1,7 @@
+// 192.168.2.221	
+Thing mqtt:topic:mosquitto:esp-oldhouse "House Light" (mqtt:broker:mosquitto) @ "Устройства" {
+	Channels:
+		Type switch: Light 			"Прожектор" 			[ stateTopic="dacha/oldhouse/output0", commandTopic="dacha/oldhouse/output0", on="1", off="0" ]
+		Type number: rssi			"Уровень сигнала" 			[ stateTopic="dacha/oldhouse/rssi" ]
+		Type number: uptime			"Время работы" 				[ stateTopic="dacha/oldhouse/uptime" ]
+}

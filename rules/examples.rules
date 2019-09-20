@@ -1,0 +1,20 @@
+/*
+rule "Bathroom door opened"
+when
+    Item BathDoor changed to OPEN
+then
+    if (NightState.state == ON) {
+        sendCommand(BathLight, ON)
+    }
+end
+*/
+
+/* ВЫКЛЮЧИТЬ УЛИЧНОЕ ОСВЕЩЕНИЕ ПОСЛЕ ВОСХОДА
+https://community.openhab.org/t/sun-raised-set-indicator/12834/34
+rule "Example Rule at sunrise"
+when
+       Channel 'astro:sun:home:rise#event' triggered START 
+then
+       sendCommand(Switch_Landscape, OFF)
+end
+*/

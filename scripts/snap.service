@@ -1,0 +1,22 @@
+#/etc/systemd/system/snap.service
+[Unit]
+Description=Snap IP Camera
+Requires=network.target
+After=network.target
+
+[Service]
+ExecStart=/bin/bash '/home/pi/snap_start.sh'
+RemainAfterExit=true
+Type=forking
+Restart=always
+RestartSec=15
+StartLimitInterval=10s
+StartLimitBurst=3
+TimeoutSec=120
+OOMScoreAdjust=-1000
+
+
+[Install]
+WantedBy=multi-user.target
+Alias=bash.service
+

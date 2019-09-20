@@ -1,0 +1,5 @@
+Group:Switch:OR(ON, OFF)        Inside_Lights_All     "Освещение в доме [(%d)]"     <light> 
+Group:Switch:OR(ON, OFF)        Inside_Lights_Floor1     "Освещение (этаж 1) [(%d)]"     <light> 
+Group:Switch:OR(ON, OFF)        Inside_Lights_Floor2     "Освещение (этаж 2) [(%d)]"     <light> 
+
+Switch Light_Floor2_Room1      "Освещение (спальня) [%s]" <light> (Inside_Lights, Inside_Lights_Floor2) {mqtt=">[openhab:dacha/touch1/output12:command:ON:1],>[openhab:dacha/touch1/output12:command:OFF:0],<[openhab:dacha/touch1/output12:state:MAP(switchMQTT.map)]"}

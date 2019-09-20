@@ -1,0 +1,63 @@
+rule "OpenHAB system started - astro"
+when
+    System started
+then
+    createTimer(now.plusSeconds(180)) [ |
+        logInfo("RULE", "--> astro init")
+        if (now.isAfter((Sunset_Time.state as DateTimeType).calendar.timeInMillis) ||
+            now.isBefore((Sunrise_Time.state as DateTimeType).calendar.timeInMillis)
+        ) {
+            logInfo("RULE", "--> Night_State ON")
+            postUpdate(Night_State, ON)
+        } else {
+            logInfo("RULE", "--> Night_State OFF")
+            postUpdate(Night_State, OFF)
+        }
+    ]
+end
+
+rule "Update NightState"
+when
+    Item Sun_Elevation changed
+then
+    if(Sun_Elevation.state >  0){
+        if(Night_State.state != OFF) postUpdate(Night_State, OFF)
+    } else {
+        if(Night_State.state != ON) postUpdate(Night_State, ON)
+    }
+end
+
+rule "Night has started"
+when
+    Item Night_State changed to ON
+then
+	//if ( StairsAutoOnSunset.state == ON && gPresent.state == ON) {
+		// можно включать при закате
+	//	if (StairsAutoMode.state == OFF) sendCommand(StairsManualState, ON)
+	//}	
+	//if (gPresent.state == ON)  {
+	//	sendCommand(OutdoorLightsAll, "all_on")
+    //}
+	val msg = "Солнце зашло за горизонт... Начинает темнеть..." 
+	sendBroadcastNotification(msg)	
+	executeCommandLine(Telegram_Command.state + msg)
+
+end
+
+rule "Day has started"
+when
+    Item Night_State changed to OFF
+then
+	//OutdoorLightsAll.sendCommand("all_off")
+	
+	//turn off stairs lights
+	//if ( StairsAutoOnSunset.state == ON ) {
+		// можно выключать при рассвете
+	//	if (StairsAutoMode.state == OFF) sendCommand(StairsManualState, OFF)
+	//}
+
+	val msg = "Солнце вышло из-за горизонта... Начинает светлеть..." 
+	sendBroadcastNotification(msg)	
+	executeCommandLine(Telegram_Command.state + msg)
+
+end

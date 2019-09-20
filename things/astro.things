@@ -1,0 +1,8 @@
+astro:sun:minus90 [ geolocation="55.782813,38.365334,100", interval=60 ] {
+    Channels:
+        Type rangeEvent : set#event [
+            offset=-90
+        ]
+}
+astro:sun:home  [ geolocation="55.782813,38.365334", interval=300]
+astro:moon:home [ geolocation="55.782813,38.365334", interval=300]

@@ -1,0 +1,60 @@
+/* Heating */
+Switch Heating_GF_Living1    "Конвектор1 (гостинная)"    <radiator>   (GF_Living, Heating_GF, Heating_All) {mqtt=">[openhab:dacha/sonoffpow01/output12:command:ON:1],>[openhab:dacha/sonoffpow01/output12:command:OFF:0],<[openhab:dacha/sonoffpow01/output12:state:MAP(switchMQTT.map)]"}
+Switch Heating_GF_Living2    "Конвектор2 (гостинная)"    <radiator>   (GF_Living, Heating_GF, Heating_All) {mqtt=">[openhab:dacha/sonoffpow02/output12:command:ON:1],>[openhab:dacha/sonoffpow02/output12:command:OFF:0],<[openhab:dacha/sonoffpow02/output12:state:MAP(switchMQTT.map)]"}
+
+Switch Heating_GF_Living_Mode1    "Термостат1 "        <heatingauto>   (GF_Living) {mqtt=">[openhab:dacha/sonoffpow01/thermo_en1:command:ON:1],>[openhab:dacha/sonoffpow01/thermo_en1:command:OFF:0],<[openhab:dacha/sonoffpow01/thermo_en1:state:MAP(switchMQTT.map)]"}
+Switch Heating_GF_Living_Mode2    "Термостат2 "        <heatingauto>   (GF_Living) {mqtt=">[openhab:dacha/sonoffpow02/thermo_en1:command:ON:1],>[openhab:dacha/sonoffpow02/thermo_en1:command:OFF:0],<[openhab:dacha/sonoffpow02/thermo_en1:state:MAP(switchMQTT.map)]"}
+
+Switch Heating_GF_Kitchen   "Конвектор (кухня)"       <radiator>   (GF_Kitchen, Heating_GF, Heating_All) {mqtt=">[openhab:dacha/sonoffpow03/output12:command:ON:1],>[openhab:dacha/sonoffpow03/output12:command:OFF:0],<[openhab:dacha/sonoffpow03/output12:state:MAP(switchMQTT.map)]"}
+Switch Heating_GF_Kitchen_Mode    "Термостат "        <heatingauto>   (GF_Kitchen) {mqtt=">[openhab:dacha/sonoffpow03/thermo_en1:command:ON:1],>[openhab:dacha/sonoffpow03/thermo_en1:command:OFF:0],<[openhab:dacha/sonoffpow03/thermo_en1:state:MAP(switchMQTT.map)]"}
+
+
+Switch Heating_GF_Toilet    "Конвектор (ванная)"        <radiator>   (GF_Toilet, Heating_GF, Heating_All) {mqtt=">[openhab:dacha/esp-s20-02/output12:command:ON:1],>[openhab:dacha/esp-s20-02/output12:command:OFF:0],<[openhab:dacha/esp-s20-02/output12:state:MAP(switchMQTT.map)]"}
+Switch Heating_GF_Toilet_Mode    "Термостат "        <heatingauto>   (GF_Toilet) {mqtt=">[openhab:dacha/esp-s20-02/thermo_en1:command:ON:1],>[openhab:dacha/esp-s20-02/thermo_en1:command:OFF:0],<[openhab:dacha/esp-s20-02/thermo_en1:state:MAP(switchMQTT.map)]"}
+
+
+
+
+
+Switch Heating_GF_Corridor   "Конвектор (коридор)"       <radiator>   (GF_Corridor, Heating_GF, Heating_All) //{mqtt=">[openhab:uno/rl/2/cmd:command:ON:ON],>[openhab:uno/rl/2/cmd:command:OFF:OFF],<[openhab:uno/rl/2/st:state:default]"}
+Switch Heating_GF_Corridor_Mode    "Режим работы"        <heatingauto>   (GF_Corridor) {mqtt=">[openhab:uno/f1/corridor/heating/mode:command:ON:1],>[openhab:uno/f1/corridor/heating/mode:command:OFF:0],<[openhab:uno/f1/corridor/heating/mode:state:MAP(switchMode.map)]"}
+
+
+Switch Heating_FF_BedRoom1      "Конвектор (комната 1)"          <radiator>   (FF_BedRoom_1, Heating_FF, Heating_All) {mqtt=">[openhab:dacha/esp-s20-01/output12:command:ON:1],>[openhab:dacha/esp-s20-01/output12:command:OFF:0],<[openhab:dacha/esp-s20-01/output12:state:MAP(switchMQTT.map)]"}
+Switch Heating_FF_BedRoom1_Mode    "Термостат"        <heatingauto>   (FF_BedRoom1) {mqtt=">[openhab:dacha/esp-s20-01/thermo_en1:command:ON:1],>[openhab:dacha/esp-s20-01/thermo_en1:command:OFF:0],<[openhab:dacha/esp-s20-01/thermo_en1:state:MAP(switchMQTT.map)]"}
+
+Switch Heating_FF_BedRoom2    "Конвектор (комната 2)"        <radiator>   (FF_BedRoom_2, Heating_FF, Heating_All) {mqtt=">[openhab:arduino/therm/status/cmd/5:command:ON:ON],>[openhab:arduino/therm/status/cmd/5:command:OFF:OFF],<[openhab:arduino/therm/status/state/5:state:default]"}
+Switch Heating_FF_BedRoom2_Mode    "Режим работы"        <heatingauto>   (FF_BedRoom2) {mqtt=">[openhab:arduino/therm/mode/cmd/5:command:ON:ON],>[openhab:arduino/therm/mode/cmd/5:command:OFF:OFF],<[openhab:arduino/therm/mode/state/5:state:default]"}
+Switch Heating_FF_BedRoom3     "Конвектор (комната 3)"  <radiator>   (FF_BedRoom_3, Heating_FF, Heating_All)
+Switch Heating_FF_BedRoom3_Mode    "Режим работы"        <heatingauto>   (FF_BedRoom3)
+Switch Heating_FF_Corridor     "Конвектор (коридор 2)"  <radiator>   (FF_Corridor, Heating_FF, Heating_All)
+Switch Heating_FF_Corridor_Mode    "Режим работы"        <heatingauto>   (FF_Corridor)
+
+String Heating_GF_Living_St1    "[%s]"   //{mqtt="<[openhab:arduino/therm/set/state/1:command:*:default]"}
+Number Heating_GF_Living_Set1    "цель1 [%.1f °C]" <tempauto>   {mqtt=">[openhab:dacha/sonoffpow01/thermo_set1:command:*:default],<[openhab:dacha/sonoffpow01/thermo_set1:state:default]"}
+
+String Heating_GF_Living_St2    "[%s]"   //{mqtt="<[openhab:arduino/therm/set/state/1:command:*:default]"}
+Number Heating_GF_Living_Set2    "цель2 [%.1f °C]" <tempset>   {mqtt=">[openhab:dacha/sonoffpow02/thermo_set1:command:*:default],<[openhab:dacha/sonoffpow02/thermo_set1:state:default]"}
+
+String Heating_GF_Toilet_St    "[%s]"   //{mqtt=">[openhab:uno/temp/f1/toilet/set:command:*:default]"}
+Number Heating_GF_Toilet_Set    "цель [%.1f °C]" <tempset>   {mqtt=">[openhab:dacha/esp-s20-02/thermo_set1:command:*:default],<[openhab:dacha/esp-s20-02/thermo_set1:state:default]"}
+
+String Heating_GF_Kitchen_St    "[%s]"   //{mqtt=">[openhab:uno/temp/f1/kitchen/set:command:*:default]"}
+Number Heating_GF_Kitchen_Set    "цель [%.1f °C]" <tempset>   {mqtt=">[openhab:dacha/sonoffpow03/thermo_set1:command:*:default],<[openhab:dacha/sonoffpow03/thermo_set1:state:default]"}
+
+String Heating_GF_Corridor_St    "[%s]"   //{mqtt=">[openhab:uno/temp/f1/corridor/set:command:*:default]"}
+Number Heating_GF_Corridor_Set    "цель [%.1f °C]" <tempset>  {mqtt=">[openhab:uno/temp/f1/corridor/set:command:*:default]"} //,<[openhab:uno/temp/f1/corridor/set:state:default]"}
+
+
+String Heating_FF_BedRoom1_St    "[%s]"   //{mqtt=">[openhab:uno/temp/f2/room1/set:command:*:default]"}
+Number Heating_FF_BedRoom1_Set    "цель [%.1f °C]" <tempset>   {mqtt=">[openhab:dacha/esp-s20-01/thermo_set1:command:*:default],<[openhab:dacha/esp-s20-01/thermo_set1:state:default]"}
+
+String Heating_FF_BedRoom2_St    "[%s]"   //{mqtt=">[openhab:uno/temp/f2/room2/set:command:*:default]"}
+Number Heating_FF_BedRoom2_Set    "цель [%.1f °C]" <tempset>   {mqtt=">[openhab:arduino/therm/set/cmd/5:command:*:default],<[openhab:arduino/therm/set/state/5:state:default]"}
+
+String Heating_FF_BedRoom3_St    "[%s]"   //{mqtt=">[openhab:uno/temp/f2/room3/set:command:*:default]"}
+Number Heating_FF_BedRoom3_Set    "цель [%.1f °C]" <tempset>   {mqtt=">[openhab:uno/temp/f2/room3/set:command:*:default]"}//,<[openhab:uno/temp/f2/room3/set:state:default]"}
+
+String Heating_FF_Corridor_St    "[%s]"   //{mqtt=">[openhab:uno/temp/f2/corridor/set:command:*:default]"}
+Number Heating_FF_Corridor_Set    "цель [%.1f °C]" <tempset>   {mqtt=">[openhab:uno/temp/f2/corridor/set:command:*:default]"}//,<[openhab:uno/temp/f2/corridor/set:state:default]"}
+

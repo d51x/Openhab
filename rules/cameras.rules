@@ -1,0 +1,146 @@
+import java.io.File
+
+var Timer cameraTimer_01
+var Timer cameraTimer_02
+var Timer cameraTimer_03
+var alarm_skip_time = 120
+var camera1_send_motion_alarm_available = new Boolean(true)
+var camera2_send_motion_alarm_available = new Boolean(true)
+var camera3_send_motion_alarm_available = new Boolean(true)
+
+rule "OpenHAB system started - camers"
+when
+    System started
+then
+    createTimer(now.plusSeconds(180)) [ |
+        logInfo("RULE", "--> cameras init")
+        postUpdate(Motion_Camera_1, OFF)
+        postUpdate(Blind_Camera_1, OFF)
+        postUpdate(Motion_Camera_2, OFF)
+        postUpdate(Blind_Camera_2, OFF)
+        postUpdate(Motion_Camera_3, OFF)
+        postUpdate(Blind_Camera_3, OFF)
+
+        postUpdate(MotionTime_Camera_1, "")
+        postUpdate(BlindTime_Camera_1, "")
+        postUpdate(MotionTime_Camera_2, "")
+        postUpdate(BlindTime_Camera_2, "")
+        postUpdate(MotionTime_Camera_3, "")
+        postUpdate(BlindTime_Camera_3, "")
+    ]
+end
+
+rule "Member of gCameraMotion changed to ON"
+when
+    Member of gCameraMotion changed to ON
+then
+   if (gPresent.state == ON) { return; } // я дома, не отправлять уведомления камерой об обнаружениях движения
+	
+    val item = triggeringItem
+	val name = item.name
+    var msg = String::format("%s. Обнаружено движение объекта!!!", name) 
+
+    var idx = name.substring( name.length()-1)
+    logInfo("Camera", "TriggeringItem: {}, idx: {}", name, idx)
+    
+    if ( name == "Motion_Camera_1" ) {
+        logInfo("Camera1", "camera1_send_motion_alarm_available: {}", camera1_send_motion_alarm_available)
+        if (camera1_send_motion_alarm_available)  {
+            logInfo("Camera1", "Start taking snapshot and send notifications")
+            camera1_send_motion_alarm_available = false
+            cameraTimer_01 = createTimer(now.plusSeconds(alarm_skip_time), [ |
+                camera1_send_motion_alarm_available = true
+                cameraTimer_01.cancel()
+            ])     
+            //logInfo("Camera1", "Execute command to get snapshot")
+            //executeCommandLine("/bin/bash@@/home/pi/snap_1.sh", 3000)
+            
+            //logInfo("Camera1", "Execute command to send photo")
+            //executeCommandLine("sh@@/home/pi/send_telegram_photo.sh@@1@@"+msg)
+            
+            //logInfo("Camera1", "Execute command to get video")
+            //executeCommandLine("sh@@/home/pi/camera_motion.sh@@1@@" + (alarm_skip_time - 10))
+        } else {
+            logInfo("Camera1", "Alarm notification disabled by timer")
+        }        
+    } else if ( name == "Motion_Camera_2" ) {
+        logInfo("Camera2", "camera2_send_motion_alarm_available: {}", camera2_send_motion_alarm_available)
+    
+        if (camera2_send_motion_alarm_available)  {
+            logInfo("Camera2", "Start taking snapshot and send notifications")
+            camera2_send_motion_alarm_available = false
+            cameraTimer_02 = createTimer(now.plusSeconds(alarm_skip_time), [ |
+                camera2_send_motion_alarm_available = true
+                cameraTimer_02.cancel()
+            ])      
+            // get snapshot
+            logInfo("Camera2", "Execute command to get snapshot")
+            //executeCommandLine("/bin/bash@@/home/pi/snap_telegram.sh@@2@@"+msg)
+            //logInfo("Camera2", "exec result: " + res)
+            // send telegram photo
+            //logInfo("Camera2", "Execute command to send photo")
+            //executeCommandLine("sh@@/home/pi/send_telegram_photo.sh@@2@@"+msg)
+        
+            // start record video (not actual video)
+            //logInfo("Camera2", "Execute command to get video")
+            //executeCommandLine("sh@@/home/pi/camera_motion.sh@@2@@" + (alarm_skip_time - 10))
+
+            logInfo("Camera2", "Send notification to cloud")
+            sendBroadcastNotification(msg, "motion", "Important")	
+	        executeCommandLine(Telegram_Command.state + msg)
+        } else {
+            logInfo("Camera2", "Alarm notification disabled by timer")
+        }
+    } else if ( name == "Motion_Camera_3") {
+        logInfo("Camera", "camera3_send_motion_alarm_available: {}", camera3_send_motion_alarm_available)
+
+        if (camera3_send_motion_alarm_available) {
+            logInfo("Camera3", "Start taking snapshot and send notifications")
+            camera3_send_motion_alarm_available = false
+            cameraTimer_03 = createTimer(now.plusSeconds(alarm_skip_time), [ |
+                camera3_send_motion_alarm_available = true
+                cameraTimer_03.cancel()
+            ])  
+            // get snapshot
+            //logInfo("Camera3", "Execute command to get snapshot")
+            //executeCommandLine("sh@@/home/pi/snap_telegram.sh@@3@@"+msg)
+            //logInfo("Camera3", "exec result: " + res)
+            // send telegram photo
+            //logInfo("Camera3", "Execute command to send photo")
+            //executeCommandLine("sh@@/home/pi/send_telegram_photo.sh@@3@@"+msg)
+        
+            // start record video (not actual video)
+            //logInfo("Camera3", "Execute command to get video")
+            //executeCommandLine("sh@@/home/pi/camera_motion.sh@@3@@" + (alarm_skip_time - 10))
+
+            logInfo("Camera3", "Send notification to cloud")
+            sendBroadcastNotification(msg, "motion", "Important")	
+	        executeCommandLine(Telegram_Command.state + msg)
+
+        } else {
+            logInfo("Camera3", "Alarm notification disabled by timer")
+        }
+    } else {
+        // other camera motion
+    }
+end
+
+rule "CameraTelegramSnapshot"
+when
+    Item CameraTelegramSnapshot changed
+then
+    val fname = "/var/log/openhab2/telegram_photo.disabled"
+    val f = new File( fname )
+
+    if ( triggeringItem.state == ON ) {
+        // ON - delete file
+        if ( f.exists() ) {
+            f.delete()
+        }
+    } else {
+        // OFF - create file
+        if ( ! f.exists() ) {
+            f.createNewFile()
+        }
+    }
+end

@@ -1,0 +1,9 @@
+Strategies {
+	default = everyUpdate
+}
+
+Items {
+	* : strategy = everyChange, restoreOnStartup
+}
+
+// vim: syntax=Xtend syntax=openhab

@@ -1,0 +1,128 @@
+Group gRoot			"Дача"
+
+// persistance groups
+Group gMyOpenHab			// для облака
+Group gChart				// для графиков
+Group gHistory				// для хранения в базах
+Group gMinMax				// для правила вычисления min и max, каждая переменная в группе должна иметь переменные _Min и _Max
+Group gLastUpdate			// для правила вычисления LastUpdate, каждая переменная в группе должна иметь _LastUpdate
+Group gInfluxe              // для Grafana
+
+Group gWeather			"Погода" 				<sun>				(gRoot)			// погода
+Group gDevices			"Устройства"			<network>			(gRoot)			// группа устройств
+Group gStatus 			"Статус"				<status>			(gRoot)			// группа статусов
+Group gSensors 			"Датчики"				<status>			(gRoot)			// все датчики (сенсоры) в одном месте
+Group:Switch:OR(ON, OFF) gActuators 		"Потребители [(%d)]"			<poweroutlet>		(gRoot)	// все реле/розетки/потребители в одном месте
+Group:Switch:OR(ON, OFF) gLights		"Освещение [(%d)]"				<light>				(gRoot)   // все освещение (и внещнее, и внутреннее)
+	
+//location groups	
+Group gHouse			"Дом"					<house>				(gRoot) 	// все, что в доме
+Group gOutside			"Улица"	 				<garden>			(gRoot)		// все, что на улице
+	
+	
+Group gPlacements		"Помещения [%s]"				<house>				(gHouse)	// все помещения в доме
+String vPlacements		"Помещения [%s]"				<house>		
+
+Group gFirstFloor		"Этаж 1" 				<groundfloor> 		(gHouse, gPlacements)	
+String vFirstFloor		"Этаж 1 [%s]" 				<groundfloor> 		
+
+Group gSecondFloor		"Этаж 2 [%s]" 				<firstfloor>  		(gHouse, gPlacements)
+String vSecondFloor		"Этаж 2 [%s]" 				<firstfloor>  		
+
+Group gGroundFloor		"Цоколь [%s]" 				<cellar>      		(gHouse, gPlacements)
+
+Group gAttic			"Чердак [%s]" 				<attic>       		(gHouse, gPlacements)
+String vAttic			"Чердак [%s]" 				<attic> 
+
+Group gBLR				"Котельная [%s]" 			<garage>			(gHouse, gPlacements)
+String vBLR				"Котельная [%s]" 				<garage>  
+
+Group gTerrace			"Веранда [%s]"				<terrace>			(gHouse)
+	
+	
+// first floor placements	
+Group gFF_LivingRoom	"Гостинная [%s]"   			<sofa>     			(gFirstFloor)
+String vFF_LivingRoom	"Гостинная [%s]"   			<sofa>     			
+
+Group gFF_Kitchen    	"Кухня [%s]"       			<kitchen>   		(gFirstFloor)
+String vFF_Kitchen    	"Кухня [%s]"       			<kitchen>   		
+
+Group gFF_BathRoom     	"Ванная [%s]"      			<bath>      		(gFirstFloor)
+String vFF_BathRoom     	"Ванная [%s]"      			<bath>      		
+
+Group gFF_Hall   		"Прихожая [%s]"      		<corridor>  		(gFirstFloor)
+	
+// second floor placements	
+Group gSF_BedRoom_1     "Спальня [%s]"   			<bedroom_orange> 	(gSecondFloor)
+String vSF_BedRoom_1     "Спальня [%s]"   			<bedroom_orange> 	
+
+Group gSF_BedRoom_2     "Детская 1 [%s]"   			<bedroom_red>    	(gSecondFloor)
+String vSF_BedRoom_2     "Детская 1 [%s]"   			<bedroom_red>    	
+
+Group gSF_BedRoom_3     "Детская 2 [%s]"  			<bedroom_blue>   	(gSecondFloor)
+String vSF_BedRoom_3     "Детская 2 [%s]"  			<bedroom_blue>   	
+
+Group gSF_Corridor     	"Коридор [%s]"     			<corridor>  	 	(gSecondFloor)
+	
+// devices	
+Group gRaspberryPi		"RaspberryPi"			<network>			(gDevices)
+
+Group gEnergy			"Электричество"			<energy>			(gSensors)
+	
+// Sensors	
+Group:Number 	gTemp		"Температура [%.1f °C]"			<temperature>		(gSensors)
+Group:Number 	gHum			"Влажность [%.0f %%]"				<humidity>			(gSensors)
+	
+// Actuators	
+Group:Switch:OR(ON, OFF) gHeaters			"Обогреватели [вкл (%d)]"			<heating>			(gActuators) // все обогреватели
+
+Group gFan				"Вентилятор"			<fan>				(gFF_Kitchen)
+
+
+
+
+// Temperatures в доме   
+Group:Number:MIN gTemp_House_Min "Температура [min. %.1f °C]" <temperature_cold>					
+Group:Number:MAX gTemp_House_Max "Температура [max. %.1f °C]" <temperature_hot> 
+Group:Number:AVG gTemp_House	 "Температура [%.1f °C]" <temperature> 
+
+// first floor temperature
+Group:Number:MIN gTemp_FF_Min "1-ый этаж. Температура [min. %.1f °C]" <temperature> (gTemp_House_Min)
+Group:Number:MAX gTemp_FF_Max "1-ый этаж. Температура [max. %.1f °C]" <temperature> (gTemp_House_Max)
+Group:Number:AVG gTemp_FF_Avg "1-ый этаж. Температура [avg. %.1f °C]" <temperature> (gTemp_House)
+
+// second floor temperature
+Group:Number:MIN gTemp_SF_Min "2-ой этаж. Температура [min. %.1f °C]" <temperature> (gTemp_House_Min)
+Group:Number:MAX gTemp_SF_Max "2-ой этаж. Температура [max. %.1f °C]" <temperature> (gTemp_House_Max)
+Group:Number:AVG gTemp_SF_Avg "2-ой этаж. Температура [avg. %.1f °C]" <temperature> (gTemp_House)
+ 
+// attic temperature
+Group:Number:MIN gTemp_Attic_Min "Чердак. Температура [min. %.1f °C]" <temperature> 
+Group:Number:MAX gTemp_Attic_Max "Чердак. Температура [max. %.1f °C]" <temperature> 
+Group:Number:AVG gTemp_Attic_Avg "Чердак. Температура [avg. %.1f °C]" <temperature> 
+ 
+ 
+// Humidity
+Group:Number:MIN gHumidity_House_Min "Влажность [min. %d %%]" <humidity> (Status, gHumidity)					
+Group:Number:MAX gHumidity_House_Max "Влажность [max. %d %%]" <humidity> (Status, gHumidity)
+Group:Number:AVG gHumidity_House	 "Влажность [%d %%]" <humidity> (Status, gHumidity)
+
+
+// first floor Humidity
+Group:Number:MIN gHumidity_FF_Min "1-ый этаж. Влажность [min. %d %%]" <humidity> (gHumidity_House_Min)
+Group:Number:MAX gHumidity_FF_Max "1-ый этаж. Влажность [max. %d %%]" <humidity> (gHumidity_House_Max)
+Group:Number:AVG gHumidity_FF_Avg "1-ый этаж. Влажность [avg. %d %%]" <humidity> (gHumidity_House)
+
+// second floor Humidity
+Group:Number:MIN gHumidity_SF_Min "2-ой этаж. Влажность [min. %d %%]" <humidity> (gHumidity_House_Min)
+Group:Number:MAX gHumidity_SF_Max "2-ой этаж. Влажность [max. %d %%]" <humidity> (gHumidity_House_Max)
+Group:Number:AVG gHumidity_SF_Avg "2-ой этаж. Влажность [avg. %d %%]" <humidity> (gHumidity_House)
+
+// attic Humidity
+Group:Number:MIN gHumidity_Attic_Min "Чердак. Влажность [min. %d %%]" <humidity> (gHumidity)
+Group:Number:MAX gHumidity_Attic_Max "Чердак. Влажность [max. %d %%]" <humidity> (gHumidity)
+Group:Number:AVG gHumidity_Attic_Avg "Чердак. Влажность [avg. %d %%]" <humidity> (gHumidity)
+
+
+
+Number Chart_Period     "Период" <chart> 

@@ -1,0 +1,13 @@
+// 192.168.2.206
+Thing mqtt:topic:mosquitto:esp-hall "Hall" (mqtt:broker:mosquitto) @ "Устройства" {
+	Channels:
+		Type number: Temperature 			"Температура в прихожей" 			[ stateTopic="dacha/esp-hall/dhtt1"]
+		Type number: Humidity 			"Влажность в прихожей" 			[ stateTopic="dacha/esp-hall/dhth1"]
+		Type contact: Door 			"Входная дверь" 			[ stateTopic="dacha/esp-hall/reed-switch-1", open="1", closed="0"]
+		Type switch: Window 			"Окно в коридоре" 			[ stateTopic="dacha/esp-hall/reed-switch-2", on="1", off="0"]
+		Type switch: Pir1 			"Датчик движения 1" 			[ stateTopic="dacha/esp-hall/pir-1", on="1", off="0"]
+		Type switch: Pir2 			"Датчик движения 2" 			[ stateTopic="dacha/esp-hall/pir-2", on="1", off="0"]
+		Type switch: NightMode 			"Ночной режим" 			[ stateTopic="dacha/esp-hall/night-mode", on="1", off="0"]
+		Type number: rssi			"Уровень сигнала" 			[ stateTopic="dacha/esp-hall/rssi" ]
+		Type number: uptime			"Время работы" 				[ stateTopic="dacha/esp-hall/uptime" ]
+}

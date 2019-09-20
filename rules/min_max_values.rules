@@ -1,0 +1,68 @@
+import org.eclipse.smarthome.model.script.ScriptServiceUtil
+
+rule "Update min/max value for item"
+when
+	Member of gMinMax changed  
+	/*-------- temperatures --------------*/
+	// Item FF_LivingRoom_sTemp_01 					changed or
+	// Item FF_LivingRoom_sTemp_02 					changed or
+	// Item FF_Kitchen_sTemp 							changed or
+	// Item FF_BathRoom_sTemp 							changed or
+	// Item SF_Room1_sTemp	 							changed or
+	// Item SF_Room2_sTemp 							changed or
+	// Item SF_Room3_sTemp 							changed or
+	// Item BoilerRoom_sTemp_01 						changed or
+	// Item BoilerRoom_Boiler_sTemperature 			changed or
+	// Item BoilerRoom_Hotcab_sTemperature 			changed or
+	// Item Septic_sTemperature 						changed or
+
+	/*--------- humidity -------------------*/
+	// Item BoilerRoom_sHumidity 						changed or
+	// Item FF_LivingRoom_sHumidity_01					changed or
+	// Item FF_LivingRoom_sHumidity_02					changed or
+	// Item FF_Kitchen_sHumidity 						changed or
+	// Item FF_BathRoom_sHumidity 						changed or
+	// Item SF_Room1_sHumidity 						changed or
+	// Item SF_Room2_sHumidity 						changed or
+	// Item SF_Room3_sHumidity 						changed or
+	
+	/*--------- electricity -----------------*/
+	// Item Electro_Voltage 							changed or
+	// Item Electro_Current 							changed or
+	// Item Electro_PowerRMS 							changed or
+	// Item Electro_SOnOffPow1_Voltage 				changed or
+	// Item Electro_SOnOffPow1_Current 				changed or
+	// Item Electro_SOnOffPow1_PowerRMS 				changed or
+	// Item Electro_SOnOffPow2_Voltage 				changed or
+	// Item Electro_SOnOffPow2_Current 				changed or
+	// Item Electro_SOnOffPow2_PowerRMS 				changed or
+	// Item Electro_SOnOffPow3_Voltage 				changed or
+	// Item Electro_SOnOffPow3_Current 				changed or
+	// Item Electro_SOnOffPow3_PowerRMS 				changed or
+	// Item Electro_ADC 								changed or
+	
+	/*---------- old items -------------------*/
+	// Item Temp_BoilerRoom 							changed or   ///Temp_BoilerRoom_Cur
+	// Item BoilerRoom_Hum 							changed or
+	// Item Temp_BoilerRoom_Boiler 					changed or
+	// Item Temp_BoilerRoom_Hotcab						changed or		///Temp_BoilerRoom_Hotcab_Cur
+	// Item Septic_Temperature 						changed or  
+	// Item Temp_Attic 								changed or  //Temp_Attic_Cur
+	// Item Weather_Temperature 						changed or //Weather_Temp
+	// Item Temp_FL1_Living1 							changed or ///Temp_FL1_Living_Cur1
+	// Item Temp_FL1_Living2 							changed or ///Temp_FL1_Living_Cur2
+	// Item Temp_FL1_Kitchen 							changed or ///Temp_FL1_Kitchen_Cur
+	// Item Temp_FL1_Toilet 							changed or ///Temp_FL1_Toilet_Cur
+	// Item Temp_FL2_Room1 							changed  ///Temp_FL2_Room1_Cur
+	
+then
+	val item = triggeringItem
+	//item.previousState("rrd4j")
+	//item.previousState("influxdb")
+	val item_max = ScriptServiceUtil.getItemRegistry.getItem( item.name + "_Max") as NumberItem
+	val item_min = ScriptServiceUtil.getItemRegistry.getItem( item.name + "_Min") as NumberItem
+	item_max.postUpdate(item.maximumSince(now.withTimeAtStartOfDay).state)
+	item_min.postUpdate(item.minimumSince(now.withTimeAtStartOfDay).state)
+end
+
+

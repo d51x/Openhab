@@ -1,0 +1,19 @@
+Group:Contact:OR(OPEN, CLOSED) gDoors			"Двери [(%d)]"					<door>				(gRoot)	// все двери
+Group:Contact:OR(OPEN, CLOSED) gWindows		"Окна [(%d)]"					<window> 			(gRoot)  // все окна
+
+
+Contact MainDoor "Входная дверь [MAP(ui.map):%s]" <frontdoor> (gMyOpenHab, gHistory, gDoors)
+								{ channel="mqtt:topic:mosquitto:esp-hall:Door" } //{mqtt=" <[openhab:dacha/esp-hall/reed-switch-1:state:MAP(switchMQTT.map)]"}
+										
+Switch CorridorWindow "Окно" <window> (gMyOpenHab, gHistory, gWindows)
+								{ channel="mqtt:topic:mosquitto:esp-hall:Window" } //{mqtt=" <[openhab:dacha/esp-hall/reed-switch-2:state:MAP(switchMQTT.map)]"}
+
+Group:Switch:OR(ON, OFF)  gMotion "Движение [(%d)]" <motion>								
+Switch PirSensor1 "Сенсор 1" <motion> (gMyOpenHab, gHistory, gMotion)
+								{ channel="mqtt:topic:mosquitto:esp-hall:Pir1" } //{mqtt=" <[openhab:dacha/esp-hall/pir-1:state:MAP(switchMQTT.map)]"}
+										
+Switch PirSensor2 "Сенсор 2" <motion> (gMyOpenHab, gHistory, gMotion)
+								{ channel="mqtt:topic:mosquitto:esp-hall:Pir2" } //{mqtt=" <[openhab:dacha/esp-hall/pir-2:state:MAP(switchMQTT.map)]"}
+										
+Switch NightModeHall "Ночной режим [%s]" <switch> (gMyOpenHab, gHistory)									
+								{ channel="mqtt:topic:mosquitto:esp-hall:NightMode" } //{mqtt=" <[openhab:dacha/esp-hall/night-mode:state:MAP(switchMQTT.map)]"}

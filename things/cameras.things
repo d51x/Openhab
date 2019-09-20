@@ -1,0 +1,27 @@
+// 192.168.2.101
+Thing mqtt:topic:mosquitto:camera_01 "Camera 1" (mqtt:broker:mosquitto) @ "Камеры" {
+	Channels:
+		Type switch: MotionDetect 			"Движение " 		[ stateTopic="dacha/camera/eec8283ccab42725/MotionDetect", transformationPattern="JSONPATH:$.Status", on="Start", off="Stop"]
+		Type string: MotionTime				"Время " 			[ stateTopic="dacha/camera/eec8283ccab42725/MotionDetect", transformationPattern="JSONPATH:$.StartTime"]
+		Type switch: BlindDetect 			"Засветка" 			[ stateTopic="dacha/camera/eec8283ccab42725/BlindDetect",  transformationPattern="JSONPATH:$.Status", on="Start", off="Stop"]
+		Type string: BlindTime				"Время " 			[ stateTopic="dacha/camera/eec8283ccab42725/BlindDetect",  transformationPattern="JSONPATH:$.StartTime"]
+}
+
+// 192.168.2.102
+Thing mqtt:topic:mosquitto:camera_02 "Camera 2" (mqtt:broker:mosquitto) @ "Камеры" {
+	Channels:
+		Type switch: MotionDetect 			"Движение " 		[ stateTopic="dacha/camera/772d8b7c7fc15135/MotionDetect", transformationPattern="JSONPATH:$.Status", on="Start", off="Stop"]
+		Type string: MotionTime				"Время " 			[ stateTopic="dacha/camera/772d8b7c7fc15135/MotionDetect", transformationPattern="JSONPATH:$.StartTime"]
+		Type switch: BlindDetect 			"Засветка" 			[ stateTopic="dacha/camera/772d8b7c7fc15135/BlindDetect",  transformationPattern="JSONPATH:$.Status", on="Start", off="Stop"]
+		Type string: BlindTime				"Время " 			[ stateTopic="dacha/camera/772d8b7c7fc15135/BlindDetect",  transformationPattern="JSONPATH:$.StartTime"]
+}
+
+// 192.168.2.103
+Thing mqtt:topic:mosquitto:camera_03 "Camera 3" (mqtt:broker:mosquitto) @ "Камеры" {
+	Channels:
+		Type switch: MotionDetect 			"Движение " 		[ stateTopic="dacha/camera/31a26529c5f163ba/MotionDetect", transformationPattern="JSONPATH:$.Status", on="Start", off="Stop"]
+		Type string: MotionTime				"Время " 			[ stateTopic="dacha/camera/31a26529c5f163ba/MotionDetect", transformationPattern="JSONPATH:$.StartTime"]
+		Type switch: BlindDetect 			"Засветка" 			[ stateTopic="dacha/camera/31a26529c5f163ba/BlindDetect",  transformationPattern="JSONPATH:$.Status", on="Start", off="Stop"]
+		Type string: BlindTime				"Время " 			[ stateTopic="dacha/camera/31a26529c5f163ba/BlindDetect",  transformationPattern="JSONPATH:$.StartTime"]
+}
+

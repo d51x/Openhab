@@ -1,0 +1,12 @@
+Group:Switch:OR(ON, OFF)        Septic_State     "Септик [%.1f °C]"     <light> 
+
+Group 		Septic_Temperature_Chart  <chart>
+Number 		Septic_Temperature      "Септик [%.1f °C]" <temperature> (gMinMax, gLastUpdate, Septic_Temperature_Chart, gHistory, gChart, gMyOpenHab) {mqtt="<[openhab:dacha/ESP-SONOFF/dsw1:state:default]"}
+Number 		Septic_Temperature_Min "Минимальная сегодня [%.1f °C]" <temperature> //(Septic_Temperature_Chart)
+Number 		Septic_Temperature_Max "Максимальная сегодня [%.1f °C]" <temperature> //(Septic_Temperature_Chart)
+DateTime 	Septic_Temperature_LastUpdate     "Последнее обновление [%1$ta %1$tR]"     <lastupdate>
+Number 		Septic_Temperature_Chart_Period     "Период"
+
+Switch 		Septic_Heating      "Обогрев септика [%s]" <radiator> (Septic_State) {mqtt=">[openhab:dacha/ESP-SONOFF/output12:command:ON:1],>[openhab:dacha/ESP-SONOFF/output12:command:OFF:0],<[openhab:dacha/ESP-SONOFF/output12:state:MAP(switchMQTT.map)]"}
+//String Heating_Septic_St    "[%s]"   {mqtt=">[openhab:uno/temp/out/septic/set:command:*:default]"}
+//Number Heating_Septic_Set    "цель [%.1f °C]" <temperature>   {mqtt=">[openhab:uno/temp/out/septic/set:command:*:default],<[openhab:uno/temp/out/septic/set:state:default]"}

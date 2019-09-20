@@ -1,0 +1,19 @@
+Group Astro <sun_clouds> (gWeather)
+
+//
+DateTime    Current_DateTime     "Сегодня [%1$tA, %1$td.%1$tm.%1$tY]"                <clock>  (Astro) {channel="ntp:ntp:local:dateTime"}
+//
+DateTime    Sunset_Time          "Закат [%1$tH:%1$tM]"                            <sun>    (Astro) {channel="astro:sun:local:set#start"}
+DateTime    Sunrise_Time         "Восход [%1$tH:%1$tM]"                           <sun>    (Astro) {channel="astro:sun:local:rise#end"}
+DateTime    Evening_Time         "Вечер [%1$tH:%1$tM]"                                    (Astro) {channel="astro:sun:minus90:set#start"}
+//
+String      Day_Phase            "Фаза дня [MAP(astro.map):%s]"                         (Astro) {channel="astro:sun:home:phase#name"}
+Switch      Night_State          "Ночь"                           (Astro) 
+//
+String      Season_Name          "Сезон [MAP(astro.map):%s]"                               (Astro) {channel="astro:sun:local:season#name"}
+String      Zodiac_Sign          "Зодиак [MAP(astro.map):%s]"                      <zodiac> (Astro) {channel="astro:sun:local:zodiac#sign"}
+Number      Sun_Elevation        "Положение солнца [%.1f °]"                          <sun>    (Astro) {channel="astro:sun:local:position#elevation"}
+Number      Moon_Elevation       "Положение луны [%.1f °]"                         <moon>   (Astro) {channel="astro:moon:local:position#elevation"}
+String      Moon_Phase           "Фаза луны [MAP(astro.map):%s]"                  <moon>   (Astro) {channel="astro:moon:local:phase#name"}
+DateTime    Moon_Next_Full       "Следующее полнолуние [%1$td.%1$tm.%1$tY, %1$tH:%1$tM]" <moon>   (Astro) {channel="astro:moon:local:phase#full"}
+DateTime    Moon_Next_New        "Следующая новая луна [%1$td.%1$tm.%1$tY, %1$tH:%1$tM]"  <moon>   (Astro) {channel="astro:moon:local:phase#new"}

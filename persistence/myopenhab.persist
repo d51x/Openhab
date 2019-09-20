@@ -1,0 +1,9 @@
+Strategies {
+	default = everyUpdate
+}
+
+Items {
+	gMyOpenHab* : strategy = everyUpdate
+}
+
+// vim: syntax=Xtend syntax=openhab

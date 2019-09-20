@@ -1,0 +1,90 @@
+import org.eclipse.smarthome.model.script.ScriptServiceUtil
+
+val mail_to = "mail@gmail.com"  //TODO: прочитать из файла
+val subject = "OpenHAB Alarm: Превышение мощности"
+
+val LOG_TAG = "Thermo:"
+
+rule "OpenHAB system started - global thermo mode"
+when
+    System started
+then
+	if (( Global_Thermo_Mode.state == NULL ) || (Global_Thermo_Mode.state == UNDEF)) {
+		sendCommand(Global_Thermo_Mode, "ALL_OFF")
+	}
+end
+
+rule "Переключение глобального режима"
+when
+	Item Global_Thermo_Mode received command   /* changed from ECO to ANTI_FREEZE */
+then
+	var temp = 7
+	var mode = ON
+	switch(receivedCommand) {
+	    case "ALL_OFF": 		mode = OFF 
+	    case "ANTI_FREEZE": 	temp = 7 
+	    case "COLD": 			temp = 13
+		case "ECO": 			temp = 18 
+		case "NORMAL": 			temp = 20	 
+		case "WARM": 			temp = 22 
+		case "HOT": 			temp = 24
+	}
+	logInfo(LOG_TAG, "Mode: " + mode)
+	logInfo(LOG_TAG, "Temp: " + temp)
+	//temp = temp * 10
+	sendCommand(gThermoMode, mode)
+	if ( mode == ON ) {
+		sendCommand(FF_LR_Heater_01_tThermo, temp)
+		sendCommand(FF_LR_Heater_02_tThermo, temp)
+		sendCommand(FF_Kitchen_Heater_tThermo, temp)
+		sendCommand(FF_Bathroom_Heater_tThermo, temp)
+		sendCommand(SF_Bedroom1_Heater_tThermo, temp)
+		sendCommand(SF_Bedroom2_Heater_tThermo, temp)
+		sendCommand(SF_Bedroom3_Heater_tThermo, temp)
+		sendCommand(BoilerRoom_Heater_tThermo, temp)	
+	}
+end	
+
+rule "Отображение изменения параметров термостата"
+when
+	Member of gThermoSetupTemp changed or
+	Member of gThermoMode changed
+then
+	val item = triggeringItem
+	val name = item.name
+	val proxy_name = name.substring(0, name.lastIndexOf("_") + 1) 
+	logError(LOG_TAG, "Proxy name: " + proxy_name)
+	val v_item = ScriptServiceUtil.getItemRegistry.getItem( proxy_name + "sThermo")	
+	logError(LOG_TAG, "v_item: " + v_item.name)
+
+	var Double value = 0
+	var mode = ""
+	if ( name.endsWith("tThermo") ) {
+		logError(LOG_TAG, "Ends with tThermo")
+		val item_mode = ScriptServiceUtil.getItemRegistry.getItem( proxy_name + "Mode")
+		logError(LOG_TAG, item_mode.name)
+		value = item.state.toString()
+		//value = (item.state as DecimalType).doubleValue
+		logError(LOG_TAG, "tThermo value: " + value)
+		mode = item_mode.state
+		//itemp.postUpdate( value )
+	
+	} else {
+		logError(LOG_TAG, "Ends with other")
+		val itemp = ScriptServiceUtil.getItemRegistry.getItem( proxy_name + "tThermo")	
+		value = itemp.state
+		//value = (item.state as DecimalType).doubleValue / 10
+		logError(LOG_TAG, "tThermo new value: " + value)
+		mode = item.state
+		//itemp.postUpdate( value )
+	}
+	
+	var smode = "Ручной"
+	if (mode == ON) { 
+		smode = "Авто: " + value + "°C" 
+	}
+	v_item.postUpdate( smode )
+end
+
+
+

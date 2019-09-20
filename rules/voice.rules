@@ -1,0 +1,30 @@
+rule "Voice Recognize Rule: turn living room light off"
+when	
+	Item VoiceCommand received command
+then
+	val result = VoiceCommand.state;
+	logInfo("Voice", "result: " + result)
+
+	if (result.toString.equalsIgnoreCase("выключи свет в гостиной")) { 
+		logInfo("Voice", "result: found")
+		FF_LivingRoom_Light_01.sendCommand( OFF )	
+		FF_LivingRoom_Light_02.sendCommand( OFF )	
+	} 
+	else if (result.toString.equalsIgnoreCase("включи свет в гостиной")) {
+		logInfo("Voice", "result: found")
+		FF_LivingRoom_Light_01.sendCommand( ON )	
+		FF_LivingRoom_Light_02.sendCommand( ON )
+	} 
+	else if (result.toString.equalsIgnoreCase("включи свет в спальне")) {
+		logInfo("Voice", "result: found")
+		SF_BedRoom1_Light.sendCommand( ON )
+	} 
+	else if (result.toString.equalsIgnoreCase("выключи свет в спальне")) {
+		logInfo("Voice", "result: found")
+		SF_BedRoom1_Light.sendCommand( OFF )
+	} 
+	else {
+		logInfo("Voice", "result: not found")
+	}
+end
+

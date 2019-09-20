@@ -1,0 +1,846 @@
+sitemap dacha2 label="Dacha2"
+{
+	Frame label="Улица" icon="garden" {
+		Text item=Weather_Temperature icon="temperatureoutside" valuecolor=[Weather_Temperature_LastUpdate=="NULL"="lightgray",Weather_Temperature_LastUpdate>90="lightgray",>25="orange",>15="green",>5="orange",<=5="blue"] {
+			Frame {
+				Text item=Weather_Temperature label="Сейчас" valuecolor=[>25="orange",>15="green",>5="orange",<=5="blue"]
+				//Text item=Weather_Temperature2 label="Сейчас" valuecolor=[>25="orange",>15="green",>5="orange",<=5="blue"]
+				Text item=Weather_Temperature_Max valuecolor=[>25="orange",>15="green",>5="orange",<=5="blue"]
+				Text item=Weather_Temperature_Min valuecolor=[>25="orange",>15="green",>5="orange",<=5="blue"] 
+				Text item=Weather_Temperature_LastUpdate  valuecolor=[Weather_Temperature_LastUpdate>120="orange", Weather_Temperature_LastUpdate>300="red"]
+			}
+			Frame {
+				Switch item=Weather_Chart_Period icon="chart" mappings=[0="Час", 1="День", 2="Неделя", 3="Месяц"]
+				Chart item=Weather_Chart period=h refresh=3600 visibility=[Weather_Chart_Period==0, Weather_Chart_Period=="NULL"]
+				Chart item=Weather_Chart period=D refresh=3600 visibility=[Weather_Chart_Period==1]
+				Chart item=Weather_Chart period=W refresh=3600 visibility=[Weather_Chart_Period==2]
+				Chart item=Weather_Chart period=M refresh=3600 visibility=[Weather_Chart_Period==3]
+			}
+		}
+		
+		Text item=gLightOutdoor {
+			Frame {
+				Switch item=OutdoorLightsAll label="Все освещение" mappings=[all_off="Выкл", all_on="Вкл"]
+			}
+			Frame {
+				Switch item=OutdoorLight_Front
+				Switch item=OutdoorLight_Back
+				Switch item=OutdoorLight_Side
+				Switch item=OutdoorLight_oldHouse
+			}
+		}
+		/*
+		Text item=Septic_vText label="Септик" icon="toilet" valuecolor=[Septic_sTemperature_LastUpdate=="NULL"="lightgray",
+																		Septic_sTemperature_LastUpdate>90="lightgray",
+																		Septic_sTemperature<2="red",
+																		Septic_sTemperature>=2="blue",
+																		Septic_sTemperature>=5="orange",
+																		Septic_sTemperature>=10="green"]
+		{
+			Frame {				
+				Switch item=Septic_aHeating
+			}
+			Frame label="Температура" {
+				Text item=Septic_sTemperature label="Сейчас"
+				Text item=Septic_sTemperature_Min label="Минимальная"
+				Text item=Septic_sTemperature_Max label="Максимальная"
+				Text item=Septic_sTemperature_LastUpdate label="Обновлено"
+			}
+			Frame {
+				Switch item=Septic_Chart_Period label="График" icon="chart" mappings=[0="Час", 1="День", 2="Неделя", 3="Месяц"]
+				Chart item=Septic_Chart period=h refresh=3600 visibility=[Septic_Chart_Period==0, Septic_Chart_Period=="NULL"]
+				Chart item=Septic_Chart_Period period=D refresh=3600 visibility=[Septic_Chart_Period==1]
+				Chart item=Septic_Chart_Period period=W refresh=3600 visibility=[Septic_Chart_Period==2]
+				Chart item=Septic_Chart_Period period=M refresh=3600 visibility=[Septic_Chart_Period==3]
+			}		
+		}
+		*/
+	
+	}
+	Frame label="Дом" {
+		Text item=vHouse_Temperature {
+			Frame label="Первый этаж" {
+				Text item=gTemp_FF_LivingRoom_Avg label="Гостинная" icon="sofa" {
+					Frame label="Температура" {
+						Text item=gTemp_FF_LivingRoom_Avg label="Сейчас" {
+							Frame label="Датчик 1" {
+								Text item=FF_LivingRoom_sTemp_01
+								Text item=FF_LivingRoom_sTemp_01_Min
+								Text item=FF_LivingRoom_sTemp_01_Max
+								Text item=FF_LivingRoom_sTemp_01_LastUpdate
+							}
+							Frame label="Датчик 2" {
+								Text item=FF_LivingRoom_sTemp_02
+								Text item=FF_LivingRoom_sTemp_02_Min
+								Text item=FF_LivingRoom_sTemp_02_Max
+								Text item=FF_LivingRoom_sTemp_02_LastUpdate
+							}						
+						}
+						Text item=gTemp_FF_LivingRoom_Min label="Минимальная" icon="temperature_cold"
+						Text item=gTemp_FF_LivingRoom_Max label="Максимальная" icon="temperature_hot"
+						Text item=FF_LivingRoom_Temp_LastUpdate
+					}
+					Frame label="Графики" {
+						Switch item=FF_LivingRoom_Chart_Period label="График" icon="chart" mappings=[0="Час", 1="День", 2="Неделя", 3="Месяц"]
+						Chart item=FF_LivingRoom_Chart period=h refresh=3600 visibility=[FF_LivingRoom_Chart_Period==0, FF_LivingRoom_Chart_Period=="NULL"]
+						Chart item=FF_LivingRoom_Chart period=D refresh=3600 visibility=[FF_LivingRoom_Chart_Period==1]
+						Chart item=FF_LivingRoom_Chart period=W refresh=3600 visibility=[FF_LivingRoom_Chart_Period==2]
+						Chart item=FF_LivingRoom_Chart period=M refresh=3600 visibility=[FF_LivingRoom_Chart_Period==3]					
+					}
+					
+				}
+				Text item=FF_Kitchen_sTemp icon="kitchen" {
+					Frame label="Температура" {
+						Text item=FF_Kitchen_sTemp label="Сейчас"
+						Text item=FF_Kitchen_sTemp_Min 
+						Text item=FF_Kitchen_sTemp_Max
+						Text item=FF_Kitchen_sTemp_LastUpdate					
+					}
+					Frame label="Графики" {
+						Switch item=FF_Kitchen_Chart_Period label="График" icon="chart" mappings=[0="Час", 1="День", 2="Неделя", 3="Месяц"]
+						Chart item=FF_Kitchen_Chart period=h refresh=3600 visibility=[FF_Kitchen_Chart_Period==0, FF_Kitchen_Chart_Period=="NULL"]
+						Chart item=FF_Kitchen_Chart period=D refresh=3600 visibility=[FF_Kitchen_Chart_Period==1]
+						Chart item=FF_Kitchen_Chart period=W refresh=3600 visibility=[FF_Kitchen_Chart_Period==2]
+						Chart item=FF_Kitchen_Chart period=M refresh=3600 visibility=[FF_Kitchen_Chart_Period==3]					
+					}					
+				}
+				Text item=FF_BathRoom_sTemp icon="bath" {
+					Frame label="Температура" {
+						Text item=FF_BathRoom_sTemp label="Сейчас"
+						Text item=FF_BathRoom_sTemp_Min
+						Text item=FF_BathRoom_sTemp_Max
+						Text item=FF_BathRoom_sTemp_LastUpdate					
+					}
+					Frame label="Графики" {
+						Switch item=FF_BathRoom_Chart_Period label="График" icon="chart" mappings=[0="Час", 1="День", 2="Неделя", 3="Месяц"]
+						Chart item=FF_BathRoom_Chart period=h refresh=3600 visibility=[FF_BathRoom_Chart_Period==0, FF_BathRoom_Chart_Period=="NULL"]
+						Chart item=FF_BathRoom_Chart period=D refresh=3600 visibility=[FF_BathRoom_Chart_Period==1]
+						Chart item=FF_BathRoom_Chart period=W refresh=3600 visibility=[FF_BathRoom_Chart_Period==2]
+						Chart item=FF_BathRoom_Chart period=M refresh=3600 visibility=[FF_BathRoom_Chart_Period==3]					
+					}					
+				}
+				Text item=FF_Corridor_sTemp icon="corridor" {
+					Frame label="Температура" {
+						Text item=FF_Corridor_sTemp label="Сейчас"
+						Text item=FF_Corridor_sTemp_Min
+						Text item=FF_Corridor_sTemp_Max
+						Text item=FF_Corridor_sTemp_LastUpdate					
+					}
+					Frame label="Графики" {
+						Switch item=FF_Corridor_Chart_Period label="График" icon="chart" mappings=[0="Час", 1="День", 2="Неделя", 3="Месяц"]
+						Chart item=FF_Corridor_Chart period=h refresh=3600 visibility=[FF_Corridor_Chart_Period==0, FF_Corridor_Chart_Period=="NULL"]
+						Chart item=FF_Corridor_Chart period=D refresh=3600 visibility=[FF_Corridor_Chart_Period==1]
+						Chart item=FF_Corridor_Chart period=W refresh=3600 visibility=[FF_Corridor_Chart_Period==2]
+						Chart item=FF_Corridor_Chart period=M refresh=3600 visibility=[FF_Corridor_Chart_Period==3]					
+					}					
+				}				
+			}
+			Frame label="Второй этаж" {
+				Text item=SF_Room1_sTemp icon="bedroom_orange" {
+					Frame label="Температура" {
+						Text item=SF_Room1_sTemp  label="Сейчас"
+						Text item=SF_Room1_sTemp_Min
+						Text item=SF_Room1_sTemp_Max
+						Text item=SF_Room1_sTemp_LastUpdate					
+					}
+					Frame label="Графики" {
+						Switch item=SF_Room1_Chart_Period label="График" icon="chart" mappings=[0="Час", 1="День", 2="Неделя", 3="Месяц"]
+						Chart item=SF_Room1_Chart period=h refresh=3600 visibility=[SF_Room1_Chart_Period==0, SF_Room1_Chart_Period=="NULL"]
+						Chart item=SF_Room1_Chart period=D refresh=3600 visibility=[SF_Room1_Chart_Period==1]
+						Chart item=SF_Room1_Chart period=W refresh=3600 visibility=[SF_Room1_Chart_Period==2]
+						Chart item=SF_Room1_Chart period=M refresh=3600 visibility=[SF_Room1_Chart_Period==3]					
+					}					
+				}
+				Text item=SF_Room2_sTemp icon="bedroom_red" {
+					Frame label="Температура" {
+						Text item=SF_Room2_sTemp  label="Сейчас"
+						Text item=SF_Room2_sTemp_Min
+						Text item=SF_Room2_sTemp_Max
+						Text item=SF_Room2_sTemp_LastUpdate					
+					}
+					Frame label="Графики" {
+						Switch item=SF_Room2_Chart_Period label="График" icon="chart" mappings=[0="Час", 1="День", 2="Неделя", 3="Месяц"]
+						Chart item=SF_Room2_Chart period=h refresh=3600 visibility=[SF_Room2_Chart_Period==0, SF_Room2_Chart_Period=="NULL"]
+						Chart item=SF_Room2_Chart period=D refresh=3600 visibility=[SF_Room2_Chart_Period==1]
+						Chart item=SF_Room2_Chart period=W refresh=3600 visibility=[SF_Room2_Chart_Period==2]
+						Chart item=SF_Room2_Chart period=M refresh=3600 visibility=[SF_Room2_Chart_Period==3]					
+					}					
+				}
+				
+				Text item=SF_Room3_sTemp icon="bedroom_blue" {
+					Frame label="Температура" {
+						Text item=SF_Room3_sTemp  label="Сейчас"
+						Text item=SF_Room3_sTemp_Min
+						Text item=SF_Room3_sTemp_Max
+						Text item=SF_Room3_sTemp_LastUpdate					
+					}
+					Frame label="Графики" {
+						Switch item=SF_Room3_Chart_Period label="График" icon="chart" mappings=[0="Час", 1="День", 2="Неделя", 3="Месяц"]
+						Chart item=SF_Room3_Chart period=h refresh=3600 visibility=[SF_Room3_Chart_Period==0, SF_Room3_Chart_Period=="NULL"]
+						Chart item=SF_Room3_Chart period=D refresh=3600 visibility=[SF_Room3_Chart_Period==1]
+						Chart item=SF_Room3_Chart period=W refresh=3600 visibility=[SF_Room3_Chart_Period==2]
+						Chart item=SF_Room3_Chart period=M refresh=3600 visibility=[SF_Room3_Chart_Period==3]					
+					}					
+				}
+			}	
+		}						
+
+		Text item=gHumidity_House {
+			Frame label="Первый этаж" {
+				Text item=gHumidity_FF_LivingRoom_Avg label="Гостинная" icon="sofa" {
+					Frame label="Влажность" {
+						Text item=gHumidity_FF_LivingRoom_Avg label="Сейчас" {
+							Frame label="Датчик 1" {
+								Text item=FF_LivingRoom_sHumidity_01
+								Text item=FF_LivingRoom_sHumidity_01_Min
+								Text item=FF_LivingRoom_sHumidity_01_Max
+								Text item=FF_LivingRoom_sHumidity_01_LastUpdate
+							}
+							Frame label="Датчик 2" {
+								Text item=FF_LivingRoom_sHumidity_02
+								Text item=FF_LivingRoom_sHumidity_02_Min
+								Text item=FF_LivingRoom_sHumidity_02_Max
+								Text item=FF_LivingRoom_sHumidity_02_LastUpdate
+							}						
+						}	
+						Text item=gHumidity_FF_LivingRoom_Min label="Минимальная" 
+						Text item=gHumidity_FF_LivingRoom_Max label="Максимальная"
+						Text item=FF_LivingRoom_Humidity_LastUpdate	
+					}
+					Frame label="Графики" {
+						Switch item=FF_LivingRoom_Humidity_Chart_Period label="График" icon="chart" mappings=[0="Час", 1="День", 2="Неделя", 3="Месяц"]
+						Chart item=FF_LivingRoom_Humidity_Chart period=h refresh=3600 visibility=[FF_LivingRoom_Humidity_Chart_Period==0, FF_LivingRoom_Humidity_Chart_Period=="NULL"]
+						Chart item=FF_LivingRoom_Humidity_Chart period=D refresh=3600 visibility=[FF_LivingRoom_Humidity_Chart_Period==1]
+						Chart item=FF_LivingRoom_Humidity_Chart period=W refresh=3600 visibility=[FF_LivingRoom_Humidity_Chart_Period==2]
+						Chart item=FF_LivingRoom_Humidity_Chart period=M refresh=3600 visibility=[FF_LivingRoom_Humidity_Chart_Period==3]					
+					}					
+				}
+				Text item=FF_Kitchen_sHumidity icon="kitchen" {
+					Frame label="Влажность" {
+						Text item=FF_Kitchen_sHumidity  label="Сейчас"
+						Text item=FF_Kitchen_sHumidity_Min
+						Text item=FF_Kitchen_sHumidity_Max
+						Text item=FF_Kitchen_sHumidity_LastUpdate					
+					}
+					Frame label="Графики" {
+						Switch item=FF_Kitchen_Humidity_Chart_Period label="График" icon="chart" mappings=[0="Час", 1="День", 2="Неделя", 3="Месяц"]
+						Chart item=FF_Kitchen_Humidity_Chart period=h refresh=3600 visibility=[FF_Kitchen_Humidity_Chart_Period==0, FF_Kitchen_Humidity_Chart_Period=="NULL"]
+						Chart item=FF_Kitchen_Humidity_Chart period=D refresh=3600 visibility=[FF_Kitchen_Humidity_Chart_Period==1]
+						Chart item=FF_Kitchen_Humidity_Chart period=W refresh=3600 visibility=[FF_Kitchen_Humidity_Chart_Period==2]
+						Chart item=FF_Kitchen_Humidity_Chart period=M refresh=3600 visibility=[FF_Kitchen_Humidity_Chart_Period==3]					
+					}
+				}
+				Text item=FF_BathRoom_sHumidity icon="bath" {
+					Frame label="Влажность" {
+						Text item=FF_BathRoom_sHumidity  label="Сейчас"
+						Text item=FF_BathRoom_sHumidity_Min
+						Text item=FF_BathRoom_sHumidity_Max
+						Text item=FF_BathRoom_sHumidity_LastUpdate					
+					}
+					Frame label="Графики" {
+						Switch item=FF_BathRoom_Humidity_Chart_Period label="График" icon="chart" mappings=[0="Час", 1="День", 2="Неделя", 3="Месяц"]
+						Chart item=FF_BathRoom_Humidity_Chart period=h refresh=3600 visibility=[FF_BathRoom_Humidity_Chart_Period==0, FF_BathRoom_Humidity_Chart_Period=="NULL"]
+						Chart item=FF_BathRoom_Humidity_Chart period=D refresh=3600 visibility=[FF_BathRoom_Humidity_Chart_Period==1]
+						Chart item=FF_BathRoom_Humidity_Chart period=W refresh=3600 visibility=[FF_BathRoom_Humidity_Chart_Period==2]
+						Chart item=FF_BathRoom_Humidity_Chart period=M refresh=3600 visibility=[FF_BathRoom_Humidity_Chart_Period==3]					
+					}
+				}
+				Text item=FF_Corridor_sHumidity icon="corridor" {
+					Frame label="Влажность" {
+						Text item=FF_Corridor_sHumidity  label="Сейчас"
+						Text item=FF_Corridor_sHumidity_Min
+						Text item=FF_Corridor_sHumidity_Max
+						Text item=FF_Corridor_sHumidity_LastUpdate					
+					}
+					Frame label="Графики" {
+						Switch item=FF_Corridor_Humidity_Chart_Period label="График" icon="chart" mappings=[0="Час", 1="День", 2="Неделя", 3="Месяц"]
+						Chart item=FF_Corridor_Humidity_Chart period=h refresh=3600 visibility=[FF_Corridor_Humidity_Chart_Period==0, FF_Corridor_Humidity_Chart_Period=="NULL"]
+						Chart item=FF_Corridor_Humidity_Chart period=D refresh=3600 visibility=[FF_Corridor_Humidity_Chart_Period==1]
+						Chart item=FF_Corridor_Humidity_Chart period=W refresh=3600 visibility=[FF_Corridor_Humidity_Chart_Period==2]
+						Chart item=FF_Corridor_Humidity_Chart period=M refresh=3600 visibility=[FF_Corridor_Humidity_Chart_Period==3]					
+					}
+				}				
+			}
+			Frame label="Второй этаж" {
+				Text item=SF_Room1_sHumidity icon="bedroom_orange" {
+					Frame label="Влажность" {
+						Text item=SF_Room1_sHumidity  label="Сейчас"
+						Text item=SF_Room1_sHumidity_Min
+						Text item=SF_Room1_sHumidity_Max
+						Text item=SF_Room1_sHumidity_LastUpdate					
+					}
+					Frame label="Графики" {
+						Switch item=SF_Room1_Humidity_Chart_Period label="График" icon="chart" mappings=[0="Час", 1="День", 2="Неделя", 3="Месяц"]
+						Chart item=SF_Room1_Humidity_Chart period=h refresh=3600 visibility=[SF_Room1_Humidity_Chart_Period==0, SF_Room1_Humidity_Chart_Period=="NULL"]
+						Chart item=SF_Room1_Humidity_Chart period=D refresh=3600 visibility=[SF_Room1_Humidity_Chart_Period==1]
+						Chart item=SF_Room1_Humidity_Chart period=W refresh=3600 visibility=[SF_Room1_Humidity_Chart_Period==2]
+						Chart item=SF_Room1_Humidity_Chart period=M refresh=3600 visibility=[SF_Room1_Humidity_Chart_Period==3]					
+					}
+				}
+				Text item=SF_Room2_sHumidity icon="bedroom_red" {
+					Frame label="Влажность" {
+						Text item=SF_Room2_sHumidity  label="Сейчас"
+						Text item=SF_Room2_sHumidity_Min
+						Text item=SF_Room2_sHumidity_Max
+						Text item=SF_Room2_sHumidity_LastUpdate					
+					}
+					Frame label="Графики" {
+						Switch item=SF_Room2_Humidity_Chart_Period label="График" icon="chart" mappings=[0="Час", 1="День", 2="Неделя", 3="Месяц"]
+						Chart item=SF_Room2_Humidity_Chart period=h refresh=3600 visibility=[SF_Room2_Humidity_Chart_Period==0, SF_Room2_Humidity_Chart_Period=="NULL"]
+						Chart item=SF_Room2_Humidity_Chart period=D refresh=3600 visibility=[SF_Room2_Humidity_Chart_Period==1]
+						Chart item=SF_Room2_Humidity_Chart period=W refresh=3600 visibility=[SF_Room2_Humidity_Chart_Period==2]
+						Chart item=SF_Room2_Humidity_Chart period=M refresh=3600 visibility=[SF_Room2_Humidity_Chart_Period==3]					
+					}
+				}
+				Text item=SF_Room3_sHumidity icon="bedroom_blue" {
+					Frame label="Влажность" {
+						Text item=SF_Room3_sHumidity  label="Сейчас"
+						Text item=SF_Room3_sHumidity_Min
+						Text item=SF_Room3_sHumidity_Max
+						Text item=SF_Room3_sHumidity_LastUpdate					
+					}
+					Frame label="Графики" {
+						Switch item=SF_Room3_Humidity_Chart_Period label="График" icon="chart" mappings=[0="Час", 1="День", 2="Неделя", 3="Месяц"]
+						Chart item=SF_Room3_Humidity_Chart period=h refresh=3600 visibility=[SF_Room3_Humidity_Chart_Period==0, SF_Room3_Humidity_Chart_Period=="NULL"]
+						Chart item=SF_Room3_Humidity_Chart period=D refresh=3600 visibility=[SF_Room3_Humidity_Chart_Period==1]
+						Chart item=SF_Room3_Humidity_Chart period=W refresh=3600 visibility=[SF_Room3_Humidity_Chart_Period==2]
+						Chart item=SF_Room3_Humidity_Chart period=M refresh=3600 visibility=[SF_Room3_Humidity_Chart_Period==3]					
+					}
+				}
+			}	
+			Frame label="Тех.помещения" {
+				Text item=BoilerRoom_sHumidity icon="softener" {
+					Frame label="Влажность" {
+						Text item=BoilerRoom_sHumidity  label="Сейчас"
+						Text item=BoilerRoom_sHumidity_LastUpdate					
+					}
+					Frame label="Графики" {
+						Switch item=BoilerRoom_Humidity_Chart_Period label="График" icon="chart" mappings=[0="Час", 1="День", 2="Неделя", 3="Месяц"]
+						Chart item=BoilerRoom_Humidity_Chart period=h refresh=3600 visibility=[BoilerRoom_Humidity_Chart_Period==0, BoilerRoom_Humidity_Chart_Period=="NULL"]
+						Chart item=BoilerRoom_Humidity_Chart period=D refresh=3600 visibility=[BoilerRoom_Humidity_Chart_Period==1]
+						Chart item=BoilerRoom_Humidity_Chart period=W refresh=3600 visibility=[BoilerRoom_Humidity_Chart_Period==2]
+						Chart item=BoilerRoom_Humidity_Chart period=M refresh=3600 visibility=[BoilerRoom_Humidity_Chart_Period==3]					
+					}				
+				}
+				Text item=Attic_sHumidity label="Чердак" icon="attic"
+			}		
+		} 
+		Text item=gHeaters label="Обогреватели"{
+			/*
+			Frame label="Первый этаж" {
+				Group item=FF_LivingRoom_Heater label="Гостинная" {
+					Switch item=FF_LivingRoom_Heater_01 label="Конвектор 1"
+					Switch item=FF_LivingRoom_Heater_02 label="Конвектор 2"
+				}
+				Switch item=FF_Kitchen_Heater label="Кухня"
+				Switch item=FF_Bathroom_Heater label="Ванная комната"
+			}	
+			Frame label="Второй этаж" {
+				Switch item=SF_Bedroom1_Heater label="Спальня"
+				Switch item=SF_Bedroom2_Heater label="Детская 1"
+				Switch item=SF_Bedroom3_Heater label="Детская 2"
+			}	
+			Frame label="Тех.помещения" {
+				Switch item=BoilerRoom_Heater label="Котельная"
+			}	
+			*/
+			//Text label="Управление" icon="heating" {
+				Frame label="Управление" {
+					Switch item=Global_Thermo_Mode icon="heating" mappings=[ALL_OFF="Off", 
+																			ANTI_FREEZE="HG",  	// +7
+																			COLD="Cold",		// +13
+																			ECO="Eco",  		// +18
+																			NORMAL="Norm",  	// +20
+																			WARM="Warm",		// +22   +19			
+																			HOT="Hot"]     	// +24
+					Text item=gThermoMode label="Авто-режим"
+				}
+				
+				Frame label="Этаж 1" icon="groundfloor" {
+				
+					Text item=FF_LR_Heater_01_sThermo label="Гостинная" icon="sofa"{
+						Switch item=FF_LivingRoom_Heater_01 label="Обогреватель1" 
+						Text item=vFF_LivingRoom_Heater_01_State label="Состояние1" 				
+						Setpoint item=FF_LR_Heater_01_tThermo minValue=7 maxValue=30 step=1
+						Switch item=FF_LR_Heater_01_Mode
+						
+						Switch item=FF_LivingRoom_Heater_02 label="Обогреватель2" 	
+						Text item=vFF_LivingRoom_Heater_02_State label="Состояние2"					
+						Setpoint item=FF_LR_Heater_02_tThermo minValue=7 maxValue=30 step=1			
+						Switch item=FF_LR_Heater_02_Mode
+					}	
+					
+					Text item=FF_Kitchen_Heater_sThermo label="Кухня" icon="kitchen" {
+							Switch item=FF_Kitchen_Heater 	label="Обогреватель" 
+							Text item=vFF_Kitchen_Heater_State label="Состояние"					
+							Setpoint item=FF_Kitchen_Heater_tThermo minValue=7 maxValue=30 step=1				
+							Switch item=FF_Kitchen_Heater_Mode 	
+					}		
+					
+					Text item=FF_Bathroom_Heater_sThermo label="Ванная" icon="bathroom" {
+							Switch item=FF_Bathroom_Heater 	label="Обогреватель" 		
+							Setpoint item=FF_Bathroom_Heater_tThermo minValue=7 maxValue=30 step=1				
+							Switch item=FF_Bathroom_Heater_Mode
+					}		
+				}
+				
+				Frame label="Этаж 2" {
+				
+					Text item=SF_Bedroom1_Heater_sThermo label="Спальня" icon="bedroom_orange" {
+							Switch item=SF_Bedroom1_Heater label="Обогреватель"	
+							Setpoint item=SF_Bedroom1_Heater_tThermo minValue=7 maxValue=30 step=1				
+							Switch item=SF_Bedroom1_Heater_Mode 
+					}	
+					
+					Text item=SF_Bedroom2_Heater_sThermo label="Детская 1" icon="bedroom_red" {
+							Switch item=SF_Bedroom2_Heater label="Обогреватель"	
+							Setpoint item=SF_Bedroom2_Heater_tThermo minValue=7 maxValue=30 step=1				
+							Switch item=SF_Bedroom2_Heater_Mode 
+					}
+					
+					Text item=SF_Bedroom3_Heater_sThermo label="Детская 2" icon="bedroom_blue" {
+							Switch item=SF_Bedroom3_Heater label="Обогреватель"	
+							Setpoint item=SF_Bedroom3_Heater_tThermo minValue=7 maxValue=30 step=1				
+							Switch item=SF_Bedroom3_Heater_Mode 
+					}			
+				}
+				
+				Frame label="Тех.помещения" {
+					
+					Text  item=BoilerRoom_Heater_sThermo label="Котельная" icon="garage" {
+							Switch item=BoilerRoom_Heater 	
+							Setpoint item=BoilerRoom_Heater_tThermo minValue=20 maxValue=30 step=0.5
+							Switch item=BoilerRoom_Heater_Mode 
+					}
+				
+					Text label="Септик" icon="toiler" {
+						Switch item=Septic_Heating
+					}
+				}			
+			//}
+		
+		}
+		Text item=gLightIndoor {
+			Frame label="Первый этаж" {
+					Switch item=FF_LivingRoom_Light_01 label="Гостинная 1"
+					Switch item=FF_LivingRoom_Light_02 label="Гостинная 2"
+					Switch item=FF_Corridor_Light label="Коридор"
+			}	
+			Frame label="Второй этаж" {
+				Switch item=SF_BedRoom1_Light label="Спальня"
+				Switch item=SF_BedRoom2_Light label="Детская 1"
+				Switch item=SF_Corridor1_Light label="Коридор"
+				Switch item=SF_Corridor2_Light label="Над лестницей"
+			}		
+			Frame label="Лестница" {
+				Switch item=StairsAutoMode mappings=[OFF="Ручной", ON="Авто"] 
+				Switch item=StairsManualState	label="Ступени"		
+				Switch item=StairsAutoOnSunset				
+			}
+		}
+		Text item=BoilerRoom_Boiler_pTemperature icon="waterheater" {
+			Text item=BoilerRoom_Boiler_sTemperature label="Температура в баке"{
+					Frame {			
+						Text item=BoilerRoom_Boiler_sTemperature label="Сейчас" valuecolor=[>60="red",>40="orange",>20="green",>10="blue"]
+						Text item=Temp_BoilerRoom_Boiler_Max valuecolor=[>60="red",>40="orange",>20="green",>10="blue"]
+						Text item=Temp_BoilerRoom_Boiler_Min valuecolor=[>60="red",>40="orange",>20="green",>10="blue"]
+						Text item=Temp_BoilerRoom_Boiler_LastUpdate valuecolor=[Temp_BoilerRoom_Boiler_LastUpdate>120="orange", Temp_BoilerRoom_Boiler_LastUpdate>300="red"]			
+					}
+					Frame {
+						Switch item=Temp_BoilerRoom_Boiler_Chart_Period icon="chart" mappings=[0="Час", 1="День", 2="Неделя", 3="Месяц"]
+						Chart item=Temp_BoilerRoom_Boiler_Chart period=h refresh=3600 visibility=[Temp_BoilerRoom_Boiler_Chart_Period==0, Temp_BoilerRoom_Boiler_Chart_Period=="NULL"]
+						Chart item=Temp_BoilerRoom_Boiler_Chart period=D refresh=3600 visibility=[Temp_BoilerRoom_Boiler_Chart_Period==1]
+						Chart item=Temp_BoilerRoom_Boiler_Chart period=W refresh=3600 visibility=[Temp_BoilerRoom_Boiler_Chart_Period==2]
+						Chart item=Temp_BoilerRoom_Boiler_Chart period=M refresh=3600 visibility=[Temp_BoilerRoom_Boiler_Chart_Period==3]
+					}
+				}
+			Switch item=BoilerRoom_aBoiler	label="Питание"
+		}
+		Text item=BoilerRoom_Pump_vPower label="Насос" icon="faucet" {
+			Frame {
+				Text item=BoilerRoom_Hotcab_sTemperature label="Температура воды"			
+			}
+			Frame label="Насос" {
+				Switch item=BoilerRoom_Pump_aPower	label="Питание"
+				Text item=BoilerRoom_Pump_vState label="Состояние"				
+			}
+			Frame label="Греющий кабель" {
+				Switch item=BoilerRoom_Hotcab_aPower	label="Питание"
+				Text item=BoilerRoom_Hotcab_Thermostate_aState label="Термостат"				
+			}
+		}
+		//Group item=gFan
+		/*
+		Text item=gStairs label="Лестница (ступени)" {
+			Frame label="Управление" {
+				Switch item=StairsAutoMode mappings=[OFF="Ручной", ON="Авто"] 
+				Switch item=StairsManualState			
+				Switch item=StairsAutoOnSunset		
+			}
+			Frame label="Нижние ступени" {
+				Switch item=F_Stair_1
+				Switch item=F_Stair_2
+				Switch item=F_Stair_3
+				Switch item=F_Stair_4
+				Switch item=F_Stair_5
+				Switch item=F_Stair_6
+			}
+			Frame label="Верхние ступени" {
+				Switch item=S_Stair_1
+				Switch item=S_Stair_2
+				Switch item=S_Stair_3
+				Switch item=S_Stair_4
+				Switch item=S_Stair_5
+				Switch item=S_Stair_6
+			}			
+		}
+		*/
+		//Group item=gDoors
+		//Group item=gWindows
+		Text item=vPlacements {
+			Text item=vFirstFloor {
+				Group item=gFF_Heaters
+				Group item=FF_Lights label="Освещение"
+				Text item=vFF_LivingRoom {
+					Text label="Температура" icon="temperature" item=gTemp_FF_LivingRoom_Avg
+					Text label="Влажность" icon="humidity"	item=gHumidity_FF_LivingRoom_Avg
+					Group label="Обогреватель" icon="heating" item=FF_LivingRoom_Heater
+					Group label="Освещение" icon="light" item=FF_LivingRoom_Light
+				}
+				
+				Text item=vFF_Kitchen {
+					Frame label="Сенсоры" {
+						Text label="Температура" icon="temperature" item=FF_Kitchen_sTemp
+						Text label="Влажность" icon="humidity" item=FF_Kitchen_sHumidity
+					}
+					
+					Frame label="Обогреватель" {
+						Switch label="Состояние" icon="heating" item=FF_Kitchen_Heater
+						
+					}					
+					Frame label="Управление" {
+						Switch item=FF_Kitchen_Heater_Mode						
+						Setpoint label="Установка" item=FF_Kitchen_Heater_tThermo minValue=7 maxValue=30 step=1
+					}					
+					//Text label="Освещение" icon="lights"
+					
+
+					
+				}
+				
+				Text item=vFF_BathRoom {
+					Frame label="Сенсоры" {
+						Text label="Температура" icon="temperature" item=FF_BathRoom_sTemp
+						Text label="Влажность" icon="humidity" item=FF_BathRoom_sHumidity
+					}
+					Frame label="Обогреватель" {
+						Switch label="Состояние" icon="heating" item=FF_Bathroom_Heater
+					}	
+					Frame label="Управление" {					
+						Switch item=FF_Bathroom_Heater_Mode
+						Setpoint item=FF_Bathroom_Heater_tThermo minValue=7 maxValue=30 step=1				
+					}
+					//Text label="Освещение" icon="lights"
+				}
+				
+			}
+			Text item=vSecondFloor {
+				Group item=gSF_Heaters
+				Group item=SF_Lights label="Освещение"
+				Text item=vSF_BedRoom_1 {
+					Frame label="Сенсоры" {
+						Text label="Температура" icon="temperature" item=SF_Room1_sTemp
+						Text label="Влажность" icon="humidity" item=SF_Room1_sHumidity
+					}
+					Frame label="Освещение" {
+						Switch label="Состояние" icon="light" item=SF_BedRoom1_Light
+					}
+					Frame label="Обогреватель" {
+						Switch label="Состояние" icon="heating" item=SF_Bedroom1_Heater
+					}	
+					Frame label="Управление" {					
+						Switch item=SF_Bedroom1_Heater_Mode
+						Setpoint item=SF_Bedroom1_Heater_tThermo minValue=7 maxValue=30 step=1				
+					}					
+				}
+				
+				Text item=vSF_BedRoom_2 {
+					Frame label="Сенсоры" {
+						Text label="Температура" icon="temperature" item=SF_Room2_sTemp
+						Text label="Влажность" icon="humidity" item=SF_Room2_sHumidity
+					}
+					Frame label="Освещение" {
+						Text label="Состояние" icon="light"
+					}
+					Frame label="Обогреватель" {
+						Switch label="Состояние" icon="heating" item=SF_Bedroom2_Heater
+					}	
+					Frame label="Управление" {					
+						Switch item=SF_Bedroom2_Heater_Mode
+						Setpoint item=SF_Bedroom2_Heater_tThermo minValue=7 maxValue=30 step=1				
+					}	
+				}
+				
+				Text item=vSF_BedRoom_3 {
+					Frame label="Сенсоры" {
+						Text label="Температура" icon="temperature" item=SF_Room3_sTemp
+						Text label="Влажность" icon="humidity" item=SF_Room3_sHumidity
+					}
+					Frame label="Освещение" {
+						Text label="Состояние" icon="light"
+					}
+					Frame label="Обогреватель" {
+						Switch label="Состояние" icon="heating" item=SF_Bedroom3_Heater
+					}	
+					Frame label="Управление" {					
+						Switch item=SF_Bedroom3_Heater_Mode
+						Setpoint item=SF_Bedroom3_Heater_tThermo minValue=7 maxValue=30 step=1				
+					}	
+				}
+				
+				Switch item=SF_Corridor1_Light label="Коридор" 
+				Switch item=SF_Corridor2_Light label="Лестница" 
+
+				
+			}
+			//Text item=gGroundFloor
+			Text item=vAttic
+			Text item=vBLR {
+				Frame label="Сенсоры" {
+					Text label="Температура в помещении" icon="temperature" item=BoilerRoom_sTemp_01
+					Text label="Влажность" icon="humidity" item=BoilerRoom_sHumidity
+				}
+				Frame label="Водонагреватель" {
+					Text label="Температура в баке" icon="temperature" item=BoilerRoom_Boiler_sTemperature
+					Switch label="Питание" icon="heating" item=BoilerRoom_aBoiler
+				}
+				Frame label="Насос" {
+					Switch label="Питание" icon="heating" item=BoilerRoom_Pump_aPower
+					Switch label="Состояние" icon="heating" item=BoilerRoom_Pump_vState
+				}				
+				Frame label="Греющий кабель" {
+					Text label="Температура ввода" icon="temperature" item=BoilerRoom_Hotcab_sTemperature
+					Switch label="Питание" icon="heating" item=BoilerRoom_Hotcab_aPower
+					Switch label="Состояние" icon="heating" item=BoilerRoom_Hotcab_Thermostate_vState
+				}		
+				Frame label="Обогреватель" {
+					Switch label="Состояние" icon="heating" item=BoilerRoom_Heater
+				}
+				Frame label="Управление" {
+					Switch item=BoilerRoom_Heater_Mode 
+					Setpoint item=BoilerRoom_Heater_tThermo minValue=20 maxValue=30 step=0.5
+				}				
+			}
+				 
+			//Text item=gTerrace
+		} 
+		Default  item=MainDoor label="Входная дверь" 
+		Text label="Ночной режим" item=NightModeHall
+		Text item=gMotion {
+			Switch item=PirSensor1
+			Switch item=PirSensor2
+		}
+		
+
+	}
+	
+	Frame label="Электроэнергия" {
+		Text label="Текущие параметры" item=Electro_Total  icon="power" {
+			Frame label="Общие параметры" {
+				Text label="Напряжение" item=Electro_Voltage icon="voltage" {
+					Frame {
+						Text item=Electro_Voltage label="Сейчас" valuecolor=[>25="orange",>15="green",>5="orange",<=5="blue"]
+						Text item=Electro_Voltage_Max valuecolor=[>25="orange",>15="green",>5="orange",<=5="blue"]
+						Text item=Electro_Voltage_Min valuecolor=[>25="orange",>15="green",>5="orange",<=5="blue"]
+						Text item=Electro_Voltage_LastUpdate  valuecolor=[Electro_Voltage_LastUpdate>120="orange", Electro_Voltage_LastUpdate>300="red"]			
+					}	
+					Frame {
+						Switch item=Electro_Voltage_Chart_Period icon="chart" mappings=[0="Час", 1="День", 2="Неделя", 3="Месяц"]
+						Chart item=Electro_Voltage_Chart period=h refresh=3600 visibility=[Electro_Voltage_Chart_Period==0, Electro_Voltage_Chart_Period=="NULL"]
+						Chart item=Electro_Voltage_Chart period=D refresh=3600 visibility=[Electro_Voltage_Chart_Period==1]
+						Chart item=Electro_Voltage_Chart period=W refresh=3600 visibility=[Electro_Voltage_Chart_Period==2]
+						Chart item=Electro_Voltage_Chart period=M refresh=3600 visibility=[Electro_Voltage_Chart_Period==3]
+					}								
+				}		
+				
+				Text label="Ток" item=Electro_Current icon="current" {
+					Frame {
+						Text item=Electro_Current label="Сейчас" valuecolor=[>25="orange",>15="green",>5="orange",<=5="blue"]
+						Text item=Electro_Current_Max valuecolor=[>25="orange",>15="green",>5="orange",<=5="blue"]
+						Text item=Electro_Current_Min valuecolor=[>25="orange",>15="green",>5="orange",<=5="blue"]
+						Text item=Electro_Current_LastUpdate  valuecolor=[Electro_Current_LastUpdate>120="orange", Electro_Current_LastUpdate>300="red"]			
+					}	
+					Frame {
+						Switch item=Electro_Current_Chart_Period icon="chart" mappings=[0="Час", 1="День", 2="Неделя", 3="Месяц"]
+						Chart item=Electro_Current_Chart period=h refresh=3600 visibility=[Electro_Current_Chart_Period==0, Electro_Current_Chart_Period=="NULL"]
+						Chart item=Electro_Current_Chart period=D refresh=3600 visibility=[Electro_Current_Chart_Period==1]
+						Chart item=Electro_Current_Chart period=W refresh=3600 visibility=[Electro_Current_Chart_Period==2]
+						Chart item=Electro_Current_Chart period=M refresh=3600 visibility=[Electro_Current_Chart_Period==3]
+					}								
+				}		
+				
+				Text label="Мощность (текущее)" item=Electro_PowerRMS icon="power" {
+					Frame {
+						Text item=Electro_PowerRMS label="Сейчас" valuecolor=[>25="orange",>15="green",>5="orange",<=5="blue"]
+						Text item=Electro_PowerRMS_Max valuecolor=[>25="orange",>15="green",>5="orange",<=5="blue"]
+						Text item=Electro_PowerRMS_Min valuecolor=[>25="orange",>15="green",>5="orange",<=5="blue"]
+						Text item=Electro_PowerRMS_LastUpdate  valuecolor=[Electro_PowerRMS_LastUpdate>120="orange", Electro_PowerRMS_LastUpdate>300="red"]			
+					}	
+					Frame {
+						Switch item=Electro_PowerRMS_Chart_Period icon="chart" mappings=[0="Час", 1="День", 2="Неделя", 3="Месяц"]
+						Chart item=Electro_PowerRMS_Chart period=h refresh=3600 visibility=[Electro_PowerRMS_Chart_Period==0, Electro_PowerRMS_Chart_Period=="NULL"]
+						Chart item=Electro_PowerRMS_Chart period=D refresh=3600 visibility=[Electro_PowerRMS_Chart_Period==1]
+						Chart item=Electro_PowerRMS_Chart period=W refresh=3600 visibility=[Electro_PowerRMS_Chart_Period==2]
+						Chart item=Electro_PowerRMS_Chart period=M refresh=3600 visibility=[Electro_PowerRMS_Chart_Period==3]
+					}								
+				}		
+
+				Text item=Electro_PowerWH label="Всего" icon="energy"
+				
+			}
+			Frame label="Конвекторы" {
+				Group item=gEnergy_Heaters_Power icon="energy"
+				Group item=gDev_POW_01 icon="heating"
+				Group item=gDev_POW_02 icon="heating"
+				Group item=gDev_POW_03 icon="heating"
+			}
+		}
+		Text label="Расходы" item=Electro_AmountMonth  {
+			Frame label="Сегодня" {
+				Text item=Electro_PowerWH_Day label="Сегодня" icon="energy"
+				Text item=Electro_AmountToday label="Сегодня" icon="energy"
+			}
+			Frame label="Вчера" {
+				Text item=Electro_PowerWH_YesterDay label="Вчера" icon="energy"
+				Text item=Electro_AmountYesterday label="Вчера" icon="energy"
+			}
+			Frame label="Текущая неделя" {
+				Text item=Electro_PowerWH_Week label="Месяц" icon="energy"
+				Text item=Electro_AmountWeek label="Месяц" icon="energy"
+			}	
+			Frame label="Прошлая неделя" {
+				Text item=Electro_PowerWH_PrevWeek label="Месяц" icon="energy"
+				Text item=Electro_AmountPrevWeek label="Месяц" icon="energy"
+			}	
+			Frame label="Прошлый месяц" {
+				Text item=Electro_PowerWH_PrevMonth label="Месяц" icon="energy"
+				Text item=Electro_AmountPrevMonth label="Месяц" icon="energy"
+			}	
+			Frame label="Текущий месяц" {
+				Text item=Electro_PowerWH_Month label="Месяц" icon="energy"
+				Text item=Electro_AmountMonth label="Месяц" icon="energy"
+			}			
+		}
+		Text label="Счетчик" item=Electro_PowerWH {
+			Frame label="Показания" {
+				Text item=Electro_PowerWH_F			label="Общий"
+				Text item=Electro_PowerWH_PrevDay		label="На начало суток"
+				Text item=Electro_PowerWH_SunDay			label="На начало недели"
+				Text item=Electro_PowerWH_LastDayMonth		label="На начало месяца"
+			}
+			Frame label="Расход" {				
+				Text item=Electro_PowerWH_Day			label="Сегодня"  valuecolor=["green"]
+				Text item=Electro_PowerWH_YesterDay		label="Вчера" 	 valuecolor=["orange"]
+				Text item=Electro_PowerWH_Week			label="Текущая неделя"  valuecolor=["blue"]
+				Text item=Electro_PowerWH_PrevWeek		label="Прошлая неделя"
+				Text item=Electro_PowerWH_Month			label="Текущий месяц"
+				Text item=Electro_PowerWH_PrevMonth		label="Прошлый месяц"
+			}
+		}
+	}	
+	
+	Frame label="Устройства" {
+		Text item=gCameras icon="camera" {
+			
+			Frame label="Камера 1" {
+				Switch item=Motion_Camera_1 icon="motion"
+				Switch item=Blind_Camera_1
+				Text item=MotionTime_Camera_1 icon="clock"
+				Text item=BlindTime_Camera_1 icon="clock"
+			}
+
+
+			Frame label="Улица" {
+				Switch item=Motion_Camera_2 icon="motion"
+				Switch item=Blind_Camera_2
+				Text item=MotionTime_Camera_2 icon="clock"
+				Text item=BlindTime_Camera_2 icon="clock"
+			}
+
+			Frame label="Стоянка" {
+				Switch item=Motion_Camera_3 icon="motion"
+				Switch item=Blind_Camera_3
+				Text item=MotionTime_Camera_3 icon="clock"
+				Text item=BlindTime_Camera_3 icon="clock"				
+			}
+			
+			Frame label="Камера 1" icon="camera" {
+				Image url="http://192.168.2.101/webcapture.jpg?command=snap&channel=1" label="Камера 1" refresh=5000
+			}	
+						
+			Frame label="Улица" /*icon="camera"*/ {
+				Image url="http://192.168.2.63:1880/webcapture2.jpg" label="Улица" refresh=5000
+			}
+			Frame label="Стоянка" /*icon="camera"*/ {
+				Image url="http://192.168.2.63:1880/webcapture3.jpg" label="Стоянка" refresh=5000
+			}			
+
+		}
+		//
+		Text item=rpi_disk_free
+		Text label="Системное" {
+			Text item=gPresent icon="man_3"
+			{ 
+				Frame label="Я" {
+					Switch item=gPresent_My  icon="man_3" mappings=[OFF="Ушел", ON="Дома"] 
+					Switch item=Presence_My_Phone icon="man_3" mappings=[OFF="Ушел", ON="Дома"] 
+					Switch item=Presence_My_IFTTT icon="man_3" mappings=[OFF="Ушел", ON="Дома"] 
+					Switch item=Presence_My_Tablet icon="man_3" mappings=[OFF="Ушел", ON="Дома"] 
+				}
+
+				Frame label="Жена" {
+					Switch item=Presence_Wife_Phone icon="man_3" mappings=[OFF="Ушел", ON="Дома"] 
+				}
+
+				Frame label="Дочь" {
+					Switch item=Presence_Daughter_Phone icon="man_3" mappings=[OFF="Ушел", ON="Дома"] 
+				}
+				
+				Frame label="Сын" {
+					Switch item=Presence_Son_Phone icon="man_3" mappings=[OFF="Ушел", ON="Дома"] 
+				}
+			}
+			Switch item=Night_State
+			Group item=gNotify
+		}
+		
+		Text item=Modem_Proxy_Data label="Модем" icon="qualityofservice" valuecolor=[Modem_RSRP>=-98="green",
+																					 Modem_RSRP>=-108="yellow",
+																					 Modem_RSRP>=-118="orange",
+																					 Modem_RSRP>=-128="red",
+																					 Modem_RSRP<-128="gray"]
+		{
+			
+			Frame label="Качество связи" {
+				Text item=Modem_Signalbar icon="qualityofservice"
+				Text item=Modem_NetworkType icon="qualityofservice"
+				Text item=Modem_RSSI
+				Text item=Modem_RSSI2
+				Text item=Modem_SINR
+				Text item=Modem_RSRP
+				Text item=Modem_RSRQ
+				Text item=Modem_NetworkBand
+				Text item=Modem_LAC_CELL
+			}
+			
+			Frame {
+				Switch item=Chart_Period icon="chart" mappings=[0="Час", 1="День", 2="Неделя", 3="Месяц"]
+				Chart item=gModemChart period=h refresh=3600 visibility=[Chart_Period==0, Chart_Period=="NULL"]
+				Chart item=gModemChart period=D refresh=3600 visibility=[Chart_Period==1]
+				Chart item=gModemChart period=W refresh=3600 visibility=[Chart_Period==2]
+				Chart item=gModemChart period=M refresh=3600 visibility=[Chart_Period==3]			
+			}	
+		}
+		
+	}	
+}

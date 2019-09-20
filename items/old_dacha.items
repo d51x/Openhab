@@ -1,0 +1,60 @@
+Group Status
+
+// location old groups
+Group gFF           "Этаж 2"   <firstfloor>
+Group gGF           "Этаж 1"  <groundfloor>
+Group gC            "Подвал"        <cellar>
+Group gA            "Чердак"        <attic>
+Group gB           "Котельная"        <garage>
+Group Garden        "Улица"        <garden>
+Group Weather       "Погода"       <sun>
+
+Group GF_Living     "Гостинная"   <sofa>     (gGF)
+Group GF_Kitchen    "Кухня"       <kitchen>   (gGF)
+Group GF_Toilet     "Ванная"        <bath>      (gGF)
+Group GF_Corridor   "Коридор"      <corridor>  (gGF)
+Group GF_Boiler   "Котельная"      <corridor>  (gGF)
+
+Group FF_BedRoom_1     "Спальня 1"   <bedroom_orange> (gFF)
+Group FF_BedRoom_2     "Спальня 2"   <bedroom_red>    (gFF)
+Group FF_BedRoom_3     "Спальня 3"  	<bedroom_blue>   (gFF)
+Group FF_Corridor     "Коридор"     <corridor>  	 (gFF)
+
+Group ESP8266
+Group ESP_Witty
+Group ESP_SOnOff
+Group ESP_D1_mini
+Group ESP_Garden
+Group ESP_Boiler
+
+/* active groups */
+Group:Switch:OR(ON, OFF)        Lights      "Все освещение [(%d)]"
+Group:Switch:OR(ON, OFF)        Heating_All     "Включенные конвекторы [(%d)]"     <heating>
+Group:Switch:OR(ON, OFF)        Heating_GF     "Включенные конвекторы [(%d)]"     <heating> 
+Group:Switch:OR(ON, OFF)        Heating_FF     "Включенные конвекторы [(%d)]"     <heating> 
+Group:Contact:OR(OPEN, CLOSED)  Windows     "Открытые окна [(%d)]"               <contact>
+
+
+/*-------------------------------- Temperatures -------------------------------*/
+Group:Number:MIN Temp_All_Min "[min. %.1f °C]" <temperature> (Status)					
+Group:Number:MAX Temp_All_Max "[max. %.1f °C]" <temperature> (Status)
+Group:Number:AVG Temp_All_Avg "[avg. %.1f °C]" <temperature> (Status)
+                                
+Group:Number:MIN Temp_FL1_Min "[min. %.1f °C]" <temperature> (Temp_All_Min)
+Group:Number:MAX Temp_FL1_Max "[max. %.1f °C]" <temperature> (Temp_All_Max)
+Group:Number:AVG Temp_FL1_Avg "[avg. %.1f °C]" <temperature> (Temp_All_Avg)
+
+Group:Number:MIN Temp_Hotcab_Min "[min. %.1f °C]" <temperature> (Temp_All_Min)
+Group:Number:MAX Temp_Hotcab_Max "[max. %.1f °C]" <temperature> (Temp_All_Max)
+Group:Number:AVG Temp_Hotcab_Avg "[avg. %.1f °C]" <temperature> (Temp_All_Avg)
+
+
+String empty_string ""
+
+Group:Number:MIN Temp_FL2_Min "[min. %.1f °C]" <temperature> (Temp_All_Min)
+Group:Number:MAX Temp_FL2_Max "[max. %.1f °C]" <temperature>  (Temp_All_Max)
+Group:Number:AVG Temp_FL2_Avg "[avg. %.1f °C]" <temperature> (Temp_All_Avg)
+
+/* Demo items */
+DateTime CurrentDate            "Date [%1$tA, %1$td.%1$tm.%1$tY]"   <calendar>  { channel="ntp:ntp:local:dateTime" }
+String CurrentDate1            "Date [%s]"   <calendar>  { channel="ntp:ntp:local:string" }

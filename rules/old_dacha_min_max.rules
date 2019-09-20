@@ -1,0 +1,20 @@
+
+rule "update temp floor1 living room"
+when
+	//Item Temp_FL1_Living_Cur changed or
+	Item Temp_FL1_Living1 changed or
+	Item Temp_FL1_Living2 changed 
+then
+	var minTemp = Temp_FL1_Living_Cur
+	var maxTemp = Temp_FL1_Living_Cur
+	
+	if (minTemp.state > Temp_FL1_Living1.state ) minTemp = Temp_FL1_Living1
+	if (minTemp.state  > Temp_FL1_Living2.state  ) minTemp = Temp_FL1_Living2
+
+	if (maxTemp.state  < Temp_FL1_Living1.state  ) maxTemp = Temp_FL1_Living1
+	if (maxTemp.state  < Temp_FL1_Living2.state  ) maxTemp = Temp_FL1_Living2
+
+	
+	//Temp_FL1_Living_Max.postUpdate(maxTemp.maximumSince(now.withTimeAtStartOfDay).state)
+	//Temp_FL1_Living_Min.postUpdate(minTemp.minimumSince(now.withTimeAtStartOfDay).state)
+end

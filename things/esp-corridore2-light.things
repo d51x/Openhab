@@ -1,0 +1,11 @@
+// 192.168.2.217	
+Thing mqtt:topic:mosquitto:esp-corridore2-light "Corridore 2 Light" (mqtt:broker:mosquitto) @ "Устройства" {
+	Channels:
+		Type switch: Light1 			"Лампочка 1" 			[ stateTopic="dacha/hall2-light/output12", commandTopic="dacha/hall2-light/output12", on="1", off="0"]
+		Type switch: Light2 			"Лампочка 2" 			[ stateTopic="dacha/hall2-light/output5", commandTopic="dacha/hall2-light/output5", on="1", off="0"]
+		Type switch: Wifi_led 			"Wifi led" 			[ stateTopic="dacha/hall2-light/output13", commandTopic="dacha/hall2-light/output13", on="0", off="1"]
+	
+		Type number: rssi			"Уровень сигнала" 			[ stateTopic="dacha/hall2-light/rssi" ]
+		Type number: uptime			"Время работы" 				[ stateTopic="dacha/hall2-light/uptime" ]
+}
+	

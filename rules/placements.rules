@@ -1,0 +1,183 @@
+val LOG_TAG = "placements"
+
+rule "Update placements temperature and humidity for floor 1"
+when
+	/*-------- temperatures --------------*/
+	Item gTemp_FF_Avg 					changed or
+	Item gHumidity_FF_Avg 					changed 	//or
+	//Time cron "0/5 * * * * ?"
+then
+	//val item = triggeringItem
+	//logInfo(LOG_TAG, "Update placements temperature for floor 1")
+	val temp = (gTemp_FF_Avg.state as Number).floatValue
+	val hum = (gHumidity_FF_Avg.state as Number).intValue
+	val String str = String::format("%d%%\u202F/\u202F%.0f°C", hum, temp) 
+	//logInfo(LOG_TAG, str)
+	postUpdate(vFirstFloor, str)
+end
+
+rule "Update placements temperature and humidity for floor 2"
+when
+	/*-------- temperatures --------------*/
+	Item gTemp_SF_Avg 					changed or
+	Item gHumidity_SF_Avg 					changed 	//or
+	//Time cron "0/5 * * * * ?"
+then
+	//val item = triggeringItem
+	//logInfo(LOG_TAG, "Update placements temperature for floor 2")
+	val temp = (gTemp_SF_Avg.state as Number).floatValue
+	val hum = (gHumidity_SF_Avg.state as Number).intValue
+	val String str = String::format("%d%%\u202F/\u202F%.0f°C", hum, temp) 
+	//logInfo(LOG_TAG, str)
+	postUpdate(vSecondFloor, str)
+end
+
+rule "Update placements temperature and humidity for boiler room"
+when
+	/*-------- temperatures --------------*/
+	Item gTemp_BoilerRoom_Avg 					changed or
+	Item gHum_BoilerRoom_Avg 					changed 	//or
+	//Time cron "0/5 * * * * ?"
+then
+	//val item = triggeringItem
+	//logInfo(LOG_TAG, "Update placements temperature for boiler room")
+	val temp = (gTemp_BoilerRoom_Avg.state as Number).floatValue
+	val hum = (gHum_BoilerRoom_Avg.state as Number).intValue
+	val String str = String::format("%d%%\u202F/\u202F%.0f°C", hum, temp) 
+	//logInfo(LOG_TAG, str)
+	postUpdate(vBLR, str)
+end
+
+rule "Update placements temperature and humidity for attic"
+when
+	/*-------- temperatures --------------*/
+	Item gTemp_Attic_Avg 					changed or
+	Item gHumidity_Attic_Avg 					changed 	//or
+	//Time cron "0/5 * * * * ?"
+then
+	//val item = triggeringItem
+	//logInfo(LOG_TAG, "Update placements temperature for attic")
+	val temp = (gTemp_Attic_Avg.state as Number).floatValue
+	val hum = (gHumidity_Attic_Avg.state as Number).intValue
+	val String str = String::format("%d%%\u202F/\u202F%.0f°C", hum, temp) 
+	//logInfo(LOG_TAG, str)
+	postUpdate(vAttic, str)
+end
+
+rule "Update placements temperature and humidity for placements"
+when
+	/*-------- temperatures --------------*/
+	Item gTemp_House 					changed or
+	Item gHumidity_House 					changed 	//or
+	//Time cron "0/5 * * * * ?"
+then
+	//val item = triggeringItem
+	//logInfo(LOG_TAG, "Update placements temperature for placements")
+	val temp = (gTemp_House.state as Number).floatValue
+	val hum = (gHumidity_House.state as Number).intValue
+	val String str = String::format("%d%%\u202F/\u202F%.0f°C", hum, temp) 
+	//logInfo(LOG_TAG, str)
+	postUpdate(vPlacements, str)
+end
+
+
+rule "Update placements temperature and humidity for living room"
+when
+	/*-------- temperatures --------------*/
+	Item gTemp_FF_LivingRoom_Avg 					changed or
+	Item gHumidity_FF_LivingRoom_Avg 					changed 	//or
+	//Time cron "0/5 * * * * ?"
+then
+	//val item = triggeringItem
+	//logInfo(LOG_TAG, "Update placements temperature for placements")
+	val temp = (gTemp_FF_LivingRoom_Avg.state as Number).floatValue
+	val hum = (gHumidity_FF_LivingRoom_Avg.state as Number).intValue
+	val String str = String::format("%d%%\u202F/\u202F%.0f°C", hum, temp) 
+	//logInfo(LOG_TAG, str)
+	postUpdate(vFF_LivingRoom, str)
+end
+
+rule "Update placements temperature and humidity for kitchen"
+when
+	/*-------- temperatures --------------*/
+	Item FF_Kitchen_sTemp 					changed or
+	Item FF_Kitchen_sHumidity 					changed 	//or
+	//Time cron "0/5 * * * * ?"
+then
+	//val item = triggeringItem
+	//logInfo(LOG_TAG, "Update placements temperature for placements")
+	val temp = (FF_Kitchen_sTemp.state as Number).floatValue
+	val hum = (FF_Kitchen_sHumidity.state as Number).intValue
+	val String str = String::format("%d%%\u202F/\u202F%.0f°C", hum, temp) 
+	//logInfo(LOG_TAG, str)
+	postUpdate(vFF_Kitchen, str)
+end
+
+
+rule "Update placements temperature and humidity for bathroom"
+when
+	/*-------- temperatures --------------*/
+	Item FF_BathRoom_sTemp 					changed or
+	Item FF_BathRoom_sHumidity 					changed 	//or
+	//Time cron "0/5 * * * * ?"
+then
+	//val item = triggeringItem
+	//logInfo(LOG_TAG, "Update placements temperature for placements")
+	val temp = (FF_BathRoom_sTemp.state as Number).floatValue
+	val hum = (FF_BathRoom_sHumidity.state as Number).intValue
+	val String str = String::format("%d%%\u202F/\u202F%.0f°C", hum, temp) 
+	//logInfo(LOG_TAG, str)
+	postUpdate(vFF_BathRoom, str)
+end
+
+
+rule "Update placements temperature and humidity for bedroom1"
+when
+	/*-------- temperatures --------------*/
+	Item SF_Room1_sTemp 					changed or
+	Item SF_Room1_sHumidity 					changed 	//or
+	//Time cron "0/5 * * * * ?"
+then
+	//val item = triggeringItem
+	//logInfo(LOG_TAG, "Update placements temperature for placements")
+	val temp = (SF_Room1_sTemp.state as Number).floatValue
+	val hum = (SF_Room1_sHumidity.state as Number).intValue
+	val String str = String::format("%d%%\u202F/\u202F%.0f°C", hum, temp) 
+	//logInfo(LOG_TAG, str)
+	postUpdate(vSF_BedRoom_1, str)
+end
+
+
+rule "Update placements temperature and humidity for bedroom2"
+when
+	/*-------- temperatures --------------*/
+	Item SF_Room2_sTemp 					changed or
+	Item SF_Room2_sHumidity 					changed 	//or
+	//Time cron "0/5 * * * * ?"
+then
+	//val item = triggeringItem
+	//logInfo(LOG_TAG, "Update placements temperature for placements")
+	val temp = (SF_Room2_sTemp.state as Number).floatValue
+	val hum = (SF_Room2_sHumidity.state as Number).intValue
+	val String str = String::format("%d%%\u202F/\u202F%.0f°C", hum, temp) 
+	//logInfo(LOG_TAG, str)
+	postUpdate(vSF_BedRoom_2, str)
+end
+
+
+
+rule "Update placements temperature and humidity for bedroom3"
+when
+	/*-------- temperatures --------------*/
+	Item SF_Room3_sTemp 					changed or
+	Item SF_Room3_sHumidity 					changed 	//or
+	//Time cron "0/5 * * * * ?"
+then
+	//val item = triggeringItem
+	//logInfo(LOG_TAG, "Update placements temperature for placements")
+	val temp = (SF_Room3_sTemp.state as Number).floatValue
+	val hum = (SF_Room3_sHumidity.state as Number).intValue
+	val String str = String::format("%d%%\u202F/\u202F%.0f°C", hum, temp) 
+	//logInfo(LOG_TAG, str)
+	postUpdate(vSF_BedRoom_3, str)
+end

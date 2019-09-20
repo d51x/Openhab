@@ -1,0 +1,21 @@
+Group:String gSeptic "Септик" (gRoot)
+Group Septic_Chart  <chart>
+
+String Septic_vText "Септик [%s]" 
+Number Septic_sTemperature      "Септик [%.1f °C]" <temperature> (gMinMax, gLastUpdate, gSeptic, Septic_Chart, gHistory, gChart, gMyOpenHab) 
+								{mqtt="<[openhab:dacha/ESP-SONOFF/dsw1:state:default]"}
+
+Switch Septic_aHeating      "Обогрев септика" <heating> (gSeptic) 
+							{mqtt="	>[openhab:dacha/ESP-SONOFF/output12:command:ON:1],
+									>[openhab:dacha/ESP-SONOFF/output12:command:OFF:0],
+									<[openhab:dacha/ESP-SONOFF/output12:state:MAP(switchMQTT.map)]"}
+									
+Number Septic_sTemperature_Min "Минимальная сегодня [%.1f °C]" <temperature_cold> (gSeptic)
+Number Septic_sTemperature_Max "Максимальная сегодня [%.1f °C]" <temperature_hot> (gSeptic)
+DateTime Septic_sTemperature_LastUpdate     "Последнее обновление [%1$ta %1$tR]"     <lastupdate> (gSeptic)
+
+
+Number Septic_Chart_Period     "" <chart> (gSeptic)
+
+
+									

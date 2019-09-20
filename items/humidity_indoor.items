@@ -1,0 +1,86 @@
+/* ------------------------ FL 1: Living room -------------------------------- */
+Group:Number:MIN gHumidity_FF_LivingRoom_Min "Минимальная [%d %%]" <humidity> (gHumidity_FF_Min)
+Group:Number:MAX gHumidity_FF_LivingRoom_Max "Максимальная [%d %%]" <humidity> (gHumidity_FF_Max)
+Group:Number:AVG gHumidity_FF_LivingRoom_Avg "Гостинная [%d %%]" <humidity> (gHumidity_FF_Avg)
+
+Group FF_LivingRoom_Humidity_Chart  <chart>
+Number FF_LivingRoom_Humidity_Chart_Period     "" <chart> 
+
+DateTime  FF_LivingRoom_Humidity_LastUpdate     "Последнее обновление [%1$ta %1$tR]"     <lastupdate> 
+	
+Number FF_LivingRoom_sHumidity_01 	"Гостинная 1 [%d %%]" <humidity> (gMinMax, gLastUpdate, gHumidity_FF_LivingRoom_Avg, gHumidity_FF_LivingRoom_Min, gHumidity_FF_LivingRoom_Max, gHistory, gChart, gMyOpenHab, FF_LivingRoom_sHumidity_01_Min, FF_LivingRoom_sHumidity_01_Max, FF_LivingRoom_Humidity_Chart, gInfluxe) 
+							{ channel="mqtt:topic:mosquitto:esp-sonoff-pow-01:Humidity" }
+Number 	FF_LivingRoom_sHumidity_01_Min "Минимальная [%d %%]" <humidity> 						
+Number 	FF_LivingRoom_sHumidity_01_Max "Максимальная [%d %%]" <humidity>
+DateTime FF_LivingRoom_sHumidity_01_LastUpdate     "Последнее обновление [%1$ta %1$tR]"     <lastupdate> 	
+ 
+Number FF_LivingRoom_sHumidity_02 	"Гостинная 2 [%d %%]" <humidity> (gMinMax, gLastUpdate, gHumidity_FF_LivingRoom_Avg, gHumidity_FF_LivingRoom_Min, gHumidity_FF_LivingRoom_Max, gHistory, gChart, gMyOpenHab, FF_LivingRoom_sHumidity_02_Min, FF_LivingRoom_sHumidity_02_Max, FF_LivingRoom_Humidity_Chart, gInfluxe) 
+							{ channel="mqtt:topic:mosquitto:esp-sonoff-pow-02:Humidity" }
+Number 	FF_LivingRoom_sHumidity_02_Min "Минимальная [%d %%]" <humidity> 						
+Number 	FF_LivingRoom_sHumidity_02_Max "Максимальная [%d %%]" <humidity>
+DateTime FF_LivingRoom_sHumidity_02_LastUpdate     "Последнее обновление [%1$ta %1$tR]"     <lastupdate> 							
+/* ------------------------ FL 1: kitchen -------------------------------- */
+Number FF_Kitchen_sHumidity 		"Кухня [%d %%]" <humidity> (gMinMax, gLastUpdate, gHumidity_FF_Avg, gHistory, gChart, gMyOpenHab, FF_Kitchen_Humidity_Chart, FF_Kitchen_sHumidity_Min, FF_Kitchen_sHumidity_Max, gInfluxe) 
+							{ channel="mqtt:topic:mosquitto:esp-sonoff-pow-03:Humidity" } 
+Group FF_Kitchen_Humidity_Chart  <chart>
+Number FF_Kitchen_Humidity_Chart_Period     "" <chart> 	
+Number 	FF_Kitchen_sHumidity_Min "Минимальная [%d %%]" <humidity> 						
+Number 	FF_Kitchen_sHumidity_Max "Максимальная [%d %%]" <humidity>
+DateTime FF_Kitchen_sHumidity_LastUpdate     "Последнее обновление [%1$ta %1$tR]"     <lastupdate> 
+							
+/* ------------------------ FL 1: toilet / bathroom -------------------------------- */
+Number FF_BathRoom_sHumidity 		"Ванная [%d %%]" <humidity> (gMinMax, gLastUpdate, gHumidity_FF_Avg, gHistory, gChart, gMyOpenHab, FF_BathRoom_Humidity_Chart, FF_BathRoom_sHumidity_Min, FF_BathRoom_sHumidity_Max, gInfluxe) 
+							{ channel="mqtt:topic:mosquitto:esp-sonoff-s20-04:Humidity" } 	
+
+Group FF_BathRoom_Humidity_Chart  <chart>
+Number FF_BathRoom_Humidity_Chart_Period     "" <chart> 	
+Number 	FF_BathRoom_sHumidity_Min "Минимальная [%d %%]" <humidity> 						
+Number 	FF_BathRoom_sHumidity_Max "Максимальная [%d %%]" <humidity>
+DateTime FF_BathRoom_sHumidity_LastUpdate     "Последнее обновление [%1$ta %1$tR]"     <lastupdate> 
+
+/* ------------------------ FL 1: corridor  -------------------------------- */
+Number FF_Corridor_sHumidity 		"Влажность в прихожей [%d %%]" <humidity> (gMinMax, gLastUpdate, gHumidity_FF_Avg, gHistory, gChart, gMyOpenHab, FF_Corridor_Humidity_Chart, FF_Corridor_sHumidity_Min, FF_Corridor_sHumidity_Max, gInfluxe) 
+							{ channel="mqtt:topic:mosquitto:esp-hall:Humidity" } 		
+
+Group FF_Corridor_Humidity_Chart  <chart>
+Number FF_Corridor_Humidity_Chart_Period     "" <chart> 	
+Number 	FF_Corridor_sHumidity_Min "Минимальная [%d %%]" <humidity> 						
+Number 	FF_Corridor_sHumidity_Max "Максимальная [%d %%]" <humidity>
+DateTime FF_Corridor_sHumidity_LastUpdate     "Последнее обновление [%1$ta %1$tR]"     <lastupdate> 
+
+/* ------------------------ FL 2: bedroom1 -------------------------------- */
+Group SF_Room1_Humidity_Chart  <chart>
+Number SF_Room1_Humidity_Chart_Period     "" <chart> 
+Number SF_Room1_sHumidity 			"Спальня [%d %%]" <humidity> (gMinMax, gLastUpdate, gHumidity_SF_Avg, SF_Room1_sHumidity_Min, SF_Room1_sHumidity_MaxgHistory, SF_Room1_Humidity_Chart, gChart, gMyOpenHab, g_SF_Bedroom1_Heater, gInfluxe) [ "CurrentHumidity" ]
+								{ channel="mqtt:topic:mosquitto:esp-sonoff-s20-01:Humidity" } 		
+
+Number 	SF_Room1_sHumidity_Min "Минимальная [%d %%]" <humidity> 						
+Number 	SF_Room1_sHumidity_Max "Максимальная [%d %%]" <humidity>
+DateTime SF_Room1_sHumidity_LastUpdate     "Последнее обновление [%1$ta %1$tR]"     <lastupdate> 
+		
+
+Group SF_Room2_Humidity_Chart  <chart>
+Number SF_Room2_Humidity_Chart_Period     "" <chart> 		
+Number SF_Room2_sHumidity 			"Детская 1 [%d %%]" <humidity> (gMinMax, gLastUpdate, gHumidity_SF_Avg, SF_Room2_sHumidity_Min, SF_Room2_sHumidity_Max, gHistory, gChart, gMyOpenHab, SF_Room2_Humidity_Chart, gInfluxe) 
+								{ channel="mqtt:topic:mosquitto:esp-sonoff-s20-02:Humidity" } 
+
+Number 	SF_Room2_sHumidity_Min "Минимальная [%d %%]" <humidity> 						
+Number 	SF_Room2_sHumidity_Max "Максимальная [%d %%]" <humidity>
+DateTime SF_Room2_sHumidity_LastUpdate     "Последнее обновление [%1$ta %1$tR]"     <lastupdate> 
+			
+
+Group SF_Room3_Humidity_Chart  <chart>
+Number SF_Room3_Humidity_Chart_Period     "" <chart> 			
+Number SF_Room3_sHumidity 			"Детская 2 [%d %%]" <humidity> (gMinMax, gLastUpdate, gHumidity_SF_Avg, SF_Room3_sHumidity_Min, SF_Room3_sHumidity_Max, gHistory, gChart, gMyOpenHab, SF_Room3_Humidity_Chart, gInfluxe) 
+								{ channel="mqtt:topic:mosquitto:esp-sonoff-s20-03:Humidity" } 
+								
+Number 	SF_Room3_sHumidity_Min "Минимальная [%d %%]" <humidity> 						
+Number 	SF_Room3_sHumidity_Max "Максимальная [%d %%]" <humidity>
+DateTime SF_Room3_sHumidity_LastUpdate     "Последнее обновление [%1$ta %1$tR]"     <lastupdate> 
+
+/* ------------------------ Attic -------------------------------- */								
+Number Attic_sHumidity 				"Влажность [%d %%]" <humidity>  (gHumidity, gAttic, gHistory, gChart, gMyOpenHab, gHumidity_Attic_Min, gHumidity_Attic_Max, gHumidity_Attic_Avg) 
+								{mqtt="<[openhab:dacha/esp-boiler/dhth1:state:default]"}
+								
+								
+							

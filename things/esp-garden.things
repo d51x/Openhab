@@ -1,0 +1,10 @@
+// 192.168.2.205
+Thing mqtt:topic:mosquitto:esp-garden "ESP Garden" (mqtt:broker:mosquitto) @ "Устройства" {
+	Channels:
+		Type switch: StreetLightSwitch 	"Прожектор на улице" 	[ stateTopic="dacha/esp-garden/output4", commandTopic="dacha/esp-garden/output4", on="1", off="0"]
+		Type switch: BackLightSwitch 	"Прожектор во дворе" 	[ stateTopic="dacha/esp-garden/output5", commandTopic="dacha/esp-garden/output5", on="1", off="0"]
+		Type switch: SideLightSwitch 	"Прожектор сбоку" 		[ stateTopic="dacha/esp-garden/output12", commandTopic="dacha/esp-garden/output12", on="1", off="0"]
+		Type number: WeatherTemperature	"Температура на улице" 	[ stateTopic="dacha/esp-garden/dsw1" ]
+		Type number: rssi				"Уровень сигнала" 		[ stateTopic="dacha/esp-garden/rssi" ]
+		Type number: uptime				"Время работы" 			[ stateTopic="dacha/esp-garden/uptime" ]
+}

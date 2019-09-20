@@ -1,0 +1,11 @@
+// 192.168.2.211
+Thing mqtt:topic:mosquitto:esp-sonoff-s20-04 "Sonoff S20-4" (mqtt:broker:mosquitto) @ "Устройства" {
+	Channels:
+		Type number: Temperature 			"Температура" 			[ stateTopic="dacha/bathroom/dhtt1" ]
+		Type number: Humidity 			"Влажность" 			[ stateTopic="dacha/bathroom/dhth1" ]
+		Type switch: Power 			"Питание" 			[ stateTopic="dacha/bathroom/output12", commandTopic="dacha/bathroom/output12", on="1", off="0" ]
+		Type switch: Thermo 			"Термостат" 			[ stateTopic="dacha/bathroom/thermo_en1", commandTopic="dacha/bathroom/thermo_en1", on="1", off="0" ]
+		Type number: TempSet 			"Уставка" 			[ stateTopic="dacha/bathroom/thermo_set1", commandTopic="dacha/bathroom/thermo_set1", min="5", max="30", step="1" ]
+		Type number: rssi			"Уровень сигнала" 			[ stateTopic="dacha/bathroom/rssi" ]
+		Type number: uptime			"Время работы" 				[ stateTopic="dacha/bathroom/uptime" ]
+}

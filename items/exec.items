@@ -1,0 +1,1 @@
+String send_telegram {channel="exec:command:send_telegram:output"}

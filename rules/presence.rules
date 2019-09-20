@@ -1,0 +1,37 @@
+val TAG = "PRESENCE"
+
+rule "gPresence state changed"
+when
+    Item gPresent changed
+then
+	// если выключить руками, то шлет столько писем, сколько мемберов
+	if ( gPresent.state == gPresent.previousState().state) {
+		logInfo(TAG, "Значение gPresent не изменилось: {}", gPresent.state.toString)
+		return;
+	}
+	val String str = if (gPresent.state == ON) "Кто-то есть на даче" else "Никого нет на даче"
+	sendBroadcastNotification(str)	
+	executeCommandLine(Telegram_Command.state + str)
+end
+
+/*
+rule "Presence: Member of gPresence state changed"
+when
+	Member of gPresent changed or 
+	Member of gPresent_My changed
+then
+	logError("presence", "name: " + triggeringItem.name)
+	val item = triggeringItem
+	val name = item.name
+
+	var String str;
+
+	
+	logError("presence", "name: " + name)
+	if (item.state.toString == "ON" ) str = item.label + " на даче"
+	if (item.state.toString == "OFF" ) str = item.label + " нет на даче"
+	sendBroadcastNotification(str)	
+	executeCommandLine(Telegram_Command.state + str)
+
+end
+*/

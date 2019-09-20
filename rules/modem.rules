@@ -1,0 +1,216 @@
+import java.io.File
+
+val LOG_TAG = "MODEM"
+
+rule "Modem get info"
+when 
+	Time cron "0/20 * * * * ?" 
+then
+	//logInfo(LOG_TAG, "********* Modem info START ************")
+	executeCommandLine("sh@@/etc/openhab2/scripts/modem_get_info.sh", 5000)
+	var String cmd
+	var String xml = ""
+	var fname = "/var/log/openhab2/modem_signal.xml"
+	var f = new File( fname )
+	if (f.exists()) {
+		//logInfo(LOG_TAG, "File '{}' exists", fname)
+		cmd = "cat@@" + fname
+		xml = executeCommandLine(cmd, 1000)
+		var String rssi
+		try {
+			rssi = transform("XPATH","/response/rssi/text()", xml)
+			rssi = rssi.substring(0, rssi.indexOf('d'))
+			//logInfo(LOG_TAG, "Modem rssi: {}", rssi)
+			val int idx = rssi.indexOf('-') 
+			//logInfo(LOG_TAG, "idx: {}", idx)
+			if (idx>0) {
+				rssi = rssi.substring(idx, rssi.length())
+				//logInfo(LOG_TAG, "Modem rssi: {}", rssi)
+			} 
+			postUpdate(Modem_RSSI, rssi)
+		} catch (Exception e) {
+
+		}
+		
+		var String sinr = transform("XPATH","/response/sinr/text()", xml)
+		sinr = sinr.substring(0, sinr.indexOf('d'))
+		//logInfo(LOG_TAG, "Modem sinr: {}", sinr)
+		postUpdate(Modem_SINR, sinr)
+		
+		postUpdate(Modem_Proxy_Data, String.format("%s dBm/ %s dB", rssi, sinr))
+
+		var String rsrp = transform("XPATH","/response/rsrp/text()", xml)
+		rsrp = rsrp.substring(0, rsrp.indexOf('d'))
+		//logInfo(LOG_TAG, "Modem rsrp: {}", rsrp)
+		postUpdate(Modem_RSRP, rsrp)
+
+		var String rsrq = transform("XPATH","/response/rsrq/text()", xml)
+		rsrq = rsrq.substring(0, rsrq.indexOf('d'))
+		//logInfo(LOG_TAG, "Modem rsrq: {}", rsrq)
+		postUpdate(Modem_RSRQ, rsrq)
+	} else {
+		logError(LOG_TAG, "File '{}' not exists", fname)
+	}
+	
+	xml= ""
+	fname = "/var/log/openhab2/modem_info.xml"
+	cmd = "cat@@" + fname
+	f = new File( fname )
+	if (f.exists()) {
+		//logInfo(LOG_TAG, "File '{}' exists", fname)
+		xml = executeCommandLine(cmd, 1000)
+		var String network = transform("XPATH","/response/workmode/text()", xml)
+		postUpdate(Modem_NetworkType, network)		
+	} else {
+		logError(LOG_TAG, "File '{}' not exists", fname)
+	}	
+	
+	fname = "/var/log/openhab2/modem_status.xml"
+	cmd = "cat@@" + fname
+	f = new File( fname )
+	if (f.exists()) {
+		//logInfo(LOG_TAG, "File '{}' exists", fname)
+		xml = executeCommandLine(cmd, 1000)
+		var String signalBar = transform("XPATH","/response/SignalIcon/text()", xml)
+		//logInfo(LOG_TAG, "Modem signalBar: {}", signalBar)
+		postUpdate(Modem_Signalbar, signalBar)	
+	} else {
+		logError(LOG_TAG, "File '{}' not exists", fname)
+	}	
+
+
+	fname = "/var/log/openhab2/modem_add_param.xml"
+	cmd = "cat@@" + fname
+	f = new File( fname )
+	if (f.exists()) {
+		//logInfo(LOG_TAG, "File '{}' exists", fname)
+		xml = executeCommandLine(cmd, 1000)
+		var String band = transform("XPATH","/config/band/text()", xml)
+		//logInfo(LOG_TAG, "Modem band: {}", band)
+		postUpdate(Modem_NetworkBand, band)	
+
+		var String lac = transform("XPATH","/config/lac/text()", xml)
+		var String cell_id = transform("XPATH","/config/cell_id/text()", xml)
+		//logInfo(LOG_TAG, "Modem lac/cell_id: {}/{}", lac, cell_id)
+		postUpdate(Modem_LAC_CELL, String.format("%s/%s", lac, cell_id))	
+
+		var String rssi2 = transform("XPATH","/config/rssi/text()", xml)
+		//logInfo(LOG_TAG, "Modem rssi2: {}", rssi2)
+		postUpdate(Modem_RSSI2, rssi2)
+	} else {
+		logError(LOG_TAG, "File '{}' not exists", fname)
+	}	
+	//logInfo(LOG_TAG, "********* Modem info END ************")	
+end
+
+
+/*
+rule "Update modem data"
+when
+	Item Modem_Data received update //changed
+then
+
+	var json = Modem_Data.state.toString
+	logInfo("Modem rule", "Modem json: " + json)
+	
+	val signalBar = transform("JSONPATH",  "$.signalbar", json)
+	logInfo("Modem param", "signalBar: " + signalBar)
+	postUpdate(Modem_Signalbar, signalBar)
+	
+	val signalQuality  = transform("JSONPATH",  "$.wan_csq", json)
+	logInfo("Modem param", "signalQuality: " + signalQuality)
+	postUpdate(Modem_SignalQuality, signalQuality)	
+	
+	val networkType  = transform("JSONPATH",  "$.network_type", json)
+	logInfo("Modem param", "networkType: " + networkType)
+	postUpdate(Modem_NetworkType, networkType)		
+
+	val networkProvider  = transform("JSONPATH",  "$.network_provider", json)
+	logInfo("Modem param", "networkProvider: " + networkProvider)
+	postUpdate(Modem_NetworkProvider, networkProvider)	
+
+	val net_select  = transform("JSONPATH",  "$.net_select", json)
+	logInfo("Modem param", "net_select: " + net_select)
+	postUpdate(Modem_Net_Select, net_select)
+	postUpdate(Modem_Set_Bearer, net_select)
+		
+		
+	
+
+
+	if ( networkType != "LTE" ) {
+		val rscp  = transform("JSONPATH",  "$.rscp", json)
+		logInfo("Modem param", "rscp: " + rscp)
+		postUpdate(Modem_3G_RSCP, rscp)
+
+		val snr  = transform("JSONPATH",  "$.lte_snr", json)
+		logInfo("Modem param", "snr: " + snr)
+		postUpdate(Modem_3G_SNR, snr)		
+
+		postUpdate(Modem_Proxy_Data, String.format("%s dBm/ %s dB", rscp, snr))
+	} else {
+		val rsrq  = transform("JSONPATH",  "$.lte_rsrq", json)
+		logInfo("Modem param", "rsrq: " + rsrq)
+		postUpdate(Modem_LTE_Rsrq, rsrq)	
+
+		val rsrp  = transform("JSONPATH",  "$.lte_rsrp", json)
+		logInfo("Modem param", "rsrp: " + rsrp)
+		postUpdate(Modem_LTE_Rsrp, rsrp)	
+
+		postUpdate(Modem_Proxy_Data, String.format("%s dBm/ %s dB", rsrp, rsrq))
+	}
+	
+	val uptime  = transform("JSONPATH",  "$.realtime_time", json)
+	logInfo("Modem param", "uptime: " + uptime)
+	
+	var long sec =  Long::parseLong(uptime)
+	var long min = sec / 60
+	sec = sec % 60 
+	var long hour = min / 60 
+	min = min % 60 
+	var long day = hour / 24 
+	hour = hour % 24 
+	val String s = String::format("%d day %02d:%02d:%02d", day, hour, min, sec) 
+
+	postUpdate(Modem_Uptime, s)		
+	
+	val tx_bytes  = transform("JSONPATH",  "$.realtime_tx_bytes", json)
+	logInfo("Modem param", "tx_bytes: " + tx_bytes)
+	postUpdate(Modem_Bytes_TX, tx_bytes) 		
+	
+	val rx_bytes  = transform("JSONPATH",  "$.realtime_rx_bytes", json)
+	logInfo("Modem param", "rx_bytes: " + rx_bytes)
+	postUpdate(Modem_Bytes_RX, rx_bytes)
+
+	val month_tx_bytes  = transform("JSONPATH",  "$.monthly_tx_bytes", json)
+	logInfo("Modem param", "month_tx_bytes: " + month_tx_bytes)
+	postUpdate(Modem_Month_Bytes_TX, month_tx_bytes) 		
+	
+	val month_rx_bytes  = transform("JSONPATH",  "$.monthly_rx_bytes", json)
+	logInfo("Modem param", "month_rx_bytes: " + month_rx_bytes)
+	postUpdate(Modem_Month_Bytes_RX, month_rx_bytes)
+	
+	val total_tx_bytes  = transform("JSONPATH",  "$.total_tx_bytes", json)
+	logInfo("Modem param", "total_tx_bytes: " + total_tx_bytes)
+	postUpdate(Modem_Total_Bytes_TX, total_tx_bytes) 		
+	
+	val total_rx_bytes  = transform("JSONPATH",  "$.total_rx_bytes", json)
+	logInfo("Modem param", "total_rx_bytes: " + total_rx_bytes)
+	postUpdate(Modem_Total_Bytes_RX, total_rx_bytes)
+
+	val connectionMode  = transform("JSONPATH",  "$.connectionMode", json)
+	logInfo("Modem param", "connectionMode: " + connectionMode)
+	postUpdate(Modem_Connection_Mode, connectionMode)
+
+end
+*/
+/*
+rule "Изенить тип сети"
+when
+	Item Modem_Set_Bearer received command
+then
+	val rule_name = "Modem Set Bearer"
+	logError(rule_name, "set network to " + receivedCommand)
+	executeCommandLine("/etc/openhab2/scripts/modem_set_bearer.sh@@" + receivedCommand)
+end
+*/

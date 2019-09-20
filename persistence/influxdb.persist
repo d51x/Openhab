@@ -1,0 +1,10 @@
+// persistence strategies have a name and a definition and are referred to in the "Items" section
+Strategies {
+	default = everyChange
+}
+
+Items {
+	gInfluxe* : strategy = everyUpdate
+}
+
+// vim: syntax=Xtend syntax=openhab

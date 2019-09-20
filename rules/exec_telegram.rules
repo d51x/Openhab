@@ -1,0 +1,295 @@
+val telegram = "sh@@/home/pi/send_telegram.sh@@"
+
+rule "OpenHAB system started - telegram"
+when
+    System started
+then
+	postUpdate(Telegram_Command, telegram)
+end
+
+
+
+rule "Septic Heating Relay state changed"
+when
+    Item Septic_Heating changed
+then
+	if ( Septic_Heater_Notify.state == ON) {
+		val septic_state = "Обогрев септика %s. Температура %.1f °C"
+		var String str;
+		if (Septic_Heating.state == ON ) str = "ВКЛЮЧЕН"
+		if (Septic_Heating.state == OFF ) str = "ВЫКЛЮЧЕН"
+		
+		str = String::format(septic_state, str, (Septic_Temperature.state as DecimalType).doubleValue)
+		logInfo("Telegram", telegram + str)
+		executeCommandLine(telegram + str)		
+	}	
+end
+
+rule "ESP_Boiler Pump_Power state changed"
+when
+    Item BoilerRoom_Pump_Power changed
+then
+	if (BR_Pump_Notify.state == ON) {
+		val ss = "Питание насоса %s"
+		var String str;
+		if (BoilerRoom_Pump_Power.state == ON ) str = "ВКЛЮЧЕНО"
+		if (BoilerRoom_Pump_Power.state == OFF ) str = "ВЫКЛЮЧЕНО"
+		str = String::format(ss, str)
+		logInfo("Telegram", telegram + str)
+		executeCommandLine(telegram + str)			
+	}
+end
+
+rule "ESP_Boiler BoilerRoom_Boiler state changed"
+when
+    Item BoilerRoom_Boiler changed
+then
+	if (BR_Boiler_Heater_Notify.state == ON) {
+		var String str;
+		val ss = "Водонагреватель %s"
+		if (BoilerRoom_Boiler.state == ON ) str = "ВКЛЮЧЕН"
+		if (BoilerRoom_Boiler.state == OFF ) str = "ВЫКЛЮЧЕН"
+		str = String::format(ss, str)
+		logInfo("Telegram", telegram + str)
+		executeCommandLine(telegram + str)		
+	}	
+end
+
+rule "ESP_Boiler BoilerRoom_Hotcab state changed"
+when
+    Item BoilerRoom_Hotcab changed
+then
+	if (BR_Hotcab_Notify.state == ON) {
+		var String str;
+		val hotcab_state = "Греющий кабель %s. Температура %.1f °C"
+		if (BoilerRoom_Hotcab.state == ON ) str = "ВКЛЮЧЕН"
+		if (BoilerRoom_Hotcab.state == OFF ) str = "ВЫКЛЮЧЕН"
+		str = String::format(hotcab_state, str, (Temp_BoilerRoom_Hotcab_Cur.state as DecimalType).doubleValue)
+		logInfo("Telegram", telegram + str)
+		executeCommandLine(telegram + str)					
+	}
+end
+
+/*
+rule "Bedroom3 termostate state changed"
+when
+	Item SF_Bedroom3_Heater_Mode changed
+then
+		var String str;
+		val bedroom3 = "Термостат в детской 2 %s. Температура %.1f °C"
+		if (SF_Bedroom3_Heater_Mode.state.toString == "ON" ) str = "ВКЛЮЧЕН"
+		if (SF_Bedroom3_Heater_Mode.state.toString == "OFF" ) str = "ВЫКЛЮЧЕН"
+		str = String::format(bedroom3, str, (SF_Room3_sTemp.state as DecimalType).doubleValue)
+    executeCommandLine(telegram + str)	
+end
+*/
+
+rule "Bedroom3 heater state changed"
+when
+	Item SF_Bedroom3_Heater changed
+then
+	if (SF_Bedroom3_Heater_Notify.state == ON) {
+		var String str;
+		val bedroom3 = "Обогреватель в детской 2 %s. Температура %.1f °C"
+		if (SF_Bedroom3_Heater.state == ON ) str = "ВКЛЮЧЕН"
+		if (SF_Bedroom3_Heater.state == OFF ) str = "ВЫКЛЮЧЕН"
+		str = String::format(bedroom3, str, (SF_Room3_sTemp.state as DecimalType).doubleValue)
+		logInfo("Telegram", telegram + str)
+		executeCommandLine(telegram + str)	
+	}
+end
+
+/*
+rule "Bedroom2 termostate state changed"
+when
+	Item SF_Bedroom2_Thermostat changed
+then
+		var String str;
+		val bedroom2 = "Термостат в детской 1 %s. Температура %.1f °C"
+		if (SF_Bedroom2_Thermostat.state.toString == "ON" ) str = "ВКЛЮЧЕН"
+		if (SF_Bedroom2_Thermostat.state.toString == "OFF" ) str = "ВЫКЛЮЧЕН"
+		str = String::format(bedroom2, str, (SF_Room2_sTemp.state as DecimalType).doubleValue)
+    executeCommandLine(telegram + str)	
+end
+*/
+
+rule "Bedroom2 heater state changed"
+when
+	Item SF_Bedroom2_Heater changed
+then
+	if (SF_Bedroom2_Heater_Notify.state == ON) {	
+		var String str;
+		val bedroom2 = "Обогреватель в детской 1 %s. Температура %.1f °C"
+		if (SF_Bedroom2_Heater.state == ON ) str = "ВКЛЮЧЕН"
+		if (SF_Bedroom2_Heater.state == OFF ) str = "ВЫКЛЮЧЕН"
+		str = String::format(bedroom2, str, (SF_Room2_sTemp.state as DecimalType).doubleValue)
+		logInfo("Telegram", telegram + str)
+		executeCommandLine(telegram + str)	
+	}
+end
+
+/*
+rule "Bedroom1 termostate state changed"
+when
+	Item SF_Bedroom1_Thermostat changed
+then
+		var String str;
+		val bedroom1 = "Термостат в спальне 1 %s. Температура %.1f °C"
+		if (SF_Bedroom1_Thermostat.state.toString == "ON" ) str = "ВКЛЮЧЕН"
+		if (SF_Bedroom1_Thermostat.state.toString == "OFF" ) str = "ВЫКЛЮЧЕН"
+		str = String::format(bedroom1, str, (SF_Room1_sTemp.state as DecimalType).doubleValue)
+		logInfo("Telegram", telegram + str)
+    executeCommandLine(telegram + str)	
+end
+*/
+
+rule "Bedroom1 heater state changed"
+when
+	Item SF_Bedroom1_Heater changed
+then
+	if (SF_Bedroom1_Heater_Notify.state == ON) {
+		var String str;
+		val bedroom1 = "Обогреватель в спальне 1 %s. Температура %.1f °C"
+		if (SF_Bedroom1_Heater.state == ON ) str = "ВКЛЮЧЕН"
+		if (SF_Bedroom1_Heater.state == OFF ) str = "ВЫКЛЮЧЕН"
+		str = String::format(bedroom1, str, (SF_Room1_sTemp.state as DecimalType).doubleValue)
+		logInfo("Telegram", telegram + str)
+		executeCommandLine(telegram + str)	
+	}	
+end
+
+rule "Bathroom heater state changed"
+when
+	Item FF_Bathroom_Heater changed
+then
+	if (FF_BR_Heater_Notify.state == ON) {
+		var String str;
+		val bathroom = "Обогреватель в ванной %s. Температура %.1f °C"
+		if (FF_Bathroom_Heater.state == ON ) str = "ВКЛЮЧЕН"
+		if (FF_Bathroom_Heater.state == OFF ) str = "ВЫКЛЮЧЕН"
+		str = String::format(bathroom, str, (FF_BathRoom_sTemp.state as DecimalType).doubleValue)
+		logInfo("Telegram", telegram + str)
+		executeCommandLine(telegram + str)	
+	}	
+end
+
+rule "Kitchen heater state changed"
+when
+	Item FF_Kitchen_Heater changed
+then
+	if (FF_Kitchen_Heater_Notify.state == ON) {
+		var String str;
+		val kitchen = "Обогреватель на кухне %s. Температура %.1f °C"
+		if (FF_Kitchen_Heater.state == ON ) str = "ВКЛЮЧЕН"
+		if (FF_Kitchen_Heater.state == OFF ) str = "ВЫКЛЮЧЕН"
+		str = String::format(kitchen, str, (FF_Kitchen_sTemp.state as DecimalType).doubleValue)
+		logInfo("Telegram", telegram + str)
+		executeCommandLine(telegram + str)	
+	}	
+end
+
+rule "Livingroom1 heater state changed"
+when
+	Item FF_LivingRoom_Heater_01 changed
+then
+	if (FF_LR_Heater_01_Notify.state == ON) {
+		var String str;
+		val ss = "Обогреватель1 в гостинной %s. Температура %.1f °C"
+		if (FF_LivingRoom_Heater_01.state == ON ) str = "ВКЛЮЧЕН"
+		if (FF_LivingRoom_Heater_01.state == OFF ) str = "ВЫКЛЮЧЕН"
+		str = String::format(ss, str, (FF_LivingRoom_sTemp_01.state as DecimalType).doubleValue)
+		logInfo("Telegram", telegram + str)
+		executeCommandLine(telegram + str)	
+	}	
+end
+
+rule "Livingroom2 heater state changed"
+when
+	Item FF_LivingRoom_Heater_02 changed
+then
+	if (FF_LR_Heater_02_Notify.state == ON) {
+		var String str;
+		val ss = "Обогреватель2 в гостинной %s. Температура %.1f °C"
+		if (FF_LivingRoom_Heater_02.state == ON ) str = "ВКЛЮЧЕН"
+		if (FF_LivingRoom_Heater_02.state == OFF ) str = "ВЫКЛЮЧЕН"
+		str = String::format(ss, str, (FF_LivingRoom_sTemp_02.state as DecimalType).doubleValue)
+		logInfo("Telegram", telegram + str)
+		executeCommandLine(telegram + str)	
+	}	
+end
+
+rule "Livingroom light1 state changed"
+when
+	Item FF_LivingRoom_Light_01 changed
+then
+	if (FF_LR_Light1_Notify.state == ON) {
+		var String str;
+		val ss = "Свет1 в гостинной %s"
+		if (FF_LivingRoom_Light_01.state == ON ) str = "ВКЛЮЧЕН"
+		if (FF_LivingRoom_Light_01.state == OFF ) str = "ВЫКЛЮЧЕН"
+		str = String::format(ss, str)
+		logInfo("Telegram", telegram + str)
+		executeCommandLine(telegram + str)	
+	}	
+end
+
+rule "Livingroom light2 state changed"
+when
+	Item FF_LivingRoom_Light_02 changed
+then
+	if (FF_LR_Light2_Notify.state == ON) {
+		var String str;
+		val ss = "Свет2 в гостинной %s"
+		if (FF_LivingRoom_Light_02.state == ON ) str = "ВКЛЮЧЕН"
+		if (FF_LivingRoom_Light_02.state == OFF ) str = "ВЫКЛЮЧЕН"
+		str = String::format(ss, str)
+		logInfo("Telegram", telegram + str)
+		executeCommandLine(telegram + str)	
+	}	
+end
+
+rule "Second floor corridor light1 state changed"
+when
+	Item SF_Corridor1_Light changed
+then
+	if (SF_Corridor_Light1_Notify.state == ON) {
+		var String str;
+		val ss = "Свет в коридоре (этаж 2) %s"
+		if (SF_Corridor1_Light.state == ON ) str = "ВКЛЮЧЕН"
+		if (SF_Corridor1_Light.state == OFF ) str = "ВЫКЛЮЧЕН"
+		str = String::format(ss, str)
+		logInfo("Telegram", telegram + str)
+		executeCommandLine(telegram + str)	
+	}	
+end
+
+rule "Second floor corridor light2 state changed"
+when
+	Item SF_Corridor2_Light changed
+then
+	if (SF_Corridor_Light2_Notify.state == ON) {
+		var String str;
+		val ss = "Свет над лестницей %s"
+		if (SF_Corridor2_Light.state == ON ) str = "ВКЛЮЧЕН"
+		if (SF_Corridor2_Light.state == OFF ) str = "ВЫКЛЮЧЕН"
+		str = String::format(ss, str)
+		logInfo("Telegram", telegram + str)
+		executeCommandLine(telegram + str)	
+	}	
+end
+
+rule "Second floor bedroom1 light state changed"
+when
+	Item SF_BedRoom1_Light changed
+then
+	if (SF_Bedroom1_Light_Notify.state == ON) {
+		var String str;
+		val ss = "Свет в спальне %s"
+		if (SF_BedRoom1_Light.state == ON ) str = "ВКЛЮЧЕН"
+		if (SF_BedRoom1_Light.state == OFF ) str = "ВЫКЛЮЧЕН"
+		str = String::format(ss, str)
+		logInfo("Telegram", telegram + str)
+		executeCommandLine(telegram + str)	
+	}	
+end
+

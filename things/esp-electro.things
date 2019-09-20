@@ -1,0 +1,11 @@
+// 192.168.2.202
+Thing mqtt:topic:mosquitto:esp-electro "Electro (PZEM)" (mqtt:broker:mosquitto) @ "Устройства" {
+	Channels:
+		Type number: Voltage 			"Напряжение" 			[ stateTopic="dacha/electro/pmv"]
+		Type number: Current 			"Сила тока" 					[ stateTopic="dacha/electro/pmc"]
+		Type number: PowerRMS 			"Потребляемая мощность" 					[ stateTopic="dacha/electro/pmw"]
+		Type number: PowerWH 		"Расход кВтч" 					[ stateTopic="dacha/electro/pmwh"]
+		
+		Type number: rssi			"Уровень сигнала" 			[ stateTopic="dacha/electro/rssi" ]
+		Type number: uptime			"Время работы" 				[ stateTopic="dacha/electro/uptime" ]
+}

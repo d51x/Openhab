@@ -1,0 +1,91 @@
+var Timer indoorLightTimer
+
+
+rule "OpenHAB system started - indoor lights"
+when
+    System started
+then
+	if ( (StairsAutoMode.state == NULL) || (StairsAutoMode.state == UNDEF)) {
+		postUpdate(StairsAutoMode, OFF)
+	}
+end
+
+
+rule "Авто Вкл подсветки лестницы, когда кто-то есть / появился дома и на улице вечер"
+when
+	Item gPresent changed from OFF to ON  // кто то появился в доме  // и время менее 23^00???
+then
+	if ( Night_State.state == OFF) { return; } // и на улице темно, включим ступеньки
+	if ( indoorLightTimer !== null ) indoorLightTimer.cancel()
+	if (StairsAutoMode.state == ON) { return; }
+	if ( StairsManualState.state == ON ) { return; }
+	val msg = "Включение подсветки ступеней по присутвию" 
+	sendBroadcastNotification(msg)	
+	executeCommandLine(Telegram_Command.state + msg)
+	sendCommand(StairsManualState, ON)
+end
+
+rule "Авто выкл подсветки лестницы, когда все ушли из дома"
+when
+	Item gPresent changed from ON to OFF  // все ушли из дома
+then
+	indoorLightTimer = createTimer(now.plusMinutes(20), [ |
+		if (StairsAutoMode.state == OFF) { 
+			if ( StairsManualState.state == ON ) {
+				val msg = "Выключение подсветки ступеней по отсутсвию" 
+				sendBroadcastNotification(msg)	
+				executeCommandLine(Telegram_Command.state + msg)
+				sendCommand(StairsManualState, OFF)
+			}
+		}
+		// выключить все освещение в доме
+
+	])
+end
+
+rule "Включить освещение в доме при наступлении заката"
+when
+    Item Night_State changed to ON
+then
+	if (gPresent.state == OFF) { return; } // только если кто-то есть дома
+	if ( StairsAutoOnSunset.state == OFF) { return; } // можно включать при закате
+	if (StairsAutoMode.state == ON) { return; }
+	if ( StairsManualState.state == ON ) { return; } // уже включена
+	val msg = "Включение подсветки ступеней при наступлении заката" 
+	sendBroadcastNotification(msg)	
+	executeCommandLine(Telegram_Command.state + msg)
+	sendCommand(StairsManualState, ON)
+end
+
+rule "Выключить освещение в доме при наступлении рассвета"
+when
+    Item Night_State changed to OFF
+then
+	//turn off stairs lights
+	if ( StairsManualState.state == OFF ) { 
+		logInfo("STAIRS", "StairsManualState already OFF, exit...")
+		return; 
+	}
+	if ( StairsAutoOnSunset.state == OFF ) { return; }
+	// можно выключать при рассвете
+	if (StairsAutoMode.state == ON) { return; }
+	val msg = "Выключение подсветки ступеней при наступлении рассвета" 
+	sendBroadcastNotification(msg)	
+	executeCommandLine(Telegram_Command.state + msg)
+	sendCommand(StairsManualState, OFF)
+end
+
+rule "StairsManualState state changed"
+when
+    Item StairsManualState changed
+then
+	if (FF_Stairs_Light_Notify.state == OFF) { return; }
+	if ( StairsManualState.state == StairsManualState.previousState().state ) {
+		logInfo("STAIRS", "new State == prevState, exit...")
+		return;
+	}
+	val String str = if ( StairsManualState.state == ON ) "включена" else "выключена"
+	val msg = "Подсветка ступеней " + str 
+	sendBroadcastNotification(msg)	
+	executeCommandLine(Telegram_Command.state + msg)		
+end

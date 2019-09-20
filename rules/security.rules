@@ -1,0 +1,62 @@
+val pirSensorDelay = 120
+var Timer pirSensorTimer
+var allowPirSensorNotify = new Boolean(true)
+
+//var Timer openedDoorTimer
+//val openedDoorDelay = 120
+
+rule "MainDoor is opened"
+when
+	Item MainDoor changed from CLOSED to OPEN 
+then
+    if ( gPresent.state == ON ) {
+        return;
+    }
+        
+    val TAG = "MainDoor"
+    
+    val msg = "Входная дверь была открыта"
+    logInfo(TAG, msg)
+    
+    sendBroadcastNotification(msg)	
+    executeCommandLine(Telegram_Command.state + msg)    
+	
+end
+
+//TODO: add timer for determine how long the door is opened
+
+
+
+
+rule "PirSensor2 is changed"
+when
+	Item PirSensor2 changed from OFF to ON 
+then
+/*
+    logInfo("PirSensor", "previousState = {}", PirSensor2.previousState().state)
+    logInfo("PirSensor", "currentState = {}", PirSensor2.state)
+    if ( PirSensor2.previousState().state == ON ) {
+        return;
+    }
+*/
+    if ( gPresent.state == ON ) {
+        return;
+    }    
+
+    val TAG = "PirSensor"
+    
+    val msg = "Обнаружено движение в коридоре"
+    logInfo(TAG, msg)
+    
+
+    if ( allowPirSensorNotify ) {
+        allowPirSensorNotify = false
+        sendBroadcastNotification(msg)	
+        executeCommandLine(Telegram_Command.state + msg)    
+    }
+
+    pirSensorTimer = createTimer(now.plusSeconds(pirSensorDelay), [ |
+        allowPirSensorNotify = true
+        pirSensorTimer.cancel()
+    ])    
+end

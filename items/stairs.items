@@ -1,0 +1,10 @@
+Group:Switch:OR(ON, OFF)  gStairs "Ступени [(%d)]" <qualityofservice> [ "Lighting" ] 
+
+Switch StairsAutoMode "Режим []" <wallswitch> (gMyOpenHab, gHistory)
+{ channel="mqtt:topic:mosquitto:esp-stairs:Mode" }
+										
+Switch StairsManualState "Состояние [MAP(ui.map):%s]" <light> (gStairs, gMyOpenHab, gHistory, gLightIndoor)  
+{ channel="mqtt:topic:mosquitto:esp-stairs:Light" }
+
+Switch StairsAutoOnSunset "Авто вкл/выкл при закате/рассвете [MAP(ui.map):%s]" <wallswitch> (gMyOpenHab, gHistory)
+

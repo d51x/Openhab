@@ -1,0 +1,8 @@
+Group Weather_Chart  <chart>
+
+Number Weather_Temperature      "Температура на улице [%.1f °C]" <temperature> (gMinMax, gLastUpdate, Weather, Weather_Chart, gHistory, gChart, gMyOpenHab, gInfluxe) { channel="mqtt:topic:mosquitto:esp-garden:WeatherTemperature" }
+Number Weather_Temperature_Max         "Максимальная сегодня [%.1f °C]"      <temperature> (Weather)
+Number Weather_Temperature_Min         "Минимальная сегодня [%.1f °C]"      <temperature> (Weather)
+
+Number Weather_Chart_Period     "Период"
+DateTime Weather_Temperature_LastUpdate     "Последнее обновление [%1$ta %1$tR]"     <lastupdate>

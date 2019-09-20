@@ -1,0 +1,9 @@
+// 192.168.2.213	
+Thing mqtt:topic:mosquitto:esp-bedroom2-light "Bedroom 2 Light" (mqtt:broker:mosquitto) @ "Устройства" {
+	Channels:
+		Type switch: Light 			"Лампочка" 			[ stateTopic="dacha/br2-light/output12", commandTopic="dacha/br2-light/output12", on="1", off="0"]
+		Type switch: Wifi_led 			"Wifi led" 			[ stateTopic="dacha/br2-light/output13", commandTopic="dacha/br2-light/output13", on="0", off="1"]
+	
+		Type number: rssi			"Уровень сигнала" 			[ stateTopic="dacha/br2-light/rssi" ]
+		Type number: uptime			"Время работы" 				[ stateTopic="dacha/br2-light/uptime" ]
+}

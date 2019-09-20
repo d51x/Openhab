@@ -1,0 +1,74 @@
+sitemap thermo label="Управление термостатами"
+{
+	
+	Frame label="Управление" {
+		Switch item=Global_Thermo_Mode icon="heating" mappings=[ALL_OFF="Off", 
+																ANTI_FREEZE="HG",  	// +7
+																COLD="Cold",		// +13
+																ECO="Eco",  		// +18
+																NORMAL="Norm",  	// +20
+																WARM="Warm",		// +22   +19			
+																HOT="Hot"]     	// +24
+		Text item=gThermoMode label="Авто-режим"
+	}
+	
+	Frame label="Этаж 1" icon="groundfloor" {
+	
+		Text item=FF_LR_Heater_01_sThermo label="Гостинная" icon="sofa"{
+			Switch item=FF_LivingRoom_Heater_01 label="Обогреватель1" 	
+			Setpoint item=FF_LR_Heater_01_tThermo minValue=7 maxValue=30 step=1
+			Switch item=FF_LR_Heater_01_Mode
+			
+			Switch item=FF_LivingRoom_Heater_02 label="Обогреватель2" 	
+			Setpoint item=FF_LR_Heater_02_tThermo minValue=7 maxValue=30 step=1			
+			Switch item=FF_LR_Heater_02_Mode
+		}	
+		
+		Text item=FF_Kitchen_Heater_sThermo label="Кухня" icon="kitchen" {
+				Switch item=FF_Kitchen_Heater 	label="Обогреватель" 	
+				Setpoint item=FF_Kitchen_Heater_tThermo minValue=7 maxValue=30 step=1				
+				Switch item=FF_Kitchen_Heater_Mode 	
+		}		
+		
+		Text item=FF_Bathroom_Heater_sThermo label="Ванная" icon="bathroom" {
+				Switch item=FF_Bathroom_Heater 	label="Обогреватель" 		
+				Setpoint item=FF_Bathroom_Heater_tThermo minValue=7 maxValue=30 step=1				
+				Switch item=FF_Bathroom_Heater_Mode
+		}		
+	}
+	
+	Frame label="Этаж 2" {
+	
+		Text item=SF_Bedroom1_Heater_sThermo label="Спальня" icon="bedroom_orange" {
+				Switch item=SF_Bedroom1_Heater label="Обогреватель"	
+				Setpoint item=SF_Bedroom1_Heater_tThermo minValue=7 maxValue=30 step=1				
+				Switch item=SF_Bedroom1_Heater_Mode 
+		}	
+		
+		Text item=SF_Bedroom2_Heater_sThermo label="Детская 1" icon="bedroom_red" {
+				Switch item=SF_Bedroom2_Heater label="Обогреватель"	
+				Setpoint item=SF_Bedroom2_Heater_tThermo minValue=7 maxValue=30 step=1				
+				Switch item=SF_Bedroom2_Heater_Mode 
+		}
+		
+		Text item=SF_Bedroom3_Heater_sThermo label="Детская 2" icon="bedroom_blue" {
+				Switch item=SF_Bedroom3_Heater label="Обогреватель"	
+				Setpoint item=SF_Bedroom3_Heater_tThermo minValue=7 maxValue=30 step=1				
+				Switch item=SF_Bedroom3_Heater_Mode 
+				Switch item=SF_Bedroom3_Thermostat
+		}			
+	}
+	
+	Frame label="Тех.помещения" {
+		
+		Text  item=BoilerRoom_Heater_sThermo label="Котельная" icon="garage" {
+				Switch item=BoilerRoom_Heater 	
+				Setpoint item=BoilerRoom_Heater_tThermo minValue=20 maxValue=30 step=0.5
+				Switch item=BoilerRoom_Heater_Mode 
+		}
+	
+		Text label="Септик" icon="toiler" {
+			Switch item=Septic_Heating
+		}
+	}	
+}

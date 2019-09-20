@@ -1,0 +1,13 @@
+Group:Switch:OR(ON,OFF) gPresent      "Кто-то есть на даче [MAP(presence.map):%s]" <presence> (gHistory, gMyOpenHab)
+
+Group:Switch:OR(ON,OFF) gPresent_My "Я на даче [MAP(presence.map):%s]" <presence> (gPresent, gHistory, gMyOpenHab)
+
+Switch Presence_My_Phone 		 "Я (phone)" 		<network> (gPresent_My, gHistory, gMyOpenHab) {channel="network:pingdevice:mimix2s:online", expire="25m, command=OFF"}
+Switch Presence_My_IFTTT 		 "Я (IFTTT)"		<network> (gPresent_My, gHistory, gMyOpenHab) 
+Switch Presence_My_Tablet 		 "Я (tablet)"		<network> (gPresent_My, gHistory, gMyOpenHab) 
+
+Switch Presence_Wife_Phone 		 "Жена (phone)" 	<network> (gPresent, gHistory, gMyOpenHab) {channel="network:pingdevice:mi5s:online", expire="25m, command=OFF"}
+Switch Presence_Daughter_Phone 	 "Дочь (phone)" 	<network> (gPresent, gHistory, gMyOpenHab) {channel="network:pingdevice:honor7c:online", expire="25m, command=OFF"}
+Switch Presence_Son_Phone 	     "Сын (phone)" 	    <network> (gPresent, gHistory, gMyOpenHab) {channel="network:pingdevice:redmi4x:online", expire="25m, command=OFF"}
+
+

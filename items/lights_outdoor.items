@@ -1,0 +1,17 @@
+Group:Switch:OR(ON, OFF) gLightOutdoor     	"Уличное освещение [(%d)]"  <outdoorlight>		(gLights)
+String OutdoorLightsAll		"Все освещение"
+
+Switch OutdoorLight_Front      "Свет улицы [%s]" <light> (gLightOutdoor, gInfluxe) [ "Lighting" ] 
+{ channel="mqtt:topic:mosquitto:esp-garden:StreetLightSwitch" }
+			
+Switch OutdoorLight_Back      "Свет двора [%s]" <light> (gLightOutdoor, gInfluxe) [ "Lighting" ] 
+{ channel="mqtt:topic:mosquitto:esp-garden:BackLightSwitch" }
+
+Switch OutdoorLight_Side      "Свет сбоку [%s]" <light> (gLightOutdoor, gInfluxe) [ "Lighting" ] 
+{ channel="mqtt:topic:mosquitto:esp-garden:SideLightSwitch" }
+
+Switch OutdoorLight_oldHouse      "Прожектор (старый дом) [%s]" <light> (gLightOutdoor, gInfluxe) [ "Lighting" ] 
+{ channel="mqtt:topic:mosquitto:esp-oldhouse:Light" }
+
+
+

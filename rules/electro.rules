@@ -1,0 +1,274 @@
+//var no_voltage = new Boolean(false)
+val initial_powerwh = 3271260 // стартовое показание счетчика для учета данных за месяц
+val price = 3.89
+
+var Timer voltageHighTimer
+var voltageHighNotification = new Boolean(true)
+
+var Timer voltageLowTimer
+var voltageLowNotification = new Boolean(true)
+
+rule "Energy init"
+when
+    System started
+then
+	postUpdate(vElectro_Month, "-" )
+end
+
+rule "Electricity total"
+when
+	Item Electro_Voltage changed or
+	Item Electro_Current changed  
+then
+
+	val item = triggeringItem
+	val name = item.name
+	
+	val Double voltage = (Electro_Voltage.state as DecimalType).doubleValue
+	val Double current = (Electro_Current.state as DecimalType).doubleValue
+	val Double power_rms = (voltage * current)
+	var String str = String::format("%.0fV\t%.1fA\t%.1fkW", voltage, current, power_rms/1000)
+
+	Electro_Total.postUpdate(str)
+	Electro_PowerRMS.postUpdate(power_rms)
+
+	if ( name == "Electro_Voltage" ) {
+		//no_voltage = false
+		if (voltage == 0 ) {
+			// отправлять только 1 раз в Х минут (таймер + переменная-флаг)
+			//no_voltage = true
+			// отправлять только если 0 вольт более чем 5 мин
+			val msg = String::format("PZEM. Отсутствуют данные по напряжению")  // + сообщть, что напряжение появилось + значение
+			sendBroadcastNotification(msg)	
+			executeCommandLine(Telegram_Command.state + msg)
+		} else if ( voltage < 190 ) {
+			if ( voltageLowNotification ) {
+				voltageLowNotification = false
+				voltageLowTimer = createTimer(now.plusSeconds(5*60), [ |
+            		voltageLowNotification = true
+             		voltageLowTimer.cancel()
+        		]) 
+
+				val msg = String::format("PZEM. Низкое напряжение сети: %.0fV", voltage)  
+				sendBroadcastNotification(msg)	
+				executeCommandLine(Telegram_Command.state + msg)				
+			}
+		} else if ( voltage > 240 ) {
+			if ( voltageHighNotification ) {
+				voltageHighNotification = false
+				voltageHighTimer = createTimer(now.plusSeconds(5*60), [ |
+            		voltageHighNotification = true
+             		voltageHighTimer.cancel()
+        		]) 				
+				val msg = String::format("PZEM. Повышенное напряжение сети: %.0fV", voltage)  
+				sendBroadcastNotification(msg)	
+				executeCommandLine(Telegram_Command.state + msg)					
+			}
+		}
+	}
+	
+	//						<5	 5-10  10-15   15-20	20-25		> 25					
+	// energy status: (very low, low, normal, high, very high, alert)
+	
+	if (( name == "Electro_Current") && (current > 25.5) && (current < 40.0)) {
+		val msg = String::format("PZEM. Превышение по току: %.1f A", current)  
+		sendBroadcastNotification(msg)	
+		executeCommandLine(Telegram_Command.state + msg)
+	}
+
+
+end
+
+rule "Records Electro_PowerWH changed"
+when
+	Item Electro_PowerWH_F changed
+then
+	val TAG = "POWER"
+	// текущее показание счетчика
+	val Double current_pwh = (Electro_PowerWH_F.state as DecimalType).doubleValue  
+	if ( current_pwh < 0) {
+		return;
+	} else if ( current_pwh == 0 ) {
+		val Double prev_current_pwh = (Electro_PowerWH_F.previousState().state as DecimalType).doubleValue  
+		val msg = String::format("PZEM. Нулевые показания счетчика. Предыдущее значение: %.1f kWt*h", prev_current_pwh/1000)  
+		sendBroadcastNotification(msg)	
+		executeCommandLine(Telegram_Command.state + msg)
+		current_pwh = prev_current_pwh	
+	}
+	//logInfo(TAG, "Текущие показания: {}", current_pwh)
+
+	// показания счетчика за прошлое воскресенье
+	val Double pwr_last_sunday = (Electro_PowerWH_SunDay.state as DecimalType).doubleValue 
+	//logInfo(TAG, "Показания на начало недели: {}", pwr_last_sunday)
+
+	// показания счетчика за последний день месяца?
+	// ????
+
+	// расход за все время с учетом начального счетчика
+	val Double total =  (current_pwh - initial_powerwh) / 1000  
+	Electro_PowerWH.postUpdate(current_pwh/1000)
+  	
+	// за вчера 
+	val Double pwr_prev = (Electro_PowerWH_PrevDay.state as DecimalType).doubleValue  // получим показания счетчика за "вчера"	
+	val Double pwr_yesterday = (Electro_PowerWH_YesterDay.state as DecimalType).doubleValue  
+	Electro_AmountYesterday	.postUpdate(price * pwr_yesterday)
+
+	// за сегодня
+	val Double pwr_today = (current_pwh  - pwr_prev) / 1000	// расход в кВт.ч за "сегодня" с 00:00
+	Electro_PowerWH_Day.postUpdate( pwr_today )	
+	Electro_AmountToday.postUpdate(price * pwr_today)
+
+	// за прошлую неделю
+	val Double pwr_prev_week = (Electro_PowerWH_SunDay.state as DecimalType).doubleValue  // получим показания счетчика за "предыдущее воскресенье"	
+	val Double pwr_lastweek = (Electro_PowerWH_PrevWeek.state as DecimalType).doubleValue 
+	Electro_AmountPrevWeek	.postUpdate(price * pwr_lastweek)
+
+	// за текущую неделю
+	val Double pwr_week = (current_pwh - pwr_prev_week)  / 1000 // расход в кВт.ч за "текущую неделю" с 00:00 понедельника
+	Electro_PowerWH_Week.postUpdate( pwr_week )
+	Electro_AmountWeek.postUpdate(price * pwr_week)
+
+	// за прошлый месяц
+	var Double pwr_prev_month = (Electro_PowerWH_LastDayMonth.state as DecimalType).doubleValue  // получим показания счетчика за "последний день предыдущего месяца"	
+	val Double pwr_last_month = (Electro_PowerWH_PrevMonth.state as DecimalType).doubleValue 
+	Electro_AmountPrevMonth	.postUpdate(price * pwr_last_month)
+
+	// за текущий месяц
+	val Double pwr_month = (current_pwh - pwr_prev_month)  / 1000 // расход в кВт.ч за "текущий месяц" с 00:00 первого числа месяца
+	Electro_AmountMonth.postUpdate(price * pwr_month)
+	postUpdate(Electro_PowerWH_Month, pwr_month)
+end
+
+
+rule "Clear daily consumption"
+when
+	Time cron "0 0 0 ? * *"    // power on at 0:00 every day
+then
+	// сбросить счет потребления за день 
+	Electro_PowerWH_PrevDay.postUpdate( (Electro_PowerWH_F.state as DecimalType).doubleValue )     // зафиксировали показание счетчика за вчера
+	Electro_PowerWH_YesterDay.postUpdate( (Electro_PowerWH_Day.state as DecimalType).doubleValue)	// запомнили расход за вчера
+	Electro_PowerWH_Day.postUpdate(0)							// обнулили потребление за день
+	
+end
+
+rule "Save last week consumption"
+when
+	Time cron "0 0 0 ? * MON"    // power on at 0:00 on monday
+then
+	// сбросить счет потребления за неделю 
+	Electro_PowerWH_SunDay.postUpdate( (Electro_PowerWH_F.state as DecimalType).doubleValue )     // зафиксировали показание счетчика за прошедшую неделю
+	Electro_PowerWH_PrevWeek.postUpdate( (Electro_PowerWH_Week.state as DecimalType).doubleValue)	// запомнили расход за прошедшую неделю
+	Electro_PowerWH_Week.postUpdate(0)							// обнулили потребление за текущую неделю
+	
+end
+
+rule "Save last month consumption"
+when
+	Time cron "0 0 0 1 * ?"    // power on at 0:00 on 1st day of month
+then
+	// сбросить счет потребления за месяц 
+	Electro_PowerWH_LastDayMonth.postUpdate( (Electro_PowerWH_F.state as DecimalType).doubleValue )     // зафиксировали показание счетчика за предыдущий месяц
+	Electro_PowerWH_PrevMonth.postUpdate( (Electro_PowerWH_Month.state as DecimalType).doubleValue)	// запомнили расход за предыдущий месяц
+	Electro_PowerWH_Month.postUpdate(0)							// обнулили потребление за текущий месяц
+	
+end
+
+rule "Notify lastday compsumption in the morning"
+when
+	Time cron "0 0 8 ? * *"    // power on at 8:00 every day
+then
+	var msg = String::format("Расход электричества за вчера: %.1f кВт\n\r", (Electro_PowerWH_YesterDay.state as DecimalType).doubleValue )  
+	msg += String::format("Расход электричества с последней оплаты: %.1f кВт\n\r", (Electro_PowerWH_Month.state as DecimalType).doubleValue )  
+
+	sendBroadcastNotification(msg)	
+	executeCommandLine(Telegram_Command.state + msg)       
+end
+
+rule "Notify lastweek compsumption in the morning"
+when
+	Time cron "0 0 8 ? * MON"    // power on at 8:00 on monday
+then
+	var msg = String::format("Расход электричества за неделю: %.1f кВт\n\r", (Electro_PowerWH_PrevWeek.state as DecimalType).doubleValue )  
+	msg += String::format("Расход электричества с последней оплаты: %.1f кВт\n\r", (Electro_PowerWH_Month.state as DecimalType).doubleValue )  
+
+	sendBroadcastNotification(msg)	
+	executeCommandLine(Telegram_Command.state + msg)       
+end
+
+rule "Notify lastmonth compsumption in the morning"
+when
+	Time cron "0 0 8 1 * ?"    // power on at 0:00 on 1st day of month
+then
+	var msg = String::format("Расход электричества за месяц: %.1f кВт\n\r", (Electro_PowerWH_PrevMonth.state as DecimalType).doubleValue )  
+	sendBroadcastNotification(msg)	
+	executeCommandLine(Telegram_Command.state + msg) 
+end
+
+//********************  SOnOff POW 01 *********************************************************************
+
+rule "update Electro_SOnOffPow1_Current min max"
+when
+	Item Electro_SOnOffPow1_CurrentF changed
+then
+	var Double t
+	t = (Electro_SOnOffPow1_CurrentF.state as DecimalType).doubleValue / 1000
+	Electro_SOnOffPow1_Current.postUpdate(t)
+end
+
+rule "Records Electro_SOnOffPow1_PowerWH changed"
+when
+  Item Electro_SOnOffPow1_PowerWH_F changed
+then
+  var Double t = (Electro_SOnOffPow1_PowerWH_F.state as DecimalType).doubleValue / 1000
+  Electro_SOnOffPow1_PowerWH.postUpdate(t)
+end
+
+//********************  SOnOff POW 02 *********************************************************************
+
+rule "update Electro_SOnOffPow2_Current"
+when
+	Item Electro_SOnOffPow2_CurrentF changed
+then
+	var Double t
+	t = (Electro_SOnOffPow2_CurrentF.state as DecimalType).doubleValue / 1000
+	Electro_SOnOffPow2_Current.postUpdate(t)		
+end
+
+rule "Records Electro_SOnOffPow2_PowerWH changed"
+when
+  Item Electro_SOnOffPow2_PowerWH_F changed
+then
+  var Double t = ((Electro_SOnOffPow2_PowerWH_F.state as DecimalType).doubleValue) / 1000
+  Electro_SOnOffPow2_PowerWH.postUpdate(t)
+end
+
+//********************  SOnOff POW 03 *********************************************************************
+rule "update Electro_SOnOffPow3_Current min max"
+when
+	Item Electro_SOnOffPow3_CurrentF changed
+then
+	var Double t
+	t = (Electro_SOnOffPow3_CurrentF.state as DecimalType).doubleValue / 1000
+	Electro_SOnOffPow3_Current.postUpdate(t)	
+end
+
+rule "Records Electro_SOnOffPow3_PowerWH changed"
+when
+  Item Electro_SOnOffPow3_PowerWH_F changed
+then
+  var Double t = (Electro_SOnOffPow3_PowerWH_F.state as DecimalType).doubleValue / 1000
+  Electro_SOnOffPow3_PowerWH.postUpdate(t)
+end
+
+
+
+rule "Illuminance changed"
+when
+	Item Electro_ADC changed
+then
+	//var PercentType t = (Electro_ADC.state as DecimalType).doubleValue / 100
+	var Double t = (Electro_ADC.state as DecimalType).doubleValue * 100 / 1024
+	//logInfo("Illumination", "value: " + (Electro_ADC.state as DecimalType).doubleValue)
+	logInfo("Illumination", "value: " + t + "%")
+	vIllumination.postUpdate( t )
+end

@@ -1,0 +1,9 @@
+// 192.168.2.220	
+Thing mqtt:topic:mosquitto:esp-stairs "Stairs Light" (mqtt:broker:mosquitto) @ "Устройства" {
+	Channels:
+		Type switch: Mode 			"Режим" 			[ stateTopic="dacha/esp-led/output6", commandTopic="dacha/esp-led/output6", on="1", off="0"]
+		Type switch: Light 			"Состояние" 			[ stateTopic="dacha/esp-led/output16", commandTopic="dacha/esp-led/output16", on="1", off="0" ]
+	
+		Type number: rssi			"Уровень сигнала" 			[ stateTopic="dacha/esp-led/rssi" ]
+		Type number: uptime			"Время работы" 				[ stateTopic="dacha/esp-led/uptime" ]
+}	

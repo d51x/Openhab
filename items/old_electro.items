@@ -1,0 +1,40 @@
+String Electro_Total "Электричество [%s]" <electricity>
+
+Group Electro_Voltage_Chart  <chart>
+//Number Electro_Voltage "Напряжение [%.0f V]" <electricity> (Electro_Voltage_Chart) {mqtt="<[openhab:dacha/electro/voltage:state:default]"}
+Number Electro_Voltage "Напряжение [%.0f V]" <electricity> (Electro_Voltage_Chart, gHistory, gChart, gMyOpenHab) {mqtt="<[openhab:dacha/electro/pmv:state:default]"}
+Number Electro_Voltage_Min "Минимум сегодня [%.0f V]" <electricity>
+Number Electro_Voltage_Max "Максимум сегодня [%.0f V]" <electricity>
+DateTime Electro_Voltage_LastUpdate     "Последнее обновление [%1$ta %1$tR]"     <lastupdate>
+Number Electro_Voltage_Chart_Period     "Период"
+
+Group Electro_Current_Chart  <chart>
+//Number Electro_Current "Ток [%.1f A]" <current> (Electro_Current_Chart) {mqtt="<[openhab:dacha/electro/current:state:default]"}
+Number Electro_Current "Ток [%.1f A]" <current> (Electro_Current_Chart, gHistory, gChart, gMyOpenHab) {mqtt="<[openhab:dacha/electro/pmc:state:default]"}
+Number Electro_Current_Min "Минимум сегодня [%.1f A]" <current> //(Group Electro_Current_Chart  <chart>)
+Number Electro_Current_Max "Максимум сегодня [%.1f A]" <current> //(Group Electro_Current_Chart  <chart>)
+DateTime Electro_Current_LastUpdate     "Последнее обновление [%1$ta %1$tR]"     <lastupdate>
+Number Electro_Current_Chart_Period     "Период"
+
+Group Electro_PowerRMS_Chart  <chart>
+Number Electro_PowerRMS "Мощность RMS [%.0f W]" <powerplug> (Electro_PowerRMS_Chart, gHistory, gChart, gMyOpenHab) {mqtt="<[openhab:dacha/electro/pmw:state:default]"}
+Number Electro_PowerRMS_Min "Минимум сегодня [%.0f W]" <powerplug> //(Group Electro_PowerRMS_Chart  <chart>)
+Number Electro_PowerRMS_Max "Максимум сегодня [%.0f W]" <powerplug> //(Group Electro_PowerRMSChart  <chart>)
+DateTime Electro_PowerRMS_LastUpdate     "Последнее обновление [%1$ta %1$tR]"     <lastupdate>
+Number Electro_PowerRMS_Chart_Period     "Период"
+
+Number Electro_PowerWH_F "Счетчик [%.1f kW/h]" <powerplug> {mqtt="<[openhab:dacha/electro/pmwh:state:default]"}
+Number Electro_PowerWH "Счетчик [%.1f kW/h]" <powerplug> 
+
+Group Electro_ADC_Chart  <chart>
+Number Electro_ADC "Освещенность [%.1f]" <sun> (Electro_ADC_Chart, gHistory, gChart, gMyOpenHab) {mqtt="<[openhab:dacha/electro/adc:state:default]"} 
+Number Electro_ADC_Min "Минимум сегодня [%.1f A]" <current> //(Group Electro_Current_Chart  <chart>)
+Number Electro_ADC_Max "Максимум сегодня [%.1f A]" <current> //(Group Electro_Current_Chart  <chart>)
+DateTime Electro_ADC_LastUpdate     "Последнее обновление [%1$ta %1$tR]"     <lastupdate>
+Number Electro_ADC_Chart_Period     "Период"
+
+
+
+//Number Electro_KWth "Расход [%d kWt/h]" {mqtt="<[openhab:dacha/electro/kwth:state:default]"}
+
+

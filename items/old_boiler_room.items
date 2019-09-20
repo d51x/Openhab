@@ -1,0 +1,54 @@
+Switch Heating_BoilerRoom    "Конвектор (котельная)"        <radiator>   (GF_Boiler, Heating_GF, Heating_All) {mqtt=">[openhab:arduino/therm/status/cmd/3:command:ON:ON],>[openhab:arduino/therm/status/cmd/3:command:OFF:OFF],<[openhab:arduino/therm/status/state/3:state:default]"}
+Switch Heating_BoilerRoom_Mode    "Режим работы"        <radiator>   (GF_Boiler) {mqtt=">[openhab:arduino/therm/mode/cmd/3:command:ON:ON],>[openhab:arduino/therm/mode/cmd/3:command:OFF:OFF],<[openhab:arduino/therm/mode/state/3:state:default]"}
+
+
+/* ----------------- Температура воздуха -----------------------*/
+Group Temp_BoilerRoom_Chart  <chart>
+Number Temp_BoilerRoom_Min "Минимальная сегодня [%.1f °C]" <temperature> //(Temp_BoilerRoom_Chart)
+Number Temp_BoilerRoom_Max "Максимальная сегодня [%.1f °C]" <temperature> //(Temp_BoilerRoom_Chart)
+Number Temp_BoilerRoom "Котельная [%.1f °C]" <temperature> (gMinMax, gLastUpdate, Temp_All_Avg, Temp_BoilerRoom_Chart, gHistory, gChart, gMyOpenHab) {mqtt="<[openhab:dacha/esp-boiler/dhtt1:state:default]"}
+DateTime Temp_BoilerRoom_LastUpdate     "Последнее обновление [%1$ta %1$tR]"     <lastupdate>
+Number Temp_BoilerRoom_Chart_Period     "Период"
+
+/* ------------- влажность -------------*/
+Group BoilerRoom_Hum_Chart  <chart>
+Number BoilerRoom_Hum "Влажность [%.1f %%]" <humidity> (gMinMax, gLastUpdate, BoilerRoom_Hum_Chart, gHistory, gChart, gMyOpenHab) {mqtt="<[openhab:dacha/esp-boiler/dhth1:state:default]"}
+DateTime BoilerRoom_Hum_LastUpdate     "Последнее обновление [%1$ta %1$tR]"     <lastupdate>
+Number BoilerRoom_Hum_Chart_Period     "Период"
+Number BoilerRoom_Hum_Min "Минимальная сегодня [%.1f %%]" <humidity> //(Temp_BoilerRoom_Chart)
+Number BoilerRoom_Hum_Max "Максимальная сегодня [%.1f %%]" <humidity> //(Temp_BoilerRoom_Chart)
+
+String Heating_BoilerRoom_St    "[%s]"   //{mqtt=">[openhab:uno/temp/f1/boilerroom/set:command:*:default]"}
+Number Heating_BoilerRoom_Set    "цель [%.1f °C]" <temperature>  {mqtt=">[openhab:arduino/therm/set/cmd/3:command:*:default],<[openhab:arduino/therm/set/state/3:state:default]"}
+
+/* ------------- ВОДОНАГРЕВАТЕЛЬ: статус питания, температура воды --------------------------*/
+Switch BoilerRoom_Boiler    "Водонагреватель (питание)"        <waterheater>   (GF_Boiler) {mqtt=">[openhab:dacha/esp-boiler/output12:command:ON:1],>[openhab:dacha/esp-boiler/output12:command:OFF:0],<[openhab:dacha/esp-boiler/output12:state:MAP(switchMQTT.map)]"}
+Group Temp_BoilerRoom_Boiler_Chart  <chart>
+Number Temp_BoilerRoom_Boiler_Min "Минимальная сегодня [%.1f °C]" <temperature>  //(Temp_Attic_Chart)
+Number Temp_BoilerRoom_Boiler_Max "Максимальная сегодня [%.1f °C]" <temperature>  //(Temp_Attic_Chart)
+Number Temp_BoilerRoom_Boiler "Водонагреватель [%.1f °C]" <temperature>  (gMinMax, gLastUpdate, Temp_BoilerRoom_Boiler_Chart, gHistory, gChart, gMyOpenHab) {mqtt="<[openhab:dacha/esp-boiler/dsw1:state:default]"}
+DateTime Temp_BoilerRoom_Boiler_LastUpdate     "Последнее обновление [%1$ta %1$tR]"     <lastupdate>
+Number Temp_BoilerRoom_Boiler_Chart_Period     "Период"
+
+/* ------------- ГРЕЮЩИЙ КАБЕЛЬ: статус питания, температура воды --------------------------*/
+Switch BoilerRoom_Hotcab    "Греющий кабель (питание)"        <heatingarrows>   (GF_Boiler) {mqtt=">[openhab:dacha/esp-boiler/output14:command:ON:1],>[openhab:dacha/esp-boiler/output14:command:OFF:0],<[openhab:dacha/esp-boiler/output14:state:MAP(switchMQTT.map)]"}
+Number BoilerRoom_Hotcab_Therm_d   {http="<[http://192.168.2.204/jsonoptions?select=thermostat:60000:JSONPATH($.thermostat.termo1.en)]"}
+Switch BoilerRoom_Hotcab_Therm    "Греющий кабель (термостат)"        <heating>   (GF_Boiler)  
+{mqtt=">[openhab:dacha/esp-boiler/optionsset:command:ON:MAP(boiler_therm_cmd.map)], 
+>[openhab:dacha/esp-boiler/optionsset:command:OFF:MAP(boiler_therm_cmd.map)]"}
+String BoilerRoom_Hotcab_St    "[%s]"   //{mqtt=">[openhab:uno/temp/f1/boilerroom/set:command:*:default]"}
+Number BoilerRoom_Hotcab_Set    "цель [%.1f °C]" <temperature>  {mqtt=">[openhab:arduino/therm/set/cmd/3:command:*:default],<[openhab:arduino/therm/set/state/3:state:default]"}
+
+
+Group Temp_BoilerRoom_Hotcab_Chart  <chart>
+Number Temp_BoilerRoom_Hotcab_Min "Минимальная сегодня [%.1f °C]" <temperature>  //(Temp_Attic_Chart)
+Number Temp_BoilerRoom_Hotcab_Max "Максимальная сегодня [%.1f °C]" <temperature>  //(Temp_Attic_Chart)
+Number Temp_BoilerRoom_Hotcab "Греющий кабель [%.1f °C]" <temperature>  (gMinMax, gLastUpdate, Temp_BoilerRoom_Hotcab_Chart, gHistory, gChart, gMyOpenHab) {mqtt="<[openhab:dacha/esp-boiler/dsw2:state:default]"}
+DateTime Temp_BoilerRoom_Hotcab_LastUpdate     "Последнее обновление [%1$ta %1$tR]"     <lastupdate>
+Number Temp_BoilerRoom_Hotcab_Chart_Period     "Период"
+
+
+/* ------------ статусы питания -------------*/
+Switch BoilerRoom_Pump_Power    "Насос (питание)"        <pump>   (GF_Boiler) {mqtt=">[openhab:dacha/esp-boiler/output13:command:ON:1],>[openhab:dacha/esp-boiler/output13:command:OFF:0],<[openhab:dacha/esp-boiler/output13:state:MAP(switchMQTT.map)]"}
+Switch BoilerRoom_Pump_State    "Насос (статус)"        <faucet>   (GF_Boiler) {mqtt="<[openhab:dacha/esp-boiler/valuedes0:state:MAP(switchMQTT.map)]"}
+

@@ -1,0 +1,7 @@
+// 192.168.2.216
+Thing mqtt:topic:mosquitto:hall1-light "Hall 1 Light" (mqtt:broker:mosquitto) @ "Устройства" {
+	Channels:
+		Type switch: Light 			"Свет в прихожей" 			[ stateTopic="dacha/hall1-light/output12", commandTopic="dacha/hall1-light/output12", on="1", off="0"]
+		Type number: rssi			"Уровень сигнала" 			[ stateTopic="dacha/hall1-light/rssi" ]
+		Type number: uptime			"Время работы" 				[ stateTopic="dacha/hall1-light/uptime" ]
+}

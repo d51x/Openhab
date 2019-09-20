@@ -1,0 +1,151 @@
+Group gModem
+Group gModemChart
+//String Modem_Data {http="<[http://192.168.99.1/goform/goform_get_cmd_process?cmd=signalbar,wan_csq,network_type,network_provider,cell_id,lac_code,rssi,rscp,lte_rssi,lte_rsrq,lte_rsrp,lte_snr,realtime_time,realtime_tx_bytes,realtime_rx_bytes,net_select,ConnectionMode,monthly_tx_bytes,monthly_rx_bytes,total_tx_bytes,total_rx_bytes{referer=http://192.168.99.1/index.html}:20000:REGEX((.*))]"}
+
+String Modem_Proxy_Data "Модем [%s]"
+Number Modem_RSSI 	"RSSI [%s dBm]" <network> (gModem, gHistory, gModemChart, gInfluxe) 
+Number Modem_RSSI2 	"RSSI2 [%s dBm]" <network> (gModem, gHistory, gModemChart, gInfluxe) 
+Number Modem_SINR 	"SINR [%s dB]" <network> (gModem, gHistory, gModemChart, gInfluxe)
+Number Modem_RSRQ 	"RSRQ [%s dB]" <network> (gModem, gHistory, gModemChart, gInfluxe)
+Number Modem_RSRP 	"RSRP [%s dBm]" <network> (gModem, gHistory, gModemChart, gInfluxe)
+String Modem_NetworkType "Тип сети [%s]"
+Number Modem_Signalbar "Уровень сигнала [%d]" (gModem)
+String Modem_NetworkBand "Band [%s]" (gModem)
+String Modem_LAC_CELL "Lac/Cell [%s]" (gModem)
+/* 
+Number Modem_FrequencyDown 	"frequency-down [%s mHz]" <network> (gModem) {channel="exec:command:frequency-down:output"}
+Number Modem_FrequencyUp 	"frequency-up [%s mHz]" <network> (gModem) {channel="exec:command:frequency-up:output"}
+
+ {channel="exec:command:network-band:output"}
+ */
+//
+//Number Modem_SignalQuality "Качество сигнала [%d]" (gModem)
+
+//Number Modem_LTE_Rsrq "RSRQ [%.1f dB]" (gModem, gHistory, gModemChart, gInfluxe)
+//Number Modem_LTE_Rsrp "RSRP [%d dBm]" (gModem, gHistory, gModemChart, gInfluxe)
+
+//Number Modem_3G_SNR "SNR [%.1f]" (gModem, gHistory, gInfluxe, gModemChart)
+//Number Modem_3G_RSCP "RSCP [%d dBm]" (gModem, gHistory, gInfluxe, gModemChart)
+
+
+//DateTime Modem_Uptime "Modem uptime [%1$tA, %1$td.%1$tm.%1$tY]" (gModem)
+//String Modem_Uptime "Время сессии [%s]" (gModem)
+
+//String Modem_NetworkProvider "Провайдер [%s]" (gModem)
+//String Modem_Bytes_TX "Передано [JS(byte-to-multibyte.js):%s]" (gModem)
+//String Modem_Bytes_RX "Принято [JS(byte-to-multibyte.js):%s]" (gModem)
+
+//String Modem_Month_Bytes_TX "Передано (мес) [JS(byte-to-multibyte.js):%s]" (gModem)
+//String Modem_Month_Bytes_RX "Принято (мес) [JS(byte-to-multibyte.js):%s]" (gModem)
+
+//String Modem_Total_Bytes_TX "Передано всего [JS(byte-to-multibyte.js):%s]" (gModem)
+//String Modem_Total_Bytes_RX "Принято всего [JS(byte-to-multibyte.js):%s]" (gModem)
+
+
+//String Modem_Net_Select "Предпочтение [%s]" (gModem)
+//String Modem_Connection_Mode "Режим [%s]" (gModem)
+
+//String Modem_Set_Bearer "Предпочитаемые сети"
+
+/*        RSRP  					
+зеленый   rsrp >= -98				уровень приема			RSRP			RSRQ			signal quality				RSRP		RSRQ
+желтый    -98 < rsrp <= -108        отличный				>=-80			>=-10           excellent					> -84		> -5
+оранжевый -109 < rsrp <= -118       хороший					-80 .. -90		-10 .. -15      good						-85..-102   -6..-10
+красный   -119 < rsrp <= -128       средний					-90 .. -100		-15 .. -20      fair						-103..-111  -6..-10
+серый     rsrp < -129               слабый					<= -100			< -20           poor						<-112		<-11
+*/
+
+/*
+NETWORK_auto - OK | WCDMA_preferred | GSM_preferred - GSM | Only_GSM - OK | Only_WCDMA - OK | Only_LTE - OK | WCDMA_AND_GSM - OK | WCDMA_AND_LTE - LTE | GSM_AND_LTE - LTE
+*/
+
+/*
+{"result":"failure"} {"result":"siccess"}
+*/
+
+/*
+http://192.168.99.1//goform_set_cmd_process?goformId=SET_BEARER_PREFERENCE&BearerPreference=Only_LTE
+http://192.168.99.1/goform/goform_set_cmd_process?goformId=SET_BEARER_PREFERENCE&BearerPreference=Only_WCDMA
+
+http://192.168.99.1/goform/goform_get_cmd_process?cmd=signalbar,wan_csq,network_type,network_provider,cell_id,lac_code,rssi,rscp,lte_rssi,lte_rsrq,lte_rsrp,lte_snr,ecio
+
+http://192.168.99.1/goform/goform_set_cmd_process?goformId=SET_CONNECTION_MODE&ConnectionMode=auto_dial
+
+
+"hardware_version":"832FT"
+"model_name":"832FT"
+"wa_inner_version":"BD_MTSMF832MV1.0.0B05"
+"network_provider":"MTS RUS"
+"hplmn":"25001"
+"sim_imsi":"250016313537359"
+"imei":"864780028378273"
+"wan_ipaddr":"10.53.232.113"
+"ipv6_wan_ipaddr":"2a00:1fa0:23b:5960:200:ff:fe00:0"
+"modem_msn":"288977007939"
+"manufacturer":"ZTE COPORATION"
+"web_version":"WM_MTSRUSMF832MV1.0.0B06"
+"lan_ipaddr":"192.168.99.1"
+
+"connectionMode":"auto_dial","autoConnectWhenRoaming":"off"
+net_select
+{"net_select":"Only_LTE"}
+
+
+cmd=sms_capacity_info
+{"sms_nv_total":"100","sms_sim_total":"5","sms_nv_rev_total":"100","sms_nv_send_total":"0","sms_nv_draftbox_total":"0","sms_sim_rev_total":"0","sms_sim_send_total":"0","sms_sim_draftbox_total":"0"}
+
+{"battery_pers":"4"}
+
+{"realtime_tx_bytes":"146828696"}
+{"realtime_rx_bytes":"1469463727"}
+{"realtime_time":"11715"}
+        realtime_rx_thrpt : 0,
+        total_tx_bytes : 0,
+        total_rx_bytes : 0,
+        total_time : 0,
+        monthly_tx_bytes : 0,
+        monthly_rx_bytes : 0,
+        monthly_time : 0,
+        realtime_tx_bytes : 0,
+        realtime_rx_bytes : 0,
+        realtime_time : 0,
+        realtime_tx_thrpt : 0,
+
+{"lte_band":""}
+{"sms_current_db_id":"852;853;854;855;"}
+{"product_type":"NO_DRIVER_UFI"}
+
+
+cmd=sms_cmd_status_info&sms_cmd=1
+{"sms_cmd":"1","sms_cmd_status_result":"3"}
+{"unlock_nck_time":"0"}
+
+cmd=sms_unread_num
+{"sms_unread_num":"100","sms_dev_unread_num":"100","sms_sim_unread_num":"0"}
+
+"UMTS", "LTE", "HSDPA", "HSUPA", "HSPA", "HSPA+", "DC", "DC-HSPA+", "DC-HSPA"
+
+if network_type != LTE
+    HSPA+
+    "rscp":"-92"
+    "lte_snr":"-11.5"
+
+*/
+
+/*
+Nmap scan report for 192.168.99.1
+Host is up (0.0060s latency).
+Not shown: 990 filtered ports
+PORT      STATE  SERVICE
+53/tcp    open   domain
+80/tcp    open   http
+443/tcp   open   https
+5555/tcp  open   freeciv
+8080/tcp  closed http-proxy
+12345/tcp open   netbus
+49152/tcp closed unknown
+49153/tcp open   unknown
+49154/tcp closed unknown
+49155/tcp closed unknown
+
+*/

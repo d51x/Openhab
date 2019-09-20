@@ -1,0 +1,118 @@
+rule "Heating_GF_Living_Set1 changed"
+when
+	Item Heating_GF_Living_Set1 changed
+then
+	if (Heating_GF_Living_Set1.state == NULL) { 
+		postUpdate(Heating_GF_Living_Set1, 20) 
+	} else {
+		postUpdate(Heating_GF_Living_Set1, Heating_GF_Living_Set1.state) 
+	}
+end
+
+rule "Heating_GF_Living_Set2 changed"
+when
+	Item Heating_GF_Living_Set2 changed
+then
+	if (Heating_GF_Living_Set2.state == NULL) { 
+		postUpdate(Heating_GF_Living_Set2, 20) 
+	} else {
+		postUpdate(Heating_GF_Living_Set2, Heating_GF_Living_Set2.state) 
+	}
+end
+
+rule "Heating_GF_Kitchen_Set changed"
+when
+	Item Heating_GF_Kitchen_Set changed
+then
+	if (Heating_GF_Kitchen_Set.state == NULL) { 
+		postUpdate(Heating_GF_Kitchen_Set, 20) 
+	} else {
+		postUpdate(Heating_GF_Kitchen_Set, Heating_GF_Kitchen_Set.state) 
+	}
+end
+
+rule "Heating_GF_Toilet_Set changed"
+when
+	Item Heating_GF_Toilet_Set changed
+then
+	if (Heating_GF_Toilet_Set.state == NULL) { 
+		postUpdate(Heating_GF_Toilet_Set, 20) 
+	} else {
+		postUpdate(Heating_GF_Toilet_Set, Heating_GF_Toilet_Set.state) 
+	}
+end
+
+rule "Heating_FF_BedRoom1_Set changed"
+when
+	Item Heating_FF_BedRoom1_Set changed
+then
+	if (Heating_FF_BedRoom1_Set.state == NULL) { 
+		postUpdate(Heating_FF_BedRoom1_Set, 20) 
+	} else {
+		postUpdate(Heating_FF_BedRoom1_Set, Heating_FF_BedRoom1_Set.state) 
+	}
+end
+
+///rule "Heating_Septic_Set changed"
+///	when
+///		Item Heating_Septic_Set changed //received
+///	then
+		//if (Heating_Septic_Set.state == Uninitialized) { 
+		//	Heating_Septic_Set.postUpdate(20) 
+		//	Heating_Septic_St.sendCommand("20.0")
+		//} else {
+///			Heating_Septic_St.sendCommand(Heating_Septic_Set.state.toString)
+		//}
+///end
+
+///rule "Initialize heating states"
+///	when
+///		System started
+///	then
+		// if (Heating_GF_Living_Set.state == Uninitialized) { 
+			// Heating_GF_Living_Set.postUpdate(20) 
+			// Heating_GF_Living_St.sendCommand("20.0")
+		// }
+		// if (Heating_GF_Kitchen_Set.state == Uninitialized) { 
+			// Heating_GF_Kitchen_Set.postUpdate(20) 
+			// Heating_GF_Kitchen_St.sendCommand("20.0")
+		// }
+		// if (Heating_BoilerRoom_Set.state == Uninitialized) { 
+			// Heating_BoilerRoom_Set.postUpdate(20) 
+			// Heating_BoilerRoom_St.sendCommand("20.0")
+		// }		
+		// if (Heating_GF_Corridor_Set.state == Uninitialized) { 
+			// Heating_GF_Corridor_Set.postUpdate(20) 
+			// Heating_GF_Corridor_St.sendCommand("20.0")
+		// }			
+		// if (Heating_FF_BedRoom1_Set.state == Uninitialized) { 
+			// Heating_FF_BedRoom1_Set.postUpdate(20) 
+			// Heating_FF_BedRoom1_St.sendCommand("20.0")
+		// }					
+		// if (Heating_FF_BedRoom2_Set.state == Uninitialized) { 
+			// Heating_FF_BedRoom2_Set.postUpdate(20) 
+			// Heating_FF_BedRoom2_St.sendCommand("20.0")
+		// }						
+		// if (Heating_FF_BedRoom3_Set.state == Uninitialized) { 
+			// Heating_FF_BedRoom3_Set.postUpdate(20) 
+			// Heating_FF_BedRoom3_St.sendCommand("20.0")
+		// }					
+		// if (Heating_FF_Corridor_Set.state == Uninitialized) { 
+			// Heating_FF_Corridor_Set.postUpdate(20) 
+			// Heating_FF_Corridor_St.sendCommand("20.0")
+		// }						
+		// if (Heating_Septic_Set.state == Uninitialized) { 
+			// Heating_Septic_Set.postUpdate(10) 
+			// Heating_Septic_St.sendCommand("10.0")
+		// }					
+///end
+
+///rule "Arduino restarted" 
+///	when
+///		Item s_arduinoRestarted received update
+///	then
+///		//String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date())
+///		//s_arduinoRestarted.sendCommand(timeStamp)
+///		postUpdate(dt_arduinoRestarted, new DateTimeType())
+///end	
+

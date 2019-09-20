@@ -1,0 +1,84 @@
+/* Indoor Temperatures */
+
+/* ------------------------ FL 1 -------------------------------- */
+Group Temp_FL1_Living_Chart <chart>
+Number Temp_FL1_Living_Chart_Period     "Период"
+
+/* ------------------------ FL 1: Living room -------------------------------- */
+Number Temp_FL1_Living1 "Температура1 [%.1f °C]" <temperature> (gMinMax, gLastUpdate, Temp_FL1_Avg,Temp_FL1_Min,Temp_FL1_Max, Temp_FL1_Living_Chart, gHistory, gChart, gMyOpenHab) {mqtt="<[openhab:dacha/sonoffpow01/dhtt1:state:default]"}
+Number Temp_FL1_Living2 "Температура2 [%.1f °C]" <temperature> (gMinMax, gLastUpdate, Temp_FL1_Avg,Temp_FL1_Min,Temp_FL1_Max, Temp_FL1_Living_Chart, gHistory, gChart, gMyOpenHab) {mqtt="<[openhab:dacha/sonoffpow02/dhtt1:state:default]"}
+
+Number Temp_FL1_Living_Cur "Температура1 [%.1f °C]" <temperature> (gHistory, gChart, gMyOpenHab)
+
+Number Temp_FL1_Living1_Min "Минимальная сегодня [%.1f °C]" <temperature> //(Temp_FL1_Living_Chart)
+Number Temp_FL1_Living1_Max "Максимальная сегодня [%.1f °C]" <temperature> //(Temp_FL1_Living_Chart)
+DateTime Temp_FL1_Living1_LastUpdate     "Последнее обновление [%1$ta %1$tR]"     <lastupdate>
+
+Number Temp_FL1_Living2_Min "Минимальная сегодня [%.1f °C]" <temperature> //(Temp_FL1_Living_Chart)
+Number Temp_FL1_Living2_Max "Максимальная сегодня [%.1f °C]" <temperature> //(Temp_FL1_Living_Chart)
+DateTime Temp_FL1_Living2_LastUpdate     "Последнее обновление [%1$ta %1$tR]"     <lastupdate>
+
+/* ------------------------ FL 1: kitchen -------------------------------- */
+Group Temp_FL1_Kitchen_Chart  <chart>
+Number Temp_FL1_Kitchen_Min "Минимальная сегодня [%.1f °C]" <temperature> //(Temp_FL1_Kitchen_Chart)
+Number Temp_FL1_Kitchen_Max "Максимальная сегодня [%.1f °C]" <temperature> //(Temp_FL1_Kitchen_Chart)
+Number Temp_FL1_Kitchen "Кухня [%.1f °C]" <temperature> (gMinMax, gLastUpdate, Temp_FL1_Avg, Temp_FL1_Kitchen_Chart, gHistory, gChart, gMyOpenHab) {mqtt="<[openhab:dacha/sonoffpow03/dhtt1:state:default]"}
+DateTime Temp_FL1_Kitchen_LastUpdate     "Последнее обновление [%1$ta %1$tR]"     <lastupdate>
+Number Temp_FL1_Kitchen_Chart_Period     "Периодd"
+
+/* ------------------------ FL 1: toilet / bathroom -------------------------------- */
+Group Temp_FL1_Toilet_Chart  <chart>
+Number Temp_FL1_Toilet_Min "Минимальная сегодня [%.1f °C]" <temperature> //(Temp_FL1_Toilet_Chart)
+Number Temp_FL1_Toilet_Max "Максимальная сегодня [%.1f °C]" <temperature>  //(Temp_FL1_Toilet_Chart)
+Number Temp_FL1_Toilet "Ванная [%.1f °C]" <temperature>  (gMinMax, gLastUpdate, Temp_FL1_Avg, Temp_FL1_Toilet_Chart, gHistory, gChart, gMyOpenHab) {mqtt="<[openhab:dacha/esp-s20-02/dhtt1:state:default]"}
+DateTime Temp_FL1_Toilet_LastUpdate     "Последнее обновление [%1$ta %1$tR]"     <lastupdate>
+Number Temp_FL1_Toilet_Chart_Period     "Период"
+
+/* ------------------------ FL 2 -------------------------------- */
+/* ------------------------ FL 2: badroom1 -------------------------------- */
+Group Temp_FL2_Room1_Chart  <chart>
+Number Temp_FL2_Room1_Min "Минимальная сегодня [%.1f °C]" <temperature> //(Temp_FL2_Room1_Chart)
+Number Temp_FL2_Room1_Max "Максимальная сегодня [%.1f °C]" <temperature> //(Temp_FL2_Room1_Chart)
+Number Temp_FL2_Room1 "Комната 1 [%.1f °C]" <temperature> (gMinMax, gLastUpdate, Temp_FL2_Avg, Temp_FL2_Room1_Chart, gHistory, gChart, gMyOpenHab) {mqtt="<[openhab:dacha/esp-s20-01/dhtt1:state:default]"}
+DateTime Temp_FL2_Room1_LastUpdate     "Последнее обновление [%1$ta %1$tR]"     <lastupdate>
+Number Temp_FL2_Room1_Chart_Period     "Период"
+
+/* ------------------------ FL 2: badroom2 -------------------------------- */
+/*
+Group Temp_FL2_Room2_Chart  <chart>
+Number Temp_FL2_Room2_Min "Минимальная сегодня [%.1f °C]" <temperature> //(Temp_FL2_Room2_Chart)
+Number Temp_FL2_Room2_Max "Максимальная сегодня [%.1f °C]" <temperature> //(Temp_FL2_Room2_Chart)
+Number Temp_FL2_Room2_Cur "Комната 2 [%.1f °C]" <temperature> (gMinMax, gLastUpdate, Temp_FL2_Avg,Temp_FL2_Min,Temp_FL2_Max, Temp_FL2_Room2_Chart) {mqtt="<[openhab:arduino/dsw/2:state:default]"}
+DateTime Temp_FL2_Room2_LastUpdate     "Последнее обновление [%1$ta %1$tR]"     <lastupdate>
+Number Temp_FL2_Room2_Chart_Period     "Период"
+*/
+
+/* ------------------------ FL 2: badroom3 -------------------------------- */
+/*
+Group Temp_FL2_Room3_Chart  <chart>
+Number Temp_FL2_Room3_Min "Минимальная сегодня [%.1f °C]" <temperature> //(Temp_FL2_Room3_Chart)
+Number Temp_FL2_Room3_Max "Максимальная сегодня [%.1f °C]" <temperature> //(Temp_FL2_Room3_Chart)
+Number Temp_FL2_Room3_Cur "Комната 3 [%.1f °C]" <temperature>  (gMinMax, gLastUpdate, Temp_FL2_Avg,Temp_FL2_Min,Temp_FL2_Max, Temp_FL2_Room3_Chart) {mqtt="<[openhab:arduino/dsw/3:state:default]"}
+DateTime Temp_FL2_Room3_LastUpdate     "Последнее обновление [%1$ta %1$tR]"     <lastupdate>
+Number Temp_FL2_Room3_Chart_Period     "Период"
+*/
+
+/*
+Group Temp_FL2_Corridor_Chart  <chart>
+Number Temp_FL2_Corridor_Min "Минимальная сегодня [%.1f °C]" <temperature>  //(Temp_FL2_Corridor_Chart)
+Number Temp_FL2_Corridor_Max "Максимальная сегодня [%.1f °C]" <temperature> //(Temp_FL2_Corridor_Chart)
+Number Temp_FL2_Corridor_Cur "Коридор [%.1f °C]" <temperature> (Temp_FL2_Avg,Temp_FL2_Min,Temp_FL2_Max, Temp_FL2_Corridor_Chart) {mqtt="<[openhab:dacha/ESP-Witty/dsw1:state:default]"}
+DateTime Temp_FL2_Corridor_LastUpdate     "Последнее обновление [%1$ta %1$tR]"     <lastupdate>
+Number Temp_FL2_Corridor_Chart_Period     "Период"
+*/
+
+Group Temp_Attic_Chart  <chart>
+Number Temp_Attic_Min "Минимальная сегодня [%.1f °C]" <temperature>  //(Temp_Attic_Chart)
+Number Temp_Attic_Max "Максимальная сегодня [%.1f °C]" <temperature>  //(Temp_Attic_Chart)
+Number Temp_Attic "Чердак [%.1f °C]" <temperature>  (gMinMax, gLastUpdate, Temp_Attic_Chart, gHistory, gChart, gMyOpenHab) {mqtt="<[openhab:dacha/electro/dhtt1:state:default]"}
+DateTime Temp_Attic_LastUpdate     "Последнее обновление [%1$ta %1$tR]"     <lastupdate>
+Number Temp_Attic_Chart_Period     "Период"
+
+Number Temp_GF_Corridor  "Temperature [%.1f °C]" <temperature>   (Temperature, GF_Corridor)
+
+

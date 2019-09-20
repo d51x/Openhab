@@ -1,0 +1,19 @@
+#/etc/systemd/system/snap-mon.service
+[Unit]
+Description=Snapshot from IP Camera to Telegram
+Requires=network.target
+After=network.target
+
+[Service]
+ExecStart=/home/pi/snap_mon.sh
+RemainAfterExit=true
+Type=forking
+Restart=always
+RestartSec=15
+TimeoutSec=120
+OOMScoreAdjust=-900
+
+[Install]
+WantedBy=multi-user.target
+Alias=bash.service
+

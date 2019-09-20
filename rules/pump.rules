@@ -1,0 +1,48 @@
+rule "BoilerRoom_Hotcab_Therm_d updated"
+ when
+    Item BoilerRoom_Hotcab_Therm_d received update
+then
+	if (BoilerRoom_Hotcab_Therm_d.state == 1) {
+		BoilerRoom_Hotcab_Therm.postUpdate(ON)
+	} else {
+		BoilerRoom_Hotcab_Therm.postUpdate(OFF)
+	}
+end
+
+rule "BoilerRoom_Hotcab_Set changed"
+when
+	Item BoilerRoom_Hotcab_Set changed 
+then
+	if (BoilerRoom_Hotcab_Set.state == NULL) { 
+		BoilerRoom_Hotcab_Set.postUpdate(1) 
+	} else {
+		BoilerRoom_Hotcab_Set.postUpdate(BoilerRoom_Hotcab_Set.state) 
+	}
+end
+
+
+rule "BoilerRoom_Hotcab_Thermostate_vState updated"
+ when
+    Item BoilerRoom_Hotcab_Thermostate_vState received update
+then
+	if (BoilerRoom_Hotcab_Thermostate_vState.state == 1) {
+		BoilerRoom_Hotcab_Thermostate_aState.postUpdate(ON)
+	} else {
+		BoilerRoom_Hotcab_Thermostate_aState.postUpdate(OFF)
+	}
+end
+
+rule "Update BoilerRoom_Pump_aPower"
+when	
+	Item BoilerRoom_Hotcab_sTemperature changed or
+	Item BoilerRoom_Pump_aPower received command
+then
+	var String str;
+	var String st = "ВЫКЛ";
+	if (BoilerRoom_Pump_aPower.state == ON) { st = "ВКЛ"	}
+	var Double temp = (BoilerRoom_Hotcab_sTemperature.state as DecimalType).doubleValue
+	str = String::format("(%s) \u202F \t %.1f", st, temp)
+	BoilerRoom_Pump_vPower.postUpdate(str)
+end
+
+

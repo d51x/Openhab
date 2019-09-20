@@ -1,0 +1,18 @@
+// 192.168.2.209
+Thing mqtt:topic:mosquitto:esp-sonoff-pow-03 "Sonoff Pow 3" (mqtt:broker:mosquitto) @ "Устройства" {
+	Channels:
+		Type number: Temperature 			"Температура" 			[ stateTopic="dacha/kitchen/dhtt1" ]
+		Type number: Humidity 			"Влажность" 			[ stateTopic="dacha/kitchen/dhth1" ]
+		Type switch: Power 			"Питание" 			[ stateTopic="dacha/kitchen/output12", commandTopic="dacha/kitchen/output12", on="1", off="0" ]
+		//Type switch: State 			"Состояние" 			[ stateTopic="dacha/kitchen/conv_state", on="1", off="0" ]
+		Type switch: Thermo 			"Термостат" 			[ stateTopic="dacha/kitchen/thermo_en1", commandTopic="dacha/kitchen/thermo_en1", on="1", off="0" ]
+		Type number: TempSet 			"Уставка" 			[ stateTopic="dacha/kitchen/thermo_set1", commandTopic="dacha/kitchen/thermo_set1", min="5", max="30", step="1" ]
+		
+		Type number: Voltage 			"Напряжение" 			[ stateTopic="dacha/kitchen/hlwv" ]
+		Type number: Current 			"Сила тока" 			[ stateTopic="dacha/kitchen/hlwc" ]
+		Type number: PowerRMS 			"Мощность" 			[ stateTopic="dacha/kitchen/hlww" ]
+		Type number: PowerWH 			"Расход" 			[ stateTopic="dacha/kitchen/hlwwh" ]
+
+		Type number: rssi			"Уровень сигнала" 			[ stateTopic="dacha/kitchen/rssi" ]
+		Type number: uptime			"Время работы" 				[ stateTopic="dacha/kitchen/uptime" ]
+}	

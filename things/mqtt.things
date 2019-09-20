@@ -1,0 +1,3 @@
+Bridge mqtt:broker:mosquitto "Mosquitto" [ host="127.0.0.1", port=1883, secure=false, clientID="openhab" ]
+
+//https://community.openhab.org/t/things-files-with-mqtt-2-4/61090/8

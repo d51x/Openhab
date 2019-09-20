@@ -1,0 +1,35 @@
+Group:Switch:OR(ON, OFF)        FF_Lights     "Освещение (этаж 1) [(%d)]"     <light>  [ "Switchable" ]
+Group:Switch:OR(ON, OFF)        SF_Lights     "Освещение (этаж 2) [(%d)]"     <light>  [ "Switchable" ]
+Group:Switch:OR(ON, OFF)        FF_LivingRoom_Light     "Освещение (гостинная) [(%d)]"     <light>   (FF_Lights) [ "Switchable" ]
+
+Group:Switch:OR(ON, OFF) gLightIndoor		"Внутренее освещение [(%d)]" 		<light>				(gLights)
+Group:Switch:OR(ON, OFF) gLightIndoorNight	"Ночная подсветка" 			<rgb>				(gLightIndoor)
+
+
+Switch FF_LivingRoom_Light_01      "Освещение 1 (гостинная) [MAP(ui.map):%s]" <light> (FF_LivingRoom_Light, gLightIndoor, gMyOpenHab, gHistory, gInfluxe) [ "Lighting" ] 
+{ channel="mqtt:topic:mosquitto:esp-livingroom-light:Light1" }
+
+Switch FF_LivingRoom_Light_02      "Освещение 2 (гостинная) [MAP(ui.map):%s]" <light> (FF_LivingRoom_Light, gLightIndoor, gMyOpenHab, gHistory, gInfluxe) [ "Lighting" ] 
+{ channel="mqtt:topic:mosquitto:esp-livingroom-light:Light2" }
+									
+Switch FF_Corridor_Light      "Коридор (этаж 1) [MAP(ui.map):%s]" <light> (FF_Lights, gLightIndoor, gMyOpenHab, gHistory, gInfluxe) [ "Lighting" ] 
+{ channel="mqtt:topic:mosquitto:hall1-light:Light" }
+									
+Switch SF_BedRoom1_Light      "Освещение (спальня) [MAP(ui.map):%s]" <light> (SF_Lights, gLightIndoor, gMyOpenHab, gHistory, gInfluxe) [ "Lighting" ] 
+{ channel="mqtt:topic:mosquitto:esp-bedroom1-light:Light" }
+
+Switch SF_BedRoom2_Light      "Освещение (детская 1) [MAP(ui.map):%s]" <light> (SF_Lights, gLightIndoor, gMyOpenHab, gHistory, gInfluxe) [ "Lighting" ] 
+{ channel="mqtt:topic:mosquitto:esp-bedroom2-light:Light" }
+									
+Switch SF_BedRoom3_Light      "Освещение (детская 2) [MAP(ui.map):%s]" <light> (SF_Lights) 
+{ channel="mqtt:topic:mosquitto:esp-bedroom3-light:Light" }
+									
+Switch SF_Corridor1_Light      "Коридор (этаж 2) [MAP(ui.map):%s]" <light> (SF_Lights, gLightIndoor, gMyOpenHab, gHistory, gInfluxe) [ "Lighting" ] 
+{ channel="mqtt:topic:mosquitto:esp-corridore2-light:Light1" }
+									
+Switch SF_Corridor2_Light      "Над лестницей [MAP(ui.map):%s]" <light> (SF_Lights, gLightIndoor, gMyOpenHab, gHistory, gInfluxe) [ "Lighting" ] 
+{ channel="mqtt:topic:mosquitto:esp-corridore2-light:Light2" }
+
+
+
+

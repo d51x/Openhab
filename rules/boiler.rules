@@ -1,0 +1,15 @@
+rule "Update BoilerRoom_Boiler_pTemperature"
+when	
+	Item BoilerRoom_Boiler_sTemperature changed or
+	Item BoilerRoom_aBoiler received command
+then
+	var String str;
+	var String st = "ВЫКЛ";
+	if (BoilerRoom_aBoiler.state == ON) { st = "ВКЛ"	}
+	var Double temp = (BoilerRoom_Boiler_sTemperature.state as DecimalType).doubleValue
+	str = String::format("(%s) \u202F \t %.1f", st, temp)
+	BoilerRoom_Boiler_pTemperature.postUpdate(str)
+end
+
+
+
