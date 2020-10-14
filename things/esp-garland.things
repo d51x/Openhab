@@ -1,0 +1,8 @@
+// 192.168.2.224
+Thing mqtt:topic:mosquitto:garland "ESP Garland" (mqtt:broker:mosquitto) @ "Устройства" {
+	Channels:
+		Type switch: Garland 			"Гирлянда" 				[ stateTopic="dacha/garland/output12", commandTopic="dacha/garland/output12", on="1", off="0"]
+		Type switch: Led 			"Светодиод" 				[ stateTopic="dacha/garland/output13", commandTopic="dacha/grland/output13", on="1", off="0"]
+		Type number: rssi			"Уровень сигнала" 			[ stateTopic="dacha/garland/rssi" ]
+		Type number: uptime			"Время работы" 				[ stateTopic="dacha/garland/uptime" ]
+}

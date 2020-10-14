@@ -1,0 +1,34 @@
+
+Switch Attic_AlarmLed      "Маяк" <light> (gMyOpenHab)
+							{ channel="mqtt:topic:mosquitto:attic:AlarmLed" }
+
+Switch Attic_Present      "Маяк (присутствие)" (gMyOpenHab)
+							{ channel="mqtt:topic:mosquitto:attic:Present" }
+
+Switch Attic_AlarmLed_Mode      "Режим маяка (Manual/Auto)" (gMyOpenHab)
+							{ channel="mqtt:topic:mosquitto:attic:Mode" }
+
+Switch Attic_AlarmLed_Blynk      "Мигание при движении"  (gMyOpenHab)
+							{ channel="mqtt:topic:mosquitto:attic:Blynk" }
+
+Switch Attic_AlarmDetected     "Чердак. Тревога" 
+							{ channel="mqtt:topic:mosquitto:attic:AlarmDetected" }
+
+Dimmer Attic_Dimmer_AlarmLed      "Яркость маяка [%d]" <light> (gMyOpenHab)
+{ channel="mqtt:topic:mosquitto:attic:LedPwm" }									
+
+Switch Attic_Fan      "Вентилятор на чердаке" <fan> (gFan)
+							{ channel="mqtt:topic:mosquitto:attic:Fan" }
+
+Switch Attic_vFan      "Вентилятор на чердаке (виртуальный)" <fan> 
+							{ channel="mqtt:topic:mosquitto:attic:vFan" }
+
+Dimmer Attic_Dimmer_Fan      "Скорость вентилятора на чердаке [%d]" <fan> (gMyOpenHab)
+							{ channel="mqtt:topic:mosquitto:attic:FanPwm" }	
+
+Switch Attic_Fan_AutoHummidity "Автовключение по влажности" (gMyOpenHab)
+Switch Attic_Fan_AutoOff "Автовыключение" (gMyOpenHab)
+Number Attic_Fan_HumTreshold "Предел влажности для включения [%.1f %%]" (gMyOpenHab)
+Number Attic_Fan_AutoOffTime "Время автоотключения [%d мин]" (gMyOpenHab)
+
+String Attic_Fan_Mode "Ручной выбор времени работы"

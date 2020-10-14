@@ -1,0 +1,24 @@
+// 192.168.2.201
+Thing mqtt:topic:mosquitto:cellar "ESP Cellar" (mqtt:broker:mosquitto) @ "Устройства" {
+	Channels:
+		Type number: Temperature1	"Температура1 в цоколе" 		[ stateTopic="dacha/cellar/dhtt1" ]
+		Type number: Humidity1		"Влажность1 в цоколе" 		[ stateTopic="dacha/cellar/dhth1" ]
+
+		Type number: Temperature2	"Температура2 в цоколе" 		[ stateTopic="dacha/cellar/dhtt2" ]
+		Type number: Humidity2		"Влажность2 в цоколе" 		[ stateTopic="dacha/cellar/dhth2" ]
+
+		Type number: SepticTemperature1	"Температура1 в септике" 		[ stateTopic="dacha/cellar/dsw1" ]
+		Type number: SepticTemperature2	"Температура2 в септике" 		[ stateTopic="dacha/cellar/dsw2" ]
+
+		Type switch: Pump 		"Насос в 3й камере септика" 					[ stateTopic="dacha/cellar/output220", commandTopic="dacha/cellar/output220", on="1", off="0"]
+		Type switch: Fan1 		"Вентилятор 1 в цоколе" 				[ stateTopic="dacha/cellar/output221", commandTopic="dacha/cellar/output221", on="1", off="0"]
+		Type switch: Fan2 		"Вентилятор 2 в цоколе" 				[ stateTopic="dacha/cellar/output222", commandTopic="dacha/cellar/output222", on="1", off="0"]
+		Type switch: Light 		"Свет в цоколе" 				[ stateTopic="dacha/cellar/output223", commandTopic="dacha/cellar/output223", on="1", off="0"]
+
+		Type number: WaterDistance	"Расстояние до воды (мм)" 		[ stateTopic="dacha/cellar/hcsr04" ]
+		Type switch: SonarFail		"Ошибка измерения уровня воды"	[ stateTopic="dacha/cellar/sonar/fail", commandTopic="dacha/cellar/sonar/fail", on="1", off="0"]
+		Type number: TankFill		"Заполненность бака"	[ stateTopic="dacha/cellar/tank/fill" ]
+
+		Type number: rssi			"Уровень сигнала" 			[ stateTopic="dacha/cellar/rssi" ]
+		Type number: uptime			"Время работы" 				[ stateTopic="dacha/cellar/uptime" ]
+}

@@ -35,14 +35,14 @@ end
 rule "Update placements temperature and humidity for boiler room"
 when
 	/*-------- temperatures --------------*/
-	Item gTemp_BoilerRoom_Avg 					changed or
-	Item gHum_BoilerRoom_Avg 					changed 	//or
+	Item BoilerRoom_sTemp 					changed or
+	Item BoilerRoom_sHumidity 					changed 	//or
 	//Time cron "0/5 * * * * ?"
 then
 	//val item = triggeringItem
 	//logInfo(LOG_TAG, "Update placements temperature for boiler room")
-	val temp = (gTemp_BoilerRoom_Avg.state as Number).floatValue
-	val hum = (gHum_BoilerRoom_Avg.state as Number).intValue
+	val temp = (BoilerRoom_sTemp.state as Number).floatValue
+	val hum = (BoilerRoom_sHumidity.state as Number).intValue
 	val String str = String::format("%d%%\u202F/\u202F%.0f°C", hum, temp) 
 	//logInfo(LOG_TAG, str)
 	postUpdate(vBLR, str)
@@ -51,15 +51,16 @@ end
 rule "Update placements temperature and humidity for attic"
 when
 	/*-------- temperatures --------------*/
-	Item gTemp_Attic_Avg 					changed or
-	Item gHumidity_Attic_Avg 					changed 	//or
+	Item gTemp_Attic_Avg 					changed //or
+	//Item gHumidity_Attic_Avg 					changed 	//or
 	//Time cron "0/5 * * * * ?"
 then
 	//val item = triggeringItem
 	//logInfo(LOG_TAG, "Update placements temperature for attic")
 	val temp = (gTemp_Attic_Avg.state as Number).floatValue
-	val hum = (gHumidity_Attic_Avg.state as Number).intValue
-	val String str = String::format("%d%%\u202F/\u202F%.0f°C", hum, temp) 
+	//val hum = (gHumidity_Attic_Avg.state as Number).intValue
+	//val String str = String::format("%d%%\u202F/\u202F%.0f°C", hum, temp) 
+	val String str = String::format("\u202F%.0f°C", temp) 
 	//logInfo(LOG_TAG, str)
 	postUpdate(vAttic, str)
 end

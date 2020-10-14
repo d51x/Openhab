@@ -1,7 +1,11 @@
 import org.eclipse.smarthome.model.script.ScriptServiceUtil
 
-val mail_to = "mail@gmail.com"  //TODO: прочитать из файла
-val subject = "OpenHAB Alarm: Превышение мощности"
+val TEMP_ANTI_FREEZE = 9
+val TEMP_COLD = 16
+val TEMP_ECO = 20
+val TEMP_NORM = 22
+val TEMP_WARM = 24
+val TEMP_HOT = 26
 
 val LOG_TAG = "Thermo:"
 
@@ -22,26 +26,28 @@ then
 	var mode = ON
 	switch(receivedCommand) {
 	    case "ALL_OFF": 		mode = OFF 
-	    case "ANTI_FREEZE": 	temp = 7 
-	    case "COLD": 			temp = 13
-		case "ECO": 			temp = 18 
-		case "NORMAL": 			temp = 20	 
-		case "WARM": 			temp = 22 
-		case "HOT": 			temp = 24
+	    case "ANTI_FREEZE": 	temp = TEMP_ANTI_FREEZE
+	    case "COLD": 			temp = TEMP_COLD
+		case "ECO": 			temp = TEMP_ECO
+		case "NORMAL": 			temp = TEMP_NORM
+		case "WARM": 			temp = TEMP_WARM
+		case "HOT": 			temp = TEMP_HOT
 	}
 	logInfo(LOG_TAG, "Mode: " + mode)
 	logInfo(LOG_TAG, "Temp: " + temp)
 	//temp = temp * 10
 	sendCommand(gThermoMode, mode)
 	if ( mode == ON ) {
-		sendCommand(FF_LR_Heater_01_tThermo, temp)
-		sendCommand(FF_LR_Heater_02_tThermo, temp)
+		// start with timer
+
+		sendCommand(FF_LivingRoom01_Heater_tThermo, temp)
+		sendCommand(FF_LivingRoom02_Heater_tThermo, temp)
 		sendCommand(FF_Kitchen_Heater_tThermo, temp)
-		sendCommand(FF_Bathroom_Heater_tThermo, temp)
-		sendCommand(SF_Bedroom1_Heater_tThermo, temp)
-		sendCommand(SF_Bedroom2_Heater_tThermo, temp)
-		sendCommand(SF_Bedroom3_Heater_tThermo, temp)
-		sendCommand(BoilerRoom_Heater_tThermo, temp)	
+		sendCommand(FF_BathRoom_Heater_tThermo, temp)
+		sendCommand(SF_Room1_Heater_tThermo, temp)
+		sendCommand(SF_Room2_Heater_tThermo, temp)
+		sendCommand(SF_Room3_Heater_tThermo, temp)
+		//sendCommand(BoilerRoom_Heater_tThermo, temp)	
 	}
 end	
 
@@ -52,16 +58,21 @@ when
 then
 	val item = triggeringItem
 	val name = item.name
-	val proxy_name = name.substring(0, name.lastIndexOf("_") + 1) 
+	val proxy_name = name.substring(0, name.lastIndexOf("_") ) 
+	val v_proxy_item = ScriptServiceUtil.getItemRegistry.getItem( proxy_name )
+	//ProxyName: BoilerRoom_Heater_
+	//v_item: BoilerRoom_Heater_sThermo
+
+	logError(LOG_TAG, "---------------------------------------------")
 	logError(LOG_TAG, "Proxy name: " + proxy_name)
-	val v_item = ScriptServiceUtil.getItemRegistry.getItem( proxy_name + "sThermo")	
+	val v_item = ScriptServiceUtil.getItemRegistry.getItem( proxy_name + "_sThermo")	
 	logError(LOG_TAG, "v_item: " + v_item.name)
 
 	var Double value = 0
 	var mode = ""
 	if ( name.endsWith("tThermo") ) {
 		logError(LOG_TAG, "Ends with tThermo")
-		val item_mode = ScriptServiceUtil.getItemRegistry.getItem( proxy_name + "Mode")
+		val item_mode = ScriptServiceUtil.getItemRegistry.getItem( proxy_name + "_Mode")
 		logError(LOG_TAG, item_mode.name)
 		value = item.state.toString()
 		//value = (item.state as DecimalType).doubleValue
@@ -71,7 +82,7 @@ then
 	
 	} else {
 		logError(LOG_TAG, "Ends with other")
-		val itemp = ScriptServiceUtil.getItemRegistry.getItem( proxy_name + "tThermo")	
+		val itemp = ScriptServiceUtil.getItemRegistry.getItem( proxy_name + "_tThermo")	
 		value = itemp.state
 		//value = (item.state as DecimalType).doubleValue / 10
 		logError(LOG_TAG, "tThermo new value: " + value)
@@ -79,12 +90,165 @@ then
 		//itemp.postUpdate( value )
 	}
 	
-	var smode = "Ручной"
+	
+	val proxy_place = proxy_name.substring(0, name.lastIndexOf("_Heater") + 1) 
+	logError(LOG_TAG, "Proxy place: " + proxy_place)
+	val v_temp_item = ScriptServiceUtil.getItemRegistry.getItem( proxy_place + "sTemp")	
+	logError(LOG_TAG, "Temp item: " + v_temp_item.name)
+	logError(LOG_TAG, "Temp value: " + v_temp_item.state)
+
+	var vtmp = " (%.1f°C)"
+	var smode = "M:"
 	if (mode == ON) { 
-		smode = "Авто: " + value + "°C" 
+		smode = "A: " + value + "°C"
 	}
+	val Double temp = (v_temp_item.state as DecimalType).doubleValue
+	val String st = if ( v_proxy_item.state == ON ) "Вкл " else "Выкл "
+	
+	smode =  st + smode + String::format(vtmp, temp)
 	v_item.postUpdate( smode )
 end
 
 
+//rule "Turn on thermostat every day from 22:00 till 23:59 every 10 min"
+//when
+//	Time cron "* */10 00-07,22,23 * * ?" // каждые 10 минут с 22 по 7 часов
+	//Time cron "*/15 00-15,32-36,40-48 * * * ?"   // каждые 15 сек в минутах с 0 до 15ой, с 32ой по 36.e? с 40ой по 48ую
+//then
+	//logInfo("Thermo", "State {} set to ON", FF_Kitchen_Heater_Mode.name)
+	//sendCommand(FF_Kitchen_Heater_Mode, ON)
+//end
 
+rule "thermostat temp"
+when
+	Item SF_Room1_sTemp changed 
+then
+	logInfo("Temp", "Bedroom1 temp: {}", SF_Room1_sTemp.state)
+	logInfo("Temp", "Bedroom1 temp2: {}", SF_Room1_Heater_Temp.state)
+	SF_Room1_Heater_Temp.postUpdate(SF_Room1_sTemp.state)
+end
+
+rule "SF_Room1_Therm_Mode changed"
+when
+	Item SF_Room1_Therm_Mode received command
+then
+	var temp = 7
+	var mode = ON
+	switch(receivedCommand) {
+	    case "OFF": 		mode = OFF 
+	    case "ON": 			mode = ON 
+	    case "COMFORT": 	temp = 24 
+		case "ECO": 		temp = 21
+	}
+	sendCommand(SF_Room1_Heater_Mode, mode)
+	if ( mode == ON ) {
+		// start with timer
+		sendCommand(SF_Room1_Heater_tThermo, temp)
+	}	
+end
+
+rule "Kotel_Thermo_Temp changed"
+when
+	Item Kotel_Thermo_Temp received command
+then
+	var temp = TEMP_ANTI_FREEZE
+	switch(receivedCommand){
+	    case "ANTI_FREEZE": 	temp = TEMP_ANTI_FREEZE
+	    case "COLD": 			temp = TEMP_COLD
+		case "ECO": 			temp = TEMP_ECO
+		case "NORMAL": 			temp = TEMP_NORM
+		case "WARM": 			temp = TEMP_WARM
+		case "HOT": 			temp = TEMP_HOT
+	}
+
+	logInfo(LOG_TAG, "Global Kotel Temp Set: " + temp)
+
+	//sendCommand(Kotel_TempSet, temp )
+	Kotel_TempSet.postUpdate(temp )
+	//sendCommand(Kotel_Kiturami_tThermo, temp * 10)
+	//sendCommand(Kotel_Protherm_tThermo, temp * 10)
+end
+
+rule "Kotel_TempSet changed"
+when 
+	Item Kotel_TempSet changed
+then
+	val item = triggeringItem
+	val value = (item.state as DecimalType).doubleValue
+	logError(LOG_TAG, "Changed Kotel_TempSet: " + value )
+
+	if ( value >= TEMP_HOT )
+		Kotel_Thermo_Temp.postUpdate("HOT")
+	else if ( value >= TEMP_WARM )
+		Kotel_Thermo_Temp.postUpdate("WARM")	
+	else if ( value >= TEMP_NORM )
+		Kotel_Thermo_Temp.postUpdate("NORMAL")
+	else if ( value >= TEMP_ECO )
+		Kotel_Thermo_Temp.postUpdate("ECO")
+	else if ( value >= TEMP_COLD )
+		Kotel_Thermo_Temp.postUpdate("COLD")
+	else 
+		Kotel_Thermo_Temp.postUpdate("ANTI_FREEZE")
+
+	Kotel_Kiturami_tThermo.sendCommand( value * 10 ) 
+	Kotel_Kiturami_vThermo.postUpdate( value )
+
+	Kotel_Protherm_tThermo.sendCommand( value * 10 )
+	Kotel_Protherm_vThermo.postUpdate( value )	
+end
+
+rule "Kotel Protherm Temp Set changed"
+when
+	Item Kotel_Protherm_tThermo received update
+then
+	val item = triggeringItem
+	val value = (item.state as DecimalType).doubleValue / 10
+	Kotel_Protherm_vThermo.postUpdate( value )
+end
+
+rule "Kotel Kiturami Temp Set changed"
+when
+	Item Kotel_Kiturami_tThermo received update
+then
+	val item = triggeringItem
+	val value = (item.state as DecimalType).doubleValue / 10
+	Kotel_Kiturami_vThermo.postUpdate( value )
+end
+
+rule "Kotel Protherm vTempSet changed"
+when
+	Item Kotel_Protherm_vThermo changed
+then
+	val item = triggeringItem
+	val value = (item.state as DecimalType).doubleValue * 10
+	Kotel_Protherm_tThermo.sendCommand( value )
+	Kotel_Protherm_vThermo.postUpdate( (item.state as DecimalType).doubleValue )
+end
+
+rule "Kotel Kiturami vTempSet changed"
+when
+	Item Kotel_Kiturami_vThermo changed
+then
+	val item = triggeringItem
+	val value = (item.state as DecimalType).doubleValue * 10	
+	Kotel_Kiturami_tThermo.sendCommand( value )
+	Kotel_Kiturami_vThermo.postUpdate( (item.state as DecimalType).doubleValue )
+end
+
+rule "KotelState chanaged"
+when
+	Item gKotelState changed
+then
+	val item = triggeringItem
+	val state = if (item.state == ON) OFF else ON
+	logInfo(LOG_TAG, "gKotelState value {}, invers value {}",  item.state, state )
+
+	FF_BathRoom_Heater_Mode.sendCommand( state )
+
+	var telegramm = getActions("telegram","telegram:telegramBot:telegram")
+	if ( item.state == ON) {
+		telegramm.sendTelegram( "Котел включен. Температура в доме %.1f°C", (FF_LivingRoom02_sTemp.state as DecimalType).doubleValue )		
+	} else {
+		telegramm.sendTelegram( "Котел выключен. Температура в доме %.1f°C", (FF_LivingRoom02_sTemp.state as DecimalType).doubleValue )		
+	}
+end

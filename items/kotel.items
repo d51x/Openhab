@@ -1,0 +1,50 @@
+//String vKotel "Котел [%s]" <heating> 
+Group:Switch:OR(ON, OFF) gKotelState "Виртуальный котел [MAP(ui.map):%s]" <heating>
+Group gKotel "Котел [%s]" <heating> { ga="Thermostat" [ lang="en" , ordered=true, modes="off=OFF,heat=COMFORT,eco=ECO,on=ON,auto" ] }
+String Kotel_Thermo_Temp "Уставка котла" <heating>  { ga="thermostatMode" }
+
+Number Kotel_Room_Temp "Температура в комнате [%.1f °C]" { channel="mqtt:topic:mosquitto:esp-sonoff-pow-02:Temperature", ga="thermostatTemperatureAmbient" }
+Number Kotel_TempSet    "Уставка для котлов [%.1f °C]" <tempauto> (gKotel) { ga="thermostatTemperatureSetpoint" }
+
+Switch Kotel_Thermo_Mode "Режим работы котлов [%s]" <heatingauto> (gKotel)  // manual / auto
+								{ channel="mqtt:topic:mosquitto:kotel:Mode" }
+
+
+Number Kotel_Temp_FlowPipe 	"Температура подачи [%.1f °C]" <flowpipe> (gMinMax, gLastUpdate, gChart, gMyOpenHab) 
+							{ channel="mqtt:topic:mosquitto:kotel:TempFlow" }
+
+Number 	Kotel_Temp_FlowPipe_Min "Минимальная температура подачи [%.1f °C]" <temperature_cold> 						
+Number 	Kotel_Temp_FlowPipe_Max "Максимальная температура подачи [%.1f °C]" <temperature_hot>
+DateTime Kotel_Temp_FlowPipe_LastUpdate     "Температура подачи обновлена [%1$ta %1$tR]"     <lastupdate> 
+
+Number Kotel_Temp_ReturnPipe 	"Температура обратки [%.1f °C]" <returnpipe> (gMinMax, gLastUpdate, gChart, gMyOpenHab) 
+							{ channel="mqtt:topic:mosquitto:kotel:TempReturn" }
+Number 	Kotel_Temp_ReturnPipe_Min "Минимальная температура обратки [%.1f °C]" <temperature_cold> 						
+Number 	Kotel_Temp_ReturnPipe_Max "Максимальная температура обратки [%.1f °C]" <temperature_hot>
+DateTime Kotel_Temp_ReturnPipe_LastUpdate     "Температура обратки обновлена [%1$ta %1$tR]"     <lastupdate> 
+// FF_LivingRoom01_sTemp
+
+//****************** Котел Protherm
+Switch Kotel_Protherm    "Котел Protherm"    <heating>   (gKotel, gKotelState)
+								{ channel="mqtt:topic:mosquitto:kotel:PowerProtherm" }
+										
+Switch Kotel_Protherm_Mode    "Термостат Protherm"        <heatingauto> (gKotel)
+								{ channel="mqtt:topic:mosquitto:kotel:ThermostatProtherm" }
+
+Number Kotel_Protherm_vThermo    "[%.1f °C]" <tempauto> (gKotel)
+Number Kotel_Protherm_tThermo    "Уставка температуры Protherm [%.1f °C]" <tempauto> (gKotel)
+								{ channel="mqtt:topic:mosquitto:kotel:ThermostatProthermTempSet" }
+
+Switch Kotel_Protherm_ESC    "Ночной режим Protherm"       (gKotel)
+								{ channel="mqtt:topic:mosquitto:kotel:ProthermESC" }
+
+//****************** Котел Kiturami
+Switch Kotel_Kiturami    "Котел Kiturami"     <heating>  (gKotel, gKotelState)
+								{ channel="mqtt:topic:mosquitto:kotel:PowerKiturami" }
+										
+Switch Kotel_Kiturami_Mode    "Термостат Kiturami"        <heatingauto> (gKotel)
+								{ channel="mqtt:topic:mosquitto:kotel:ThermostatKiturami" }
+
+Number Kotel_Kiturami_vThermo    "[%.1f °C]" <tempauto> (gKotel)
+Number Kotel_Kiturami_tThermo    "Уставка температуры Kiturami [%.1f °C]" <tempauto> (gKotel)
+								{ channel="mqtt:topic:mosquitto:kotel:ThermostatKituramiTempSet" }

@@ -19,10 +19,14 @@ then
 	if ( indoorLightTimer !== null ) indoorLightTimer.cancel()
 	if (StairsAutoMode.state == ON) { return; }
 	if ( StairsManualState.state == ON ) { return; }
-	val msg = "Включение подсветки ступеней по присутвию" 
-	sendBroadcastNotification(msg)	
-	executeCommandLine(Telegram_Command.state + msg)
 	sendCommand(StairsManualState, ON)
+
+	val msg = "Включение подсветки ступеней по присутвию" 
+	//sendBroadcastNotification(msg)	
+	//executeCommandLine(Telegram_Command.state + msg)
+	
+	val telegram = getActions("telegram","telegram:telegramBot:telegram")
+	telegram.sendTelegram( msg )	
 end
 
 rule "Авто выкл подсветки лестницы, когда все ушли из дома"
@@ -32,10 +36,14 @@ then
 	indoorLightTimer = createTimer(now.plusMinutes(20), [ |
 		if (StairsAutoMode.state == OFF) { 
 			if ( StairsManualState.state == ON ) {
-				val msg = "Выключение подсветки ступеней по отсутсвию" 
-				sendBroadcastNotification(msg)	
-				executeCommandLine(Telegram_Command.state + msg)
 				sendCommand(StairsManualState, OFF)
+
+				val msg = "Выключение подсветки ступеней по отсутсвию" 
+				//sendBroadcastNotification(msg)	
+				//executeCommandLine(Telegram_Command.state + msg)
+
+				val telegram = getActions("telegram","telegram:telegramBot:telegram")
+				telegram.sendTelegram( msg )				
 			}
 		}
 		// выключить все освещение в доме
@@ -48,13 +56,18 @@ when
     Item Night_State changed to ON
 then
 	if (gPresent.state == OFF) { return; } // только если кто-то есть дома
-	if ( StairsAutoOnSunset.state == OFF) { return; } // можно включать при закате
+	if (StairsAutoOnSunset.state == OFF) { return; } // можно включать при закате
 	if (StairsAutoMode.state == ON) { return; }
-	if ( StairsManualState.state == ON ) { return; } // уже включена
-	val msg = "Включение подсветки ступеней при наступлении заката" 
-	sendBroadcastNotification(msg)	
-	executeCommandLine(Telegram_Command.state + msg)
+	if (StairsManualState.state == ON ) { return; } // уже включена
+	
 	sendCommand(StairsManualState, ON)
+	
+	val msg = "Включение подсветки ступеней при наступлении заката" 
+	//sendBroadcastNotification(msg)	
+
+	val telegram = getActions("telegram","telegram:telegramBot:telegram")
+	telegram.sendTelegram( msg )
+	//executeCommandLine(Telegram_Command.state + msg)
 end
 
 rule "Выключить освещение в доме при наступлении рассвета"
@@ -62,17 +75,19 @@ when
     Item Night_State changed to OFF
 then
 	//turn off stairs lights
-	if ( StairsManualState.state == OFF ) { 
-		logInfo("STAIRS", "StairsManualState already OFF, exit...")
-		return; 
-	}
+	if ( StairsManualState.state == OFF ) { return; }
 	if ( StairsAutoOnSunset.state == OFF ) { return; }
 	// можно выключать при рассвете
 	if (StairsAutoMode.state == ON) { return; }
-	val msg = "Выключение подсветки ступеней при наступлении рассвета" 
-	sendBroadcastNotification(msg)	
-	executeCommandLine(Telegram_Command.state + msg)
+	
 	sendCommand(StairsManualState, OFF)
+
+	val msg = "Выключение подсветки ступеней при наступлении рассвета" 
+	//sendBroadcastNotification(msg)	
+	//executeCommandLine(Telegram_Command.state + msg)
+	val telegram = getActions("telegram","telegram:telegramBot:telegram")
+	telegram.sendTelegram( msg )
+
 end
 
 rule "StairsManualState state changed"
@@ -81,11 +96,39 @@ when
 then
 	if (FF_Stairs_Light_Notify.state == OFF) { return; }
 	if ( StairsManualState.state == StairsManualState.previousState().state ) {
-		logInfo("STAIRS", "new State == prevState, exit...")
+		//logInfo("STAIRS", "new State == prevState, exit...")
 		return;
 	}
 	val String str = if ( StairsManualState.state == ON ) "включена" else "выключена"
 	val msg = "Подсветка ступеней " + str 
-	sendBroadcastNotification(msg)	
-	executeCommandLine(Telegram_Command.state + msg)		
+	//sendBroadcastNotification(msg)	
+	//executeCommandLine(Telegram_Command.state + msg)		
+	val telegram = getActions("telegram","telegram:telegramBot:telegram")
+	telegram.sendTelegram( msg )
+	
+end
+
+
+rule "Post NightState value every 15 min "
+when
+	Time cron "0/20 * * * * ?"  or
+	Item Night_State changed
+then
+	//logInfo("Night", "State {}", Night_State.state)
+	if ( Night_State.state == ON )
+		sendCommand(FF_kitchen_SetSunset, ON)
+	else 
+		sendCommand(FF_kitchen_SetSunset, OFF)
+	//FF_kitchen_SetSunset.sendCommand(Night_State.state)
+end
+
+rule "Выключить rgb ленту на кухне в час ночи"
+when
+	Time cron "0 0 1 ? * *"     //  at 01:00 am every day
+then
+	//FF_Kitchen_Dimmer_Red.sendCommand(0)
+	//FF_Kitchen_Dimmer_Green.sendCommand(0)
+	//FF_Kitchen_Dimmer_Blue.sendCommand(0)
+	vFF_Kitchen_RGB_Led.sendCommand(0)
+
 end

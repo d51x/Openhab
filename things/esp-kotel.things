@@ -1,0 +1,21 @@
+// 192.168.2.110
+Thing mqtt:topic:mosquitto:kotel "Kotel" (mqtt:broker:mosquitto) @ "Устройства" {
+	Channels:
+		Type number: TempFlow 			    "Температура подачи" 			[ stateTopic="dacha/kotel/dsw1"]
+		Type number: TempReturn 		    "Температура обратки" 		    [ stateTopic="dacha/kotel/dsw2"]
+
+		Type switch: Mode 			        "Режим работы котла" 			[ stateTopic="dacha/kotel/output15", commandTopic="dacha/kotel/set/output15", on="1", off="0"]
+	    Type switch: ProthermESC		    "Protherm ночной режим"		 	[ stateTopic="dacha/kotel/output16", commandTopic="dacha/kotel/set/output16", on="1", off="0"]
+        
+        Type switch: ThermostatProtherm 	"Термостат Protherm" 			[ stateTopic="dacha/kotel/thermo_en2", commandTopic="dacha/kotel/set/thermo_en2", on="1", off="0"]		
+        Type number: ThermostatProthermTempSet 	"Уставка Protherm" 			[ stateTopic="dacha/kotel/thermo_set2", commandTopic="dacha/kotel/set/thermo_set2", min="70", max="300", step="5"]
+		
+        Type switch: ThermostatKiturami 	"Термостат Kiturami" 			[ stateTopic="dacha/kotel/thermo_en1", commandTopic="dacha/kotel/set/thermo_en1", on="1", off="0"]
+        Type number: ThermostatKituramiTempSet 	"Уставка Kiturami" 			[ stateTopic="dacha/kotel/thermo_set1", commandTopic="dacha/kotel/set/thermo_set1", min="7", max="3000", step="0.5"]
+
+        Type switch: PowerProtherm 			    "Котел Protherm" 			    [ stateTopic="dacha/kotel/output14", commandTopic="dacha/kotel/set/output14", on="1", off="0"]
+		Type switch: PowerKiturami			    "Котел Kiturami" 			    [ stateTopic="dacha/kotel/output12", commandTopic="dacha/kotel/set/output12", on="1", off="0"]
+
+		Type number: rssi			"Уровень сигнала" 			[ stateTopic="dacha/kotel/rssi" ]
+		Type number: uptime			"Время работы" 				[ stateTopic="dacha/kotel/uptime" ]        
+}

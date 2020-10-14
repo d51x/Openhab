@@ -66,6 +66,8 @@ then
     } else if ( name == "Motion_Camera_2" ) {
         logInfo("Camera2", "camera2_send_motion_alarm_available: {}", camera2_send_motion_alarm_available)
     
+        Attic_AlarmDetected.sendCommand(ON)
+        
         if (camera2_send_motion_alarm_available)  {
             logInfo("Camera2", "Start taking snapshot and send notifications")
             camera2_send_motion_alarm_available = false

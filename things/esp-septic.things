@@ -1,0 +1,12 @@
+// 192.168.2.203
+Thing mqtt:topic:mosquitto:septic "Septic" (mqtt:broker:mosquitto) @ "Устройства" {
+	Channels:
+		Type number: TemperatureStreet 			"Температура на улице" 			[ stateTopic="dacha/septic/dsw1"]
+		Type number: TemperatureSeptic 			"Температура в септике" 		[ stateTopic="dacha/septic/dsw2"]
+		Type number: TemperatureTube 			"Температура трубы" 			[ stateTopic="dacha/septic/dsw3"]
+		Type switch: Light 			"Лампочка" 			[ stateTopic="dacha/septic/output12", commandTopic="dacha/septic/output12", on="1", off="0"]
+		Type switch: Led 			"LED" 			 	[ stateTopic="dacha/septic/output13", commandTopic="dacha/septic/output13", on="1", off="0"]
+		Type switch: Cabel 			"Кабель" 			[ stateTopic="dacha/septic/output14", commandTopic="dacha/septic/output14", on="1", off="0"]
+		Type switch: Thermo1 			"Термостат 1" 			[ stateTopic="dacha/septic/output40", commandTopic="dacha/septic/output40", on="1", off="0"]
+		Type switch: Thermo2			"Термостат 2" 			[ stateTopic="dacha/septic/output41", commandTopic="dacha/septic/output41", on="1", off="0"]
+}

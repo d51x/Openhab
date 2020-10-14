@@ -1,32 +1,17 @@
 /* ------------------------ BoilerRoom -------------------------------- */	
-Group:Number:AVG gTemp_BoilerRoom_Avg "Котельная [%.1f °C]" <temperature>
+Group BoilerRoom_Temp_Chart  
+Group gTemp_Boiler_Chart 
 
-Group gTemp_BoilerRoom_Chart  <chart>
-Group gTemp_Boiler_Chart  <chart>
-Number gTemp_BoilerRoom_Chart_Period     "" <chart> 
-
-Number BoilerRoom_sTemp_01 		"Котельная [%.1f °C]" <temperature> 
-								(gMinMax, gLastUpdate, gTemp_BoilerRoom_Chart, gTemp_BoilerRoom_Avg, gTemp, 
-								 gHistory, gChart, gMyOpenHab, gInfluxe, gTemp_Boiler_Chart) 
-								{ channel="mqtt:topic:mosquitto:esp-boiler:Temperature" }
+Number BoilerRoom_sTemp 		"Котельная [%.1f °C]" <temperature>  (gMinMax, gLastUpdate, BoilerRoom_Temp_Chart, gTemp, gChart, gMyOpenHab) 
+								{ channel="mqtt:topic:mosquitto:esp-boiler:Temperature" }							
+Number 	BoilerRoom_sTemp_Min "Минимальная [%.1f °C]" <temperature_cold> 						
+Number 	BoilerRoom_sTemp_Max "Максимальная [%.1f °C]" <temperature_hot>
+DateTime BoilerRoom_sTemp_LastUpdate     "Последнее обновление [%1$ta %1$tR]"     <lastupdate> 	
 								
-Number 	BoilerRoom_sTemp_01_Min "Минимальная [%.1f °C]" <temperature_cold> 						
-Number 	BoilerRoom_sTemp_01_Max "Максимальная [%.1f °C]" <temperature_hot>
-DateTime BoilerRoom_sTemp_01_LastUpdate     "Последнее обновление [%1$ta %1$tR]"     <lastupdate> 	
-								
-Number BoilerRoom_sTemp_02	 	"Котельная [%.1f °C]" <temperature> (gMinMax, gLastUpdate, gTemp_BoilerRoom_Avg, gTemp_BoilerRoom_Chart, gTemp, gHistory, gChart, gMyOpenHab, gInfluxe) 
-								{ channel="mqtt:topic:mosquitto:esp-boiler:Temperature2" } 
 
-Number 	BoilerRoom_sTemp_02_Min "Минимальная [%.1f °C]" <temperature_cold> 						
-Number 	BoilerRoom_sTemp_02_Max "Максимальная [%.1f °C]" <temperature_hot>
-DateTime BoilerRoom_sTemp_02_LastUpdate     "Последнее обновление [%1$ta %1$tR]"     <lastupdate> 	
-
-
-Group:Number:AVG gHum_BoilerRoom_Avg "Котельная [%d %%]" <humidity>
 
 Group BoilerRoom_Humidity_Chart  <chart>
-Number BoilerRoom_Humidity_Chart_Period     "" <chart> 
-Number BoilerRoom_sHumidity 		"Котельная [%d %%]" <humidity> (gMinMax, gLastUpdate, gHumidity_House, gHum_BoilerRoom_Avg, BoilerRoom_Humidity_Chart, gHistory, gChart, gMyOpenHab, gInfluxe) 
+Number BoilerRoom_sHumidity 		"Котельная [%d %%]" <humidity> (gMinMax, gLastUpdate, gHumidity_House, BoilerRoom_Humidity_Chart, gChart, gMyOpenHab) 
 								{ channel="mqtt:topic:mosquitto:esp-boiler:Humidity" }
 Number 	BoilerRoom_sHumidity_Min "Минимальная [%d %%]" <humidity> 						
 Number 	BoilerRoom_sHumidity_Max "Максимальная [%d %%]" <humidity>			
@@ -36,19 +21,35 @@ DateTime BoilerRoom_sHumidity_LastUpdate     "Последнее обновле�
 
 
 /* ------------- ВОДОНАГРЕВАТЕЛЬ: статус питания, температура воды --------------------------*/
-Group BoilerRoom_Boiler_sTemperature_Chart  <chart>
-Number BoilerRoom_Boiler_sTemperature_Chart_Period     "" <chart> 
+Group BoilerRoom_Boiler_Temp_Chart  <chart>
 Switch BoilerRoom_aBoiler    "Водонагреватель (питание)"        <poweroutlet>   (gActuators) { channel="mqtt:topic:mosquitto:esp-boiler:BoilerPower" }
+Switch BoilerRoom_aBoiler2    "Водонагреватель 1/2 (питание)"        <poweroutlet>   (gActuators) { channel="mqtt:topic:mosquitto:esp-boiler:Boiler2Power" }
 
+Switch BoilerRoom_BoilerMode "Режим регулировки мощности"  { channel="mqtt:topic:mosquitto:esp-boiler:BoilerMode" }
+Number BoilerRoom_BoilerDuty    "Мощность нагрева [%d %%]" <heating>  { channel="mqtt:topic:mosquitto:esp-boiler:BoilerDuty" }
 
-String BoilerRoom_Boiler_pTemperature  "Водонагреватель [%s°C]"									
-Number BoilerRoom_Boiler_sTemperature "Температура воды [%.1f°C]" <temperature>  (gMinMax, gLastUpdate, BoilerRoom_Boiler_sTemperature_Chart, gHistory, gChart, gMyOpenHab, gTemp_Boiler_Chart, gInfluxe) 
-										{ channel="mqtt:topic:mosquitto:esp-boiler:WaterTemp" }
+String BoilerRoom_Boiler_pTemp  "Водонагреватель [%s°C]"									
+Number BoilerRoom_Boiler_sTemp "Температура воды [%.1f°C]" <temperature>  (gMinMax, gLastUpdate, BoilerRoom_Boiler_Temp_Chart, gChart, gMyOpenHab, gTemp_Boiler_Chart) 
+										{ channel="mqtt:topic:mosquitto:esp-boiler:BoilerTemp" }
 										
-Number 	BoilerRoom_Boiler_sTemperature_Min "Минимальная [%.1f °C]" <temperature_cold> 						
-Number 	BoilerRoom_Boiler_sTemperature_Max "Максимальная [%.1f °C]" <temperature_hot>
-DateTime BoilerRoom_Boiler_sTemperature_LastUpdate     "Последнее обновление [%1$ta %1$tR]"     <lastupdate> 										
+Number 	BoilerRoom_Boiler_sTemp_Min "Минимальная [%.1f °C]" <temperature_cold> 						
+Number 	BoilerRoom_Boiler_sTemp_Max "Максимальная [%.1f °C]" <temperature_hot>
+DateTime BoilerRoom_Boiler_sTemp_LastUpdate     "Последнее обновление [%1$ta %1$tR]"     <lastupdate> 										
+
+Number BoilerRoom_Pipe_sTemp "Температура трубы [%.1f°C]" <temperature>  (gMinMax, gLastUpdate, BoilerRoom_Boiler_Temp_Chart, gChart, gMyOpenHab, gTemp_Boiler_Chart) 
+										{ channel="mqtt:topic:mosquitto:esp-boiler:PipeTemp" }
 										
+Number 	BoilerRoom_Pipe_sTemp_Min "Минимальная [%.1f °C]" <temperature_cold> 						
+Number 	BoilerRoom_Pipe_sTemp_Max "Максимальная [%.1f °C]" <temperature_hot>
+DateTime BoilerRoom_Pipe_sTemp_LastUpdate     "Последнее обновление [%1$ta %1$tR]"     <lastupdate> 
+
+Number BoilerRoom_Relay_sTemp "Температура реле бойлера [%.1f°C]" <temperature>  (gMinMax, gLastUpdate, BoilerRoom_Boiler_Temp_Chart, gChart, gMyOpenHab, gTemp_Boiler_Chart) 
+										{ channel="mqtt:topic:mosquitto:esp-boiler:RelayTemp" }
+										
+Number 	BoilerRoom_Relay_sTemp_Min "Минимальная [%.1f °C]" <temperature_cold> 						
+Number 	BoilerRoom_Relay_sTemp_Max "Максимальная [%.1f °C]" <temperature_hot>
+DateTime BoilerRoom_Relay_sTemp_LastUpdate     "Последнее обновление [%1$ta %1$tR]"     <lastupdate> 
+
 										
 /* ------------ НАСОС -------------*/
 Switch BoilerRoom_Pump_aPower    "Насос (питание) [MAP(ui.map):%s]"        <poweroutlet>   (gActuators) 
@@ -61,18 +62,19 @@ Switch BoilerRoom_Pump_vState    "Насос (статус) [MAP(ui.map):%s]"   
 								
 /* ------------- ГРЕЮЩИЙ КАБЕЛЬ: статус питания, температура воды --------------------------*/
 Group BoilerRoom_Hotcab_sTemperature_Chart  <chart>
-Number BoilerRoom_Hotcab_sTemperature_Chart_Period     "" <chart> 
 Switch BoilerRoom_Hotcab_aPower    "Греющий кабель (питание) [MAP(ui.map):%s]"        <poweroutlet>   (gActuators)
 									{ channel="mqtt:topic:mosquitto:esp-boiler:HotcabPower" }
 											
-Number BoilerRoom_Hotcab_Thermostate_vState   {http="<[http://192.168.2.204/jsonoptions?select=thermostat:60000:JSONPATH($.thermostat.termo1.en)]"}
-Switch BoilerRoom_Hotcab_Thermostate_aState    "Греющий кабель (термостат) [MAP(ui.map):%s]"        <heating>   
-												{mqtt="	>[openhab:dacha/esp-boiler/optionsset:command:ON:MAP(boiler_therm_cmd.map)], 
-														>[openhab:dacha/esp-boiler/optionsset:command:OFF:MAP(boiler_therm_cmd.map)]"}
+Number BoilerRoom_Hotcab_Thermostate_vState   
+Switch BoilerRoom_Hotcab_Thermostate_aState    "Греющий кабель (термостат) [MAP(ui.map):%s]"        <heating>   {channel="mqtt:topic:mosquitto:esp-boiler:HotcabThermTemp"} 
 
-Number BoilerRoom_Hotcab_sTemperature "Греющий кабель [%.1f °C]" <temperature>  (gMinMax, gLastUpdate, BoilerRoom_Hotcab_sTemperature_Chart, gHistory, gChart, gMyOpenHab, gTemp_Boiler_Chart, gInfluxe) 
+Number BoilerRoom_Hotcab_sTemperature "Греющий кабель [%.1f °C]" <temperature>  (gMinMax, gLastUpdate, BoilerRoom_Hotcab_sTemperature_Chart, gChart, gMyOpenHab, gTemp_Boiler_Chart) 
 										{ channel="mqtt:topic:mosquitto:esp-boiler:HotcabTemp" } 
 
 Number 	BoilerRoom_Hotcab_sTemperature_Min "Минимальная [%.1f °C]" <temperature_cold> 						
 Number 	BoilerRoom_Hotcab_sTemperature_Max "Максимальная [%.1f °C]" <temperature_hot>
 DateTime BoilerRoom_Hotcab_sTemperature_LastUpdate     "Последнее обновление [%1$ta %1$tR]"     <lastupdate> 		
+
+/* ------------ Вентиляция -------------*/
+Switch BoilerRoom_Vent_aPower    "Вентиляция (питание) [MAP(ui.map):%s]"        <poweroutlet>   (gActuators) 
+								{ channel="mqtt:topic:mosquitto:esp-boiler:VentPower" }

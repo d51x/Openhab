@@ -1,3 +1,3 @@
 Group System
 Group RPI
-String rpi_disk_free 	"Cвободно на hdd [JS(byte-to-mbyte.js):%s]" <network> (System, RPI) {channel="exec:command:freehdd:output"}
+String rpi_disk_free 	"Cвободно на hdd [%s]" <network> (System, RPI) {channel="exec:command:freehdd:output"}

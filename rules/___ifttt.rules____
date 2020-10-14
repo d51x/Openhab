@@ -1,0 +1,11 @@
+rule "Set initial values IFTTT items"
+when
+	System started
+then
+    createTimer( now.plusSeconds(180)) [|
+		logInfo("RULE", "Set initial values IFTTT items")
+		postUpdate(Presence_My_IFTTT, OFF)
+	]
+end
+
+

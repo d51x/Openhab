@@ -1,0 +1,22 @@
+// 192.168.2.200
+Thing mqtt:topic:mosquitto:attic "ESP Attic" (mqtt:broker:mosquitto) @ "Устройства" {
+	Channels:
+		Type switch: Fan 			"Вентилятор" 				[ stateTopic="dacha/attic/output0", commandTopic="dacha/attic/output0", on="1", off="0"]
+		Type switch: vFan 			"Вентилятор" 				[ stateTopic="dacha/attic/output15", commandTopic="dacha/attic/output15", on="1", off="0"]
+
+		Type switch: AlarmLed 			"Маяк" 						[ stateTopic="dacha/attic/output2", commandTopic="dacha/attic/output2", on="1", off="0"]
+		Type switch: Mode 			"Режим маяка" 				[ stateTopic="dacha/attic/output6", commandTopic="dacha/attic/output6", on="1", off="0"]
+		//Type switch: Mode 			"Режим маяка" 				[ stateTopic="dacha/attic/valuedes0", commandTopic="dacha/attic/valuedes0", on="1", off="0"]
+		Type switch: Blynk 			"Мигание при движении" 		[ stateTopic="dacha/attic/output4", commandTopic="dacha/attic/output4", on="1", off="0"]
+		//Type switch: Blynk 			"Мигание при движении" 		[ stateTopic="dacha/attic/valuedes1", commandTopic="dacha/attic/valuedes1", on="1", off="0"]
+		
+		Type switch: AlarmDetected 			"Тревога" 		[ stateTopic="dacha/attic/valuedes3", commandTopic="dacha/attic/valuedes3", on="1", off="0"]
+		Type switch: Present 				"Присутствие" 		[ stateTopic="dacha/attic/valuedes2", commandTopic="dacha/attic/valuedes2", on="1", off="0"]
+		
+		Type dimmer: LedPwm 		"Яркость маяка"		 		[ stateTopic="dacha/attic/pwm0", 	  commandTopic="dacha/attic/pwm0", min="0", max="255", step="1" ]
+		Type dimmer: FanPwm 		"Мощность вентилятора" 		[ stateTopic="dacha/attic/valuedes4", commandTopic="dacha/attic/valuedes4", min="0", max="10", step="1" ]
+
+		Type number: Temperature	"Температура чердака" 		[ stateTopic="dacha/attic/dsw1" ]
+		Type number: rssi			"Уровень сигнала" 			[ stateTopic="dacha/attic/rssi" ]
+		Type number: uptime			"Время работы" 				[ stateTopic="dacha/attic/uptime" ]
+}

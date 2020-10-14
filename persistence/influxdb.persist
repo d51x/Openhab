@@ -4,7 +4,7 @@ Strategies {
 }
 
 Items {
-	gInfluxe* : strategy = everyUpdate
+	gInfluxe* : strategy = everyChange
 }
 
 // vim: syntax=Xtend syntax=openhab

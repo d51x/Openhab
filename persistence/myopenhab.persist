@@ -3,7 +3,7 @@ Strategies {
 }
 
 Items {
-	gMyOpenHab* : strategy = everyUpdate
+	gMyOpenHab* : strategy = everychange
 }
 
 // vim: syntax=Xtend syntax=openhab

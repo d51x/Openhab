@@ -1,35 +1,74 @@
-Group:Switch:OR(ON, OFF)        FF_Lights     "Освещение (этаж 1) [(%d)]"     <light>  [ "Switchable" ]
-Group:Switch:OR(ON, OFF)        SF_Lights     "Освещение (этаж 2) [(%d)]"     <light>  [ "Switchable" ]
-Group:Switch:OR(ON, OFF)        FF_LivingRoom_Light     "Освещение (гостинная) [(%d)]"     <light>   (FF_Lights) [ "Switchable" ]
+Group:Switch:OR(ON, OFF)        FF_Lights     "Свет на этаже 1 [(%d)]"     <light>  [ "Switchable" ]
+Group:Switch:OR(ON, OFF)        SF_Lights     "Свет на этаже 2 [(%d)]"     <light>  [ "Switchable" ]
+Group:Switch:OR(ON, OFF)        FF_LivingRoom_Light     "Свет в гостинной [(%d)]"     <light>   (FF_Lights) [ "Switchable" ]
 
 Group:Switch:OR(ON, OFF) gLightIndoor		"Внутренее освещение [(%d)]" 		<light>				(gLights)
 Group:Switch:OR(ON, OFF) gLightIndoorNight	"Ночная подсветка" 			<rgb>				(gLightIndoor)
 
 
-Switch FF_LivingRoom_Light_01      "Освещение 1 (гостинная) [MAP(ui.map):%s]" <light> (FF_LivingRoom_Light, gLightIndoor, gMyOpenHab, gHistory, gInfluxe) [ "Lighting" ] 
+Switch FF_LivingRoom_Light_01      "Свет в гостинной 1 [MAP(ui.map):%s]" <light> (FF_LivingRoom_Light, gLightIndoor, gMyOpenHab) [ "Lighting" ] 
 { channel="mqtt:topic:mosquitto:esp-livingroom-light:Light1" }
 
-Switch FF_LivingRoom_Light_02      "Освещение 2 (гостинная) [MAP(ui.map):%s]" <light> (FF_LivingRoom_Light, gLightIndoor, gMyOpenHab, gHistory, gInfluxe) [ "Lighting" ] 
+Switch FF_LivingRoom_Light_02      "Свет в гостинной 2 [MAP(ui.map):%s]" <light> (FF_LivingRoom_Light, gLightIndoor, gMyOpenHab) [ "Lighting" ] 
 { channel="mqtt:topic:mosquitto:esp-livingroom-light:Light2" }
 									
-Switch FF_Corridor_Light      "Коридор (этаж 1) [MAP(ui.map):%s]" <light> (FF_Lights, gLightIndoor, gMyOpenHab, gHistory, gInfluxe) [ "Lighting" ] 
+Switch FF_Corridor_Light      "Свет в прихожей [MAP(ui.map):%s]" <light> (FF_Lights, gLightIndoor, gMyOpenHab) [ "Lighting" ] 
 { channel="mqtt:topic:mosquitto:hall1-light:Light" }
 									
-Switch SF_BedRoom1_Light      "Освещение (спальня) [MAP(ui.map):%s]" <light> (SF_Lights, gLightIndoor, gMyOpenHab, gHistory, gInfluxe) [ "Lighting" ] 
+Switch SF_BedRoom1_Light      "Свет в спальне [MAP(ui.map):%s]" <light> (SF_Lights, gLightIndoor, gMyOpenHab) [ "Lighting" ] 
 { channel="mqtt:topic:mosquitto:esp-bedroom1-light:Light" }
 
-Switch SF_BedRoom2_Light      "Освещение (детская 1) [MAP(ui.map):%s]" <light> (SF_Lights, gLightIndoor, gMyOpenHab, gHistory, gInfluxe) [ "Lighting" ] 
+Switch SF_BedRoom2_Light      "Свет у Тани [MAP(ui.map):%s]" <light> (SF_Lights, gLightIndoor, gMyOpenHab) [ "Lighting" ] 
 { channel="mqtt:topic:mosquitto:esp-bedroom2-light:Light" }
 									
-Switch SF_BedRoom3_Light      "Освещение (детская 2) [MAP(ui.map):%s]" <light> (SF_Lights) 
+Switch SF_BedRoom3_Light      "Свет у Саши [MAP(ui.map):%s]" <light> (SF_Lights) 
 { channel="mqtt:topic:mosquitto:esp-bedroom3-light:Light" }
 									
-Switch SF_Corridor1_Light      "Коридор (этаж 2) [MAP(ui.map):%s]" <light> (SF_Lights, gLightIndoor, gMyOpenHab, gHistory, gInfluxe) [ "Lighting" ] 
+Switch SF_Corridor1_Light      "Свет в коридоре (этаж 2) [MAP(ui.map):%s]" <light> (SF_Lights, gLightIndoor, gMyOpenHab) [ "Lighting" ] 
 { channel="mqtt:topic:mosquitto:esp-corridore2-light:Light1" }
 									
-Switch SF_Corridor2_Light      "Над лестницей [MAP(ui.map):%s]" <light> (SF_Lights, gLightIndoor, gMyOpenHab, gHistory, gInfluxe) [ "Lighting" ] 
+Switch SF_Corridor2_Light      "Свет над лестницей [MAP(ui.map):%s]" <light> (SF_Lights, gLightIndoor, gMyOpenHab) [ "Lighting" ] 
 { channel="mqtt:topic:mosquitto:esp-corridore2-light:Light2" }
 
+Group:Switch:OR(ON, OFF) gLedsKitchen   "Led-ленты на кухне [(%d)]" <rgb> (gLights)
+//Switch FF_Kitchen_Leds_Red      "Красная лента (кухня) [MAP(ui.map):%s]" <light> (FF_Lights, gLightIndoor, gLedsKitchen, gMyOpenHab) [ "Lighting" ] 
+//{ channel="mqtt:topic:mosquitto:kitchen-led:Red" }
+
+//Switch FF_Kitchen_Leds_Green      "Зеленая лента (кухня) [MAP(ui.map):%s]" <light> (FF_Lights, gLightIndoor, gLedsKitchen, gMyOpenHab) [ "Lighting" ] 
+//{ channel="mqtt:topic:mosquitto:kitchen-led:Green" }
+
+//Switch FF_Kitchen_Leds_Blue      "Синяя лента (кухня) [MAP(ui.map):%s]" <light> (FF_Lights, gLightIndoor, gLedsKitchen, gMyOpenHab) [ "Lighting" ] 
+//{ channel="mqtt:topic:mosquitto:kitchen-led:Blue" }
+
+//Switch FF_Kitchen_Leds_White      "Белая лента (кухня) [MAP(ui.map):%s]" <light> (FF_Lights, gLightIndoor, gLedsKitchen, gMyOpenHab) [ "Lighting" ] 
+//{ channel="mqtt:topic:mosquitto:kitchen-led:White" }
+
+Dimmer FF_Kitchen_Dimmer_Red      "Яркость красной ленты (кухня) [%d]" <rgb> (gLedsKitchen, gMyOpenHab)
+{ channel="mqtt:topic:mosquitto:kitchen-led:RedLevel" }
+
+Dimmer FF_Kitchen_Dimmer_Green      "Яркость зеленой ленты (кухня) [%d]" <rgb> (gLedsKitchen, gMyOpenHab)
+{ channel="mqtt:topic:mosquitto:kitchen-led:GreenLevel" }
+
+Dimmer FF_Kitchen_Dimmer_Blue      "Яркость синей ленты (кухня) [%d]" <rgb> (gLedsKitchen, gMyOpenHab)
+{ channel="mqtt:topic:mosquitto:kitchen-led:BlueLevel" }
+
+Dimmer FF_Kitchen_Dimmer_White      "Яркость белой ленты (кухня) [%d]" <rgb> (gLedsKitchen, gMyOpenHab)
+{ channel="mqtt:topic:mosquitto:kitchen-led:WhiteLevel" }
+
+Color FF_Kitchen_RGB_Led    "RGB Leds"  <rgb> (gLedsKitchen, gMyOpenHab)
+Number vFF_Kitchen_RGB_Led    "RGB Leds"   { channel="mqtt:topic:mosquitto:kitchen-led:colorint" }
+
+//Number FF_Kitchen_RBG_Effect_Id "Световой эффект [%d]" <rgb> (gLedsKitchen) //{ channel="mqtt:topic:mosquitto:kitchen-led:effect" }
+Number FF_Kitchen_RBG_Effect_Id "Световой эффект [%d]" <rgb> (gLedsKitchen) { channel="mqtt:topic:mosquitto:kitchen-led:effect" }
+//String FF_Kitchen_RBG_Effect_S "Световой эффект [%d]" <rgb> (gLedsKitchen) { channel="mqtt:topic:mosquitto:kitchen-led:effect" }
+
+Switch FF_Garland      "Гирлянда [MAP(ui.map):%s]" <rgb> (FF_Lights, gLightIndoor, gMyOpenHab) [ "Lighting" ] 
+{ channel="mqtt:topic:mosquitto:garland:Garland" }
+
+Color FF_Tree_RGB    "Елка"  <rgb> (gMyOpenHab)
+//String V_Tree_RGB    "[%s]"  <rgb> (gMyOpenHab) {http=">[CHANGED:GET:http://192.168.2.225/ledctrl?color=hsv2&hsv=0,100,100]"}
+Number FF_Tree_Effect_Id "Эффект [%d]" <rgb> 
 
 
-
+Switch GF_Cellar_Light      "Свет в цоколе [MAP(ui.map):%s]" <light> (gLightIndoor, gMyOpenHab) [ "Lighting" ] 
+{ channel="mqtt:topic:mosquitto:cellar:Light" }

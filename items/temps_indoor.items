@@ -1,98 +1,116 @@
+Group FF_Chart  <chart>
+Group SF_Chart  <chart>
+Group IndoorTemp_Chart  <chart>
 /* ------------------------ FL 1: Living room -------------------------------- */
 Group:Number:MIN gTemp_FF_LivingRoom_Min "Минимальная [%.1f °C]" <temperature> (gTemp_FF_Min)
 Group:Number:MAX gTemp_FF_LivingRoom_Max "Максимальная [%.1f °C]" <temperature> (gTemp_FF_Max)
 Group:Number:AVG gTemp_FF_LivingRoom_Avg "Средняя [%.1f °C]" <temperature> (gTemp_FF_Avg)
 Group FF_LivingRoom_Chart  <chart>
-Number FF_LivingRoom_Chart_Period     "" <chart> 
 
-String vHouse_Temperature "Температура [%s °C]" <temperature>
+String vHouse_Temperature "Температура в доме [%s °C]" <temperature>
+String FF_LivingRoom_sTemp "Температура в гостинной [%s °C]" <temperature>
 
-Number FF_LivingRoom_sTemp_01 	"Гостинная 1 [%.1f °C]" <temperature> (gMinMax, gLastUpdate, gTemp_FF_LivingRoom_Avg, gTemp_FF_LivingRoom_Min, gTemp_FF_LivingRoom_Max, FF_LivingRoom_Chart, gHistory, gChart, gMyOpenHab, gInfluxe) 
+Number FF_LivingRoom01_sTemp 	"Температура в гостинной 1 [%.1f °C]" <temperature> (gInfluxe, gMinMax, gLastUpdate, gTemp_FF_LivingRoom_Avg, gTemp_FF_LivingRoom_Min, gTemp_FF_LivingRoom_Max, FF_LivingRoom_Chart, gChart, gMyOpenHab, IndoorTemp_Chart, FF_Chart) 
 							{ channel="mqtt:topic:mosquitto:esp-sonoff-pow-01:Temperature" }
 
-Number FF_LivingRoom_sTemp_02 	"Гостинная 2 [%.1f °C]" <temperature> (gMinMax, gLastUpdate, gTemp_FF_LivingRoom_Avg, gTemp_FF_LivingRoom_Min, gTemp_FF_LivingRoom_Max, FF_LivingRoom_Chart, gHistory, gChart, gMyOpenHab, gInfluxe) 
+Number FF_LivingRoom02_sTemp 	"Температура в гостинной 2 [%.1f °C]" <temperature> (gInfluxe, gMinMax, gLastUpdate, gTemp_FF_LivingRoom_Avg, gTemp_FF_LivingRoom_Min, gTemp_FF_LivingRoom_Max, FF_LivingRoom_Chart, gChart, gMyOpenHab, IndoorTemp_Chart, FF_Chart) 
 							{ channel="mqtt:topic:mosquitto:esp-sonoff-pow-02:Temperature" }
 
 
-Number 	FF_LivingRoom_sTemp_01_Min "Минимальная [%.1f °C]" <temperature_cold> 						
-Number 	FF_LivingRoom_sTemp_01_Max "Максимальная [%.1f °C]" <temperature_hot>
-DateTime FF_LivingRoom_sTemp_01_LastUpdate     "Последнее обновление [%1$ta %1$tR]"     <lastupdate> 
+Number 	FF_LivingRoom01_sTemp_Min "Минимальная температура в гостинной 1 [%.1f °C]" <temperature_cold> 						
+Number 	FF_LivingRoom01_sTemp_Max "Максимальная температура в гостинной 1 [%.1f °C]" <temperature_hot>
+DateTime FF_LivingRoom01_sTemp_LastUpdate     "Температура в гостинной 1 обновлена [%1$ta %1$tR]"     <lastupdate> 
 
 
-Number 	FF_LivingRoom_sTemp_02_Min "Минимальная [%.1f °C]" <temperature_cold> 						
-Number 	FF_LivingRoom_sTemp_02_Max "Максимальная [%.1f °C]" <temperature_hot>
-DateTime FF_LivingRoom_sTemp_02_LastUpdate     "Последнее обновление [%1$ta %1$tR]"     <lastupdate>
-DateTime FF_LivingRoom_Temp_LastUpdate     "Последнее обновление [%1$ta %1$tR]"     <lastupdate> 
+Number 	FF_LivingRoom02_sTemp_Min "Минимальная температура в гостинной 2 [%.1f °C]" <temperature_cold> 						
+Number 	FF_LivingRoom02_sTemp_Max "Максимальная температура в гостинной 2 [%.1f °C]" <temperature_hot>
+DateTime FF_LivingRoom02_sTemp_LastUpdate     "Температура в гостинной 2 обновлена [%1$ta %1$tR]"     <lastupdate>
+DateTime FF_LivingRoom_Temp_LastUpdate     "Температура в гостинной обновлена [%1$ta %1$tR]"     <lastupdate> 
 
 
 /* ------------------------ FL 1: kitchen -------------------------------- */
 Group FF_Kitchen_Chart  <chart>
-Number FF_Kitchen_Chart_Period     "" <chart> 
 
-Number FF_Kitchen_sTemp 		"Кухня [%.1f °C]" <temperature> (gMinMax, gLastUpdate, gTemp_FF_Avg, gTemp_FF_Min, gTemp_FF_Max, FF_Kitchen_Chart, gHistory, gChart, gMyOpenHab, gInfluxe) 
+Number FF_Kitchen_sTemp 		"Температура на кухне [%.1f °C]" <temperature> (gMinMax, gLastUpdate, gTemp_FF_Avg, gTemp_FF_Min, gTemp_FF_Max, FF_Kitchen_Chart, gChart, gMyOpenHab, IndoorTemp_Chart, FF_Chart) 
 							{ channel="mqtt:topic:mosquitto:esp-sonoff-pow-03:Temperature" }
-Number 	FF_Kitchen_sTemp_Min "Минимальная [%.1f °C]" <temperature_cold> 						
-Number 	FF_Kitchen_sTemp_Max "Максимальная [%.1f °C]" <temperature_hot>
-DateTime FF_Kitchen_sTemp_LastUpdate     "Последнее обновление [%1$ta %1$tR]"     <lastupdate> 
+Number 	FF_Kitchen_sTemp_Min "Минимальная температура на кухне [%.1f °C]" <temperature_cold> 						
+Number 	FF_Kitchen_sTemp_Max "Максимальная температура на кухне [%.1f °C]" <temperature_hot>
+DateTime FF_Kitchen_sTemp_LastUpdate     "Температруа на кухне обновлена [%1$ta %1$tR]"     <lastupdate> 
 							
 /* ------------------------ FL 1: toilet / bathroom -------------------------------- */
 Group FF_BathRoom_Chart  <chart>
-Number FF_BathRoom_Chart_Period     "" <chart> 
 
-Number FF_BathRoom_sTemp 		"Ванная [%.1f °C]" <temperature> (gMinMax, gLastUpdate, gTemp_FF_Avg, gTemp_FF_Min, gTemp_FF_Max, FF_BathRoom_Chart, gHistory, gChart, gMyOpenHab, gInfluxe) 
+Number FF_BathRoom_sTemp 		"Температура в ванной [%.1f °C]" <temperature> (gMinMax, gLastUpdate, gTemp_FF_Avg, gTemp_FF_Min, gTemp_FF_Max, FF_BathRoom_Chart, gChart, gMyOpenHab, IndoorTemp_Chart, FF_Chart) 
 							{ channel="mqtt:topic:mosquitto:esp-sonoff-s20-04:Temperature" }
 
-Number 	FF_BathRoom_sTemp_Min "Минимальная [%.1f °C]" <temperature_cold> 						
-Number 	FF_BathRoom_sTemp_Max "Максимальная [%.1f °C]" <temperature_hot>
-DateTime FF_BathRoom_sTemp_LastUpdate     "Последнее обновление [%1$ta %1$tR]"     <lastupdate> 
+Number 	FF_BathRoom_sTemp_Min "Минимальная температура в ванной [%.1f °C]" <temperature_cold> 						
+Number 	FF_BathRoom_sTemp_Max "Максимальная температура в ванной [%.1f °C]" <temperature_hot>
+DateTime FF_BathRoom_sTemp_LastUpdate     "Температура в ванной обновлена [%1$ta %1$tR]"     <lastupdate> 
 
 /* ------------------------ FL 1: corridor -------------------------------- */
 Group FF_Corridor_Chart  <chart>
-Number FF_Corridor_Chart_Period     "" <chart> 
 
-Number FF_Corridor_sTemp 		"Коридор [%.1f °C]" <temperature> (gMinMax, gLastUpdate, gTemp_FF_Avg, gTemp_FF_Min, gTemp_FF_Max, FF_Corridor_Chart, gHistory, gChart, gMyOpenHab, gInfluxe) 
+Number FF_Corridor_sTemp 		"Температура в холле [%.1f °C]" <temperature> (gMinMax, gLastUpdate, gTemp_FF_Avg, gTemp_FF_Min, gTemp_FF_Max, FF_Corridor_Chart, gChart, gMyOpenHab, IndoorTemp_Chart, FF_Chart) 
 							{ channel="mqtt:topic:mosquitto:esp-hall:Temperature" }
 
-Number 	FF_Corridor_sTemp_Min "Минимальная [%.1f °C]" <temperature_cold> 						
-Number 	FF_Corridor_sTemp_Max "Максимальная [%.1f °C]" <temperature_hot>
-DateTime FF_Corridor_sTemp_LastUpdate     "Последнее обновление [%1$ta %1$tR]"     <lastupdate> 
+Number 	FF_Corridor_sTemp_Min "Минимальная температура в холле [%.1f °C]" <temperature_cold> 						
+Number 	FF_Corridor_sTemp_Max "Максимальная температура в холле [%.1f °C]" <temperature_hot>
+DateTime FF_Corridor_sTemp_LastUpdate     "Температура в холле обновлена [%1$ta %1$tR]"     <lastupdate> 
 
 
 /* ------------------------ FL 2: badroom1 -------------------------------- */
 Group SF_Room1_Chart  <chart>
-Number SF_Room1_Chart_Period     "" <chart> 
-Number SF_Room1_sTemp 			"Спальня [%.1f °C]" <temperature> (gMinMax, gLastUpdate, gTemp_SF_Avg, gTemp_SF_Min, gTemp_SF_Max, SF_Room1_Chart, gHistory, gChart, gMyOpenHab, g_SF_Bedroom1_Heater, gInfluxe) [ "CurrentTemperature" ]
+
+Number SF_Room1_sTemp 			"Температура в спальне [%.1f °C]" <temperature> (gInfluxe, gMinMax, gLastUpdate, gTemp_SF_Avg, gTemp_SF_Min, gTemp_SF_Max, SF_Room1_Chart, gChart, gMyOpenHab, g_SF_Bedroom1_Heater, IndoorTemp_Chart, SF_Chart)
 								{ channel="mqtt:topic:mosquitto:esp-sonoff-s20-01:Temperature" } 
 
-Number 	SF_Room1_sTemp_Min "Минимальная [%.1f °C]" <temperature_cold> 						
-Number 	SF_Room1_sTemp_Max "Максимальная [%.1f °C]" <temperature_hot>
-DateTime SF_Room1_sTemp_LastUpdate     "Последнее обновление [%1$ta %1$tR]"     <lastupdate> 
+Number 	SF_Room1_sTemp_Min "Минимальная температура в спальне [%.1f °C]" <temperature_cold> 						
+Number 	SF_Room1_sTemp_Max "Максимальная температура в спальне [%.1f °C]" <temperature_hot>
+DateTime SF_Room1_sTemp_LastUpdate     "Температура в спальне обновлена [%1$ta %1$tR]"     <lastupdate> 
 
 Group SF_Room2_Chart  <chart>
-Number SF_Room2_Chart_Period     "" <chart> 
-Number SF_Room2_sTemp 			"Детская 1 [%.1f °C]" <temperature> (gMinMax, gLastUpdate, gTemp_SF_Avg, gTemp_SF_Min, gTemp_SF_Max, SF_Room2_Chart, gHistory, gChart, gMyOpenHab, gInfluxe) 
+
+Number SF_Room2_sTemp 			"Температура в детской 1 [%.1f °C]" <temperature> (gMinMax, gLastUpdate, gTemp_SF_Avg, gTemp_SF_Min, gTemp_SF_Max, SF_Room2_Chart, gChart, gMyOpenHab, IndoorTemp_Chart, SF_Chart) 
 								{ channel="mqtt:topic:mosquitto:esp-sonoff-s20-02:Temperature" } 
 
-Number 	SF_Room2_sTemp_Min "Минимальная [%.1f °C]" <temperature_cold> 						
-Number 	SF_Room2_sTemp_Max "Максимальная [%.1f °C]" <temperature_hot>
-DateTime SF_Room2_sTemp_LastUpdate     "Последнее обновление [%1$ta %1$tR]"     <lastupdate> 
+Number 	SF_Room2_sTemp_Min "Минимальная температура в детской 1 [%.1f °C]" <temperature_cold> 						
+Number 	SF_Room2_sTemp_Max "Максимальная температура в детской 1 [%.1f °C]" <temperature_hot>
+DateTime SF_Room2_sTemp_LastUpdate     "Температура в детской 1 обновлена [%1$ta %1$tR]"     <lastupdate> 
 	
 Group SF_Room3_Chart  <chart>
-Number SF_Room3_Chart_Period     "" <chart> 	
-Number SF_Room3_sTemp 			"Детская 2 [%.1f °C]" <temperature> (gMinMax, gLastUpdate, gTemp_SF_Avg, gTemp_SF_Min, gTemp_SF_Max, SF_Room3_Chart, gHistory, gChart, gMyOpenHab, gInfluxe) 
+
+Number SF_Room3_sTemp 			"Температура в детской 2 [%.1f °C]" <temperature> (gMinMax, gLastUpdate, gTemp_SF_Avg, gTemp_SF_Min, gTemp_SF_Max, SF_Room3_Chart, gChart, gMyOpenHab, IndoorTemp_Chart, SF_Chart) 
 								{ channel="mqtt:topic:mosquitto:esp-sonoff-s20-03:Temperature" }
 
-Number 	SF_Room3_sTemp_Min "Минимальная [%.1f °C]" <temperature_cold> 						
-Number 	SF_Room3_sTemp_Max "Максимальная [%.1f °C]" <temperature_hot>
-DateTime SF_Room3_sTemp_LastUpdate     "Последнее обновление [%1$ta %1$tR]"     <lastupdate> 
+Number 	SF_Room3_sTemp_Min "Минимальная температура в детской 2 [%.1f °C]" <temperature_cold> 						
+Number 	SF_Room3_sTemp_Max "Максимальная температура в детской 2 [%.1f °C]" <temperature_hot>
+DateTime SF_Room3_sTemp_LastUpdate     "Температура в детской 2 обновлена [%1$ta %1$tR]"     <lastupdate> 
 
 /* ------------------------ Attic -------------------------------- */								
-Number Attic_sTemp 				"Температура [%.1f °C]" <temperature>  (gTemperature, gAttic, Chart_Temperature, gHistory, gChart, gMyOpenHab, gTemp_Attic_Min, gTemp_Attic_Max, gTemp_Attic_Avg) 
-								{mqtt="<[openhab:dacha/esp-boiler/dhtt1:state:default]"}
+Number Attic_sTemp 				"Температура на чердаке [%.1f °C]" <temperature>  (gTemperature, gAttic, Attic_Chart, Chart_Temperature, gChart, gMyOpenHab, gTemp_Attic_Min, gTemp_Attic_Max, gTemp_Attic_Avg) 
+								{ channel="mqtt:topic:mosquitto:attic:Temperature" }
 								
+Number 	Attic_sTemp_Min "Минимальная температура на чердаке [%.1f °C]" <temperature_cold> 						
+Number 	Attic_sTemp_Max "Максимальная температура на чердаке [%.1f °C]" <temperature_hot>
+DateTime Attic_sTemp_LastUpdate     "Температура на чердаке обновлена [%1$ta %1$tR]"     <lastupdate> 
+
+/* ------------------------ Cellar -------------------------------- */	
+
+Group gCellar						
+Group gCellar_Temp_Chart  <chart>
+Number Cellar_sTemp1 	"Температура в цоколе [%.1f °C]" <temperature>  (gMinMax, gLastUpdate, gTemperature, gCellar, gCellar_Temp_Chart, Chart_Temperature, gChart, gMyOpenHab) 
+								{ channel="mqtt:topic:mosquitto:cellar:Temperature1" }
 								
-							
+Number 	Cellar_sTemp1_Min "Минимальная температура в цоколе [%.1f °C]" <temperature_cold> 						
+Number 	Cellar_sTemp1_Max "Максимальная температура в цоколе [%.1f °C]" <temperature_hot>
+DateTime Cellar_sTemp1_LastUpdate     "Температура в цоколе обновлена [%1$ta %1$tR]"     <lastupdate> 
+
+Number Cellar_sTemp2 	"Температура2 в цоколе [%.1f °C]" <temperature>  (gMinMax, gLastUpdate, gTemperature, gCellar, gCellar_Temp_Chart, Chart_Temperature, gChart, gMyOpenHab) 
+								{ channel="mqtt:topic:mosquitto:cellar:Temperature2" }
 								
+Number 	Cellar_sTemp2_Min "Минимальная температура2 в цоколе [%.1f °C]" <temperature_cold> 						
+Number 	Cellar_sTemp2_Max "Максимальная температура2 в цоколе [%.1f °C]" <temperature_hot>
+DateTime Cellar_sTemp2_LastUpdate     "Температура2 в цоколе обновлена [%1$ta %1$tR]"     <lastupdate> 
+
 // chart
 Group Chart_Temperature <chart>
-Number Chart_Period     "Период"

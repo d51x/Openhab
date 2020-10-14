@@ -1,12 +1,153 @@
+var Timer tankFillTimer
+var tank_alarm_delay_time = 10 * 60 // 15min
+var tank_fill_alarm_available = new Boolean(true)
+var prev_level = 0
+var correction = 100
+var correction_percent = 5
+
+var level_threshold = 60		// уровень для включения насоса
+var level_threshold_max = 65	// уровень для сигнализации начала переполнения
+var level_threshold_min = 50	// уровень отключения насоса (гистерезис 10)
+var pump_schedule_time = 5		// откачка включается каждый час на 5 мин
+var flag_treshold = 0			// 1 - откачка по превышению уровня
+var flag_hour = 0				// 1 - отчкача по времени
+
+var notify_hour = 0			// уведомления по расписанию (каждый час в начале часа)
+var notify_default = 0		// уведомления при обычном изменении состояния
+var notify_level = 1		// уведомления по превышению и нормализации уровня
+
 rule "Septic group label update"
  when
     Item Septic_sTemperature received update  or
 	Item Septic_aHeating received command
 then
 	var String str;
-	val f = (Septic_sTemperature.state as DecimalType).doubleValue
-	val s = (Septic_aHeating.state.toString)
-	str = String::format("%s\u202F,\u202F%.1f°C", s, f)
+	//val f = (Septic_sTemperature.state as DecimalType).doubleValue
+	//val s = (Septic_aHeating.state.toString)
+	//str = String::format("%s\u202F,\u202F%.1f°C", s, f)
+
+	val Integer v = (TankFill.state as DecimalType).intValue
+	val f = (SepticTank1_sTemperature.state as DecimalType).doubleValue
+	str = String::format("%d%%\u202F,\u202F%.1f°C", v, f)
+
 	Septic_vText.postUpdate(str)
 end
 
+rule "Septic Heating Relay state changed"
+when
+    Item Septic_Heating changed
+then
+	if ( Septic_Heater_Notify.state == ON) {
+		val septic_state = "Обогрев септика %s. Температура %.1f °C"
+		var String msg;
+		if (Septic_Heating.state == ON ) msg = "ВКЛЮЧЕН"
+		if (Septic_Heating.state == OFF ) msg = "ВЫКЛЮЧЕН"
+		
+		msg = String::format(septic_state, msg, (Septic_Temperature.state as DecimalType).doubleValue)
+
+		//logInfo("Telegram", telegram + str)
+		//executeCommandLine(telegram + str)		
+		val telegram = getActions("telegram","telegram:telegramBot:telegram")
+   		telegram.sendTelegram( msg )			
+	}	
+end
+
+rule "OpenHAB system started - camers"
+when
+    System started
+then
+
+end
+
+rule "TankFill changed"
+when
+	Item TankFill changed
+then
+	var msg = "Заполненость бака %d %%%%"
+	val Integer value = (TankFill.state as DecimalType).intValue
+	val telegram = getActions("telegram","telegram:telegramBot:telegram")
+	msg = String::format(msg, value) 
+	logInfo("Septic", "TankFill = {}", msg)
+	if ( value > level_threshold ) {
+		flag_treshold = 1
+		if ( value > level_threshold_max && tank_fill_alarm_available ) {
+   			if (notify_level == 1)
+			   	telegram.sendTelegram( msg )
+			tank_fill_alarm_available = false
+
+            tankFillTimer = createTimer(now.plusSeconds(tank_alarm_delay_time), [ |
+                tank_fill_alarm_available = true
+                tankFillTimer.cancel()
+            ])  
+
+		}
+	} else if ( value <= level_threshold_min ) {
+		flag_treshold = 0
+	}
+
+	val level = value - prev_level
+	if ( Math.abs(level) > correction_percent ) {
+		// странно работает, бывает, что показания датчика скачат, от этого срабатывает оповещение
+		telegram.sendTelegram(  String::format("Уровень в колодце %s на %d %%%%", if (level > 0) "повысился" else  "понизился", Math.abs(level)))
+	} 
+
+	prev_level = value
+
+end
+
+
+rule "Turn on the drainage pump every hour for 5 minutes"
+when
+	Time cron "0 0 * * * ?"  // ровно каждый час (0 минут)
+then
+	flag_hour = 1  // здесь может не совпасть время cron и время esp
+	//DrainagePump.sendCommand(ON)
+	//telegram.sendTelegram(  String::format("Дренажный насос включен по расписанию на 5 минут. Уровень в колодце %d %%%%", (TankFill.state as DecimalType).intValue))
+	createTimer(now.plusMinutes(5), [ |
+		flag_hour = 0
+		//DrainagePump.sendCommand(OFF)
+		//telegram.sendTelegram(  String::format("Дренажный насос выключен по таймеру (5 минут). Уровень в колодце %d %%%%", (TankFill.state as DecimalType).intValue))
+	])	
+end
+
+rule "Состояние дренажного насоса изменилось"
+when
+	Item DrainagePump changed
+then
+	val Integer value = (TankFill.state as DecimalType).intValue
+	val telegram = getActions("telegram","telegram:telegramBot:telegram")
+
+	if ( triggeringItem.state == ON ) {
+		if ( flag_hour == 1) {
+			if ( notify_hour == 1 ) 
+				telegram.sendTelegram(  String::format("Дренажный насос включен по расписанию на %d минут. Уровень в колодце %d %%%%", pump_schedule_time, value))
+		} else if ( flag_treshold == 1 ) {
+			if ( notify_level == 1 )
+				telegram.sendTelegram(  String::format("Дренажный насос включен по превышению уровня. Уровень в колодце %d %%%%", value))
+		} else {
+			if ( notify_default == 1 ) 
+				telegram.sendTelegram(  String::format("Дренажный насос включен. Уровень в колодце %d %%%%", value))
+		}
+	} else if ( triggeringItem.state == OFF ) {
+		if ( flag_hour == 0) {
+			if ( notify_hour == 1 )
+				telegram.sendTelegram(  String::format("Дренажный насос выключен по таймеру (%d минут). Уровень в колодце %d %%%%", pump_schedule_time, value))
+		} else if ( flag_treshold == 0 ) {
+			if ( notify_level == 1 )
+				telegram.sendTelegram(  String::format("Дренажный насос выключен по нормализации уровня. Уровень в колодце %d %%%%", value))
+		} else {
+			if ( notify_default == 1 ) 
+				telegram.sendTelegram(  String::format("Дренажный насос выключен. Уровень в колодце %d %%%%", value))
+		}
+	}
+
+end
+
+rule "SonarFail changed"
+when
+	Item SonarFail changed to ON
+then
+	val msg = "Ошибка чтения уровня жидкости!"
+   	val telegram = getActions("telegram","telegram:telegramBot:telegram")
+   	telegram.sendTelegram( msg )
+end

@@ -4,17 +4,100 @@ Group gEnergy_Heaters  "Конвекторы"  (gEnergy)
 Group gPZEM 		   "PZEM-004T"    (gEnergy)
 
 
+
+//**********************************************************************************
+// ******************* новые Items для счетчика электроэнергии *********************
+//**********************************************************************************
+
+Group gEnergy_Counters "Счетчики энергии" <power>
+Group gEnergy_Counters_Hour "Расход в час" <power> (gEnergy_Counters)
+Group gEnergy_Counters_Day "Расход в день" <power> (gEnergy_Counters)
+Group gEnergy_Counters_Week "Расход в неделю" <power> (gEnergy_Counters)
+Group gEnergy_Counters_Month "Расход в месяц" <power> (gEnergy_Counters)
+
+// * тарифная зона - день / ночь
+String Energy_Counter_Zone "Тарифная зона [%s]" (gEnergy_Counters)
+
+// * текущий расход энергии - кВт.ч  (прямое показание со счетчика)
+Number Energy_Counter_Total "Текущий расход [%.1f кВт.ч]" <power> (gEnergy_Counters)
+
+// * расход за час
+Number Energy_Counter_Hour_Current "Расход за текущий час [%.2f кВт.ч]" <power> (gEnergy_Counters, gEnergy_Counters_Hour)
+Number Energy_Counter_Hour_Past "Расход за прошедший час [%.2f кВт.ч]" <power> (gEnergy_Counters_Hour)
+
+// ----------------------------------------------------------------------------------
+// * расход за день  ( с 07 до 23 )
+Number Energy_Counter_DayTime_Current "Дневной (Т1) расход [%.2f кВт.ч]" <power> (gEnergy_Counters, gEnergy_Counters_Day)
+
+// * расход за ночь  ( с 23 до 07  )
+Number Energy_Counter_NightTime_Current "Ночной (Т2) расход [%.2f кВт.ч]" <power> (gEnergy_Counters, gEnergy_Counters_Day)
+
+// * расход за сутки (с 00 по текущее время)
+Number Energy_Counter_Day_Current "Расход за сутки [%.2f кВт.ч]" <power> (gEnergy_Counters, gEnergy_Counters_Day)
+
+// * расход за прошедшие сутки
+Number Energy_Counter_Day_Past "Расход за прошедшие сутки [%.2f кВт.ч]" <power> (gEnergy_Counters_Day)
+
+// * расход за прошедший день ( 07 - 23 вчера)
+Number Energy_Counter_DayTime_Past "Расход за прошедший день [%.2f кВт.ч]" <power> (gEnergy_Counters_Day)
+
+// * расход за предыдущую ночь ( 23 - 07 )
+Number Energy_Counter_NightTime_Past "Расход за предыдущую ночь [%.2f кВт.ч]" <power> (gEnergy_Counters_Day)
+
+// ----------------------------------------------------------------------------------
+// * расход за текущую неделю (общий)
+Number Energy_Counter_Week_Current "Расход за текущую неделю [%.1f кВт.ч]" <power> (gEnergy_Counters, gEnergy_Counters_Week)
+
+// * расход за текущую неделю (общий ночной)
+Number Energy_Counter_WeekNightTime_Current "Расход по ночам за текущую неделю [%.1f кВт.ч]" <power> (gEnergy_Counters_Week)
+
+// * расход за текущую неделю (общий дневной)
+Number Energy_Counter_WeekDayTime_Current "Расход днем за текущую неделю [%.1f кВт.ч]" <power> (gEnergy_Counters_Week)
+
+// * расход за прошедшую неделю (общий)
+Number Energy_Counter_Week_Past "Расход за прошедшую неделю [%.1f кВт.ч]" <power> (gEnergy_Counters_Week)
+
+// * расход за прошедшую неделю (общий ночной)
+Number Energy_Counter_WeekNightTime_Past "Расход по ночам за прошедшую неделю [%.1f кВт.ч]" <power> (gEnergy_Counters_Week)
+
+// * расход за прошедшую неделю (общий дневной)
+Number Energy_Counter_WeekDayTime_Past "Расход днем за прошедшую неделю [%.1f кВт.ч]" <power> (gEnergy_Counters_Week)
+
+// ----------------------------------------------------------------------------------
+// * расход за текущий месяц (общий)
+String Energy_Counter_Month_Current "Расход за текущий месяц [%s кВт.ч]" <power> (gEnergy_Counters, gEnergy_Counters_Month)
+
+// * расход за текущий месяц (общий ночной)
+String Energy_Counter_MonthNightTime_Current "Расход по ночам за текущий месяц [%s кВт.ч]" <power> (gEnergy_Counters_Month)
+
+// * расход за текущий месяц (общий дневной)
+String Energy_Counter_MonthDayTime_Current "Расход днем за текущий месяц [%s кВт.ч]" <power> (gEnergy_Counters_Month)
+
+// * расход за прошедший месяц (общий)
+String Energy_Counter_Month_Past "Расход за прошедший месяц [%s кВт.ч]" <power> (gEnergy_Counters_Month)
+
+// * расход за прошедший месяц (общий ночной)
+String Energy_Counter_MonthNightTime_Past "Расход по ночам за прошедший месяц [%s кВт.ч]" <power> (gEnergy_Counters_Month)
+
+// * расход за прошедший месяц (общий дневной)
+String Energy_Counter_MonthDayTime_Past "Расход днем за прощедший месяц [%s кВт.ч]" <power> (gEnergy_Counters_Month)
+
+//**********************************************************************************
+
+
+
+
 String Electro_Total "Электричество [%s]" <electricity>
 String vElectro_Month "Расход за месяц [%s]" <electricity>
 //String Electro_Status "Статус [%s]" <electricity> 
 
 // Consumption
-Number Electro_PowerWH_Month "Потребление в месяц [%.1f кВт]" <electricity>  (gHistory, gChart, gMyOpenHab, gPZEM, gInfluxe)
-Number Electro_PowerWH_Day "Потребление сегодня [%.1f кВт]" <electricity> (gHistory, gChart, gMyOpenHab, gPZEM, gInfluxe)
-Number Electro_PowerWH_YesterDay "Потребление вчера [%.1f кВт]" <electricity> (gHistory, gChart, gMyOpenHab, gPZEM, gInfluxe)
-Number Electro_PowerWH_Week "Потребление текущей недели [%.1f кВт]" <electricity> (gHistory, gChart, gMyOpenHab, gPZEM, gInfluxe)
-Number Electro_PowerWH_PrevWeek "Потребление прошлой недели [%.1f кВт]" <electricity> (gHistory, gChart, gMyOpenHab, gPZEM, gInfluxe)
-Number Electro_PowerWH_PrevMonth "Потребление прошлый месяц [%.1f кВт]" <electricity>  (gHistory, gChart, gMyOpenHab, gPZEM, gInfluxe)
+Number Electro_PowerWH_Month "Потребление в месяц [%.1f кВт]" <electricity>  (gChart, gMyOpenHab, gPZEM)
+Number Electro_PowerWH_Day "Потребление сегодня [%.1f кВт]" <electricity> (gChart, gMyOpenHab, gPZEM, gInfluxe)
+Number Electro_PowerWH_YesterDay "Потребление вчера [%.1f кВт]" <electricity> (gChart, gMyOpenHab, gPZEM)
+Number Electro_PowerWH_Week "Потребление текущей недели [%.1f кВт]" <electricity> (gChart, gMyOpenHab, gPZEM)
+Number Electro_PowerWH_PrevWeek "Потребление прошлой недели [%.1f кВт]" <electricity> (gChart, gMyOpenHab, gPZEM)
+Number Electro_PowerWH_PrevMonth "Потребление прошлый месяц [%.1f кВт]" <electricity>  (gChart, gMyOpenHab, gPZEM)
 
 // Costs
 Number Electro_AmountMonth "Cтоимость в этом месяце [%.2f руб]" <price> 
@@ -25,13 +108,13 @@ Number Electro_AmountPrevWeek "Cтоимость прошлая неделя [%.
 Number Electro_AmountPrevMonth "Cтоимость прошлый месяц [%.2f руб]" <price> 
 
 // показания счетчика за вчера
-Number Electro_PowerWH_PrevDay "Максимальное предыдущее значение счетчика за вчера [%d Вт*ч]" <electricity> (gHistory, gChart, gMyOpenHab, gPZEM, gInfluxe)
-Number Electro_PowerWH_SunDay "Максимальное предыдущее значение счетчика за воскресенье [%d Вт*ч]" <electricity> (gHistory, gChart, gMyOpenHab, gPZEM, gInfluxe)
-Number Electro_PowerWH_LastDayMonth "Максимальное предыдущее значение счетчика за последний день месяца [%d Вт*ч]" <electricity> (gHistory, gChart, gMyOpenHab, gPZEM, gInfluxe)
+Number Electro_PowerWH_PrevDay "Максимальное предыдущее значение счетчика за вчера [%d Вт*ч]" <electricity> (gChart, gMyOpenHab, gPZEM)
+Number Electro_PowerWH_SunDay "Максимальное предыдущее значение счетчика за воскресенье [%d Вт*ч]" <electricity> (gChart, gMyOpenHab, gPZEM)
+Number Electro_PowerWH_LastDayMonth "Максимальное предыдущее значение счетчика за последний день месяца [%d Вт*ч]" <electricity> (gChart, gMyOpenHab, gPZEM)
 
 Group Electro_Voltage_Chart  <chart>
-Number Electro_Voltage "Напряжение [%.0f V]" <electricity> (gMinMax, gLastUpdate, Electro_Voltage_Chart, gHistory, gChart, gMyOpenHab, gPZEM, gInfluxe) 
-		{ channel="mqtt:topic:mosquitto:esp-electro:Voltage" } 
+Number Electro_Voltage "Напряжение [%.0f V]" <electricity> (gMinMax, gLastUpdate, Electro_Voltage_Chart, gChart, gMyOpenHab, gPZEM, gInfluxe) 
+		{ channel="mqtt:topic:mosquitto:esp-electro:Voltage_SDM" }  //{ channel="mqtt:topic:mosquitto:esp-electro:Voltage" } 
 Number Electro_Voltage_Min "Минимум сегодня [%.0f V]" <electricity>
 Number Electro_Voltage_Max "Максимум сегодня [%.0f V]" <electricity>
 DateTime Electro_Voltage_LastUpdate     "Последнее обновление [%1$ta %1$tR]"     <lastupdate>
@@ -39,7 +122,7 @@ Number Electro_Voltage_Chart_Period     "Период"
  
 Group Electro_Current_Chart  <chart>
 Number Electro_Current "Ток [%.1f A]" <current> (gMinMax, gLastUpdate, Electro_Current_Chart, /*gHistory**/ gChart, gMyOpenHab, gPZEM, gInfluxe)
-		{ channel="mqtt:topic:mosquitto:esp-electro:Current" } 
+		{ channel="mqtt:topic:mosquitto:esp-electro:Current_SDM" }  //{ channel="mqtt:topic:mosquitto:esp-electro:Current" } 
 Number Electro_Current_Min "Минимум сегодня [%.1f A]" <current> //(Group Electro_Current_Chart  <chart>)
 Number Electro_Current_Max "Максимум сегодня [%.1f A]" <current> //(Group Electro_Current_Chart  <chart>)
 DateTime Electro_Current_LastUpdate     "Последнее обновление [%1$ta %1$tR]"     <lastupdate>
@@ -47,23 +130,15 @@ Number Electro_Current_Chart_Period     "Период"
 
 Group Electro_PowerRMS_Chart  <chart>
 Number Electro_PowerRMS "Мощность RMS [%.0f W]" <powerplug> (gMinMax, gLastUpdate, Electro_PowerRMS_Chart, /*gHistory,*/ gChart, gMyOpenHab, gPZEM, gInfluxe) 
-				{ channel="mqtt:topic:mosquitto:esp-electro:PowerRMS" } 
+				{ channel="mqtt:topic:mosquitto:esp-electro:PowerRMS_SDM" }  //{ channel="mqtt:topic:mosquitto:esp-electro:PowerRMS" } 
 Number Electro_PowerRMS_Min "Минимум сегодня [%.0f W]" <powerplug> //(Group Electro_PowerRMS_Chart  <chart>)
 Number Electro_PowerRMS_Max "Максимум сегодня [%.0f W]" <powerplug> //(Group Electro_PowerRMSChart  <chart>)
 DateTime Electro_PowerRMS_LastUpdate     "Последнее обновление [%1$ta %1$tR]"     <lastupdate>
 Number Electro_PowerRMS_Chart_Period     "Период"
 
-Number Electro_PowerWH_F "Счетчик [%d Вт*ч]" <powerplug> (gPZEM) { channel="mqtt:topic:mosquitto:esp-electro:PowerWH" } 
-Number Electro_PowerWH "Счетчик [%.1f kWh]" <powerplug> (gPZEM)
-
-Group Electro_ADC_Chart  <chart>
-Number Electro_ADC "Освещенность [%.1f]" <sun> (gMinMax, gLastUpdate, Electro_ADC_Chart, gHistory, gChart, gMyOpenHab) {mqtt="<[openhab:dacha/electro/adc:state:default]"} 
-Number vIllumination "Освещенность [%.0f%%]" <sun>
-Number Electro_ADC_Min "Минимум сегодня [%.1f A]" <current> //(Group Electro_Current_Chart  <chart>)
-Number Electro_ADC_Max "Максимум сегодня [%.1f A]" <current> //(Group Electro_Current_Chart  <chart>)
-DateTime Electro_ADC_LastUpdate     "Последнее обновление [%1$ta %1$tR]"     <lastupdate>
-Number Electro_ADC_Chart_Period     "Период"
-
+Number Electro_PowerWH_F "Счетчик [%d Вт*ч]" <powerplug> (gPZEM, gHistory) 
+		{ channel="mqtt:topic:mosquitto:esp-electro:PowerWH_SDM" }  //{ channel="mqtt:topic:mosquitto:esp-electro:PowerWH" } 
+Number Electro_PowerWH "Счетчик [%.1f kWh]" <powerplug> (gPZEM, gHistory)
 
 
 //Number Electro_KWth "Расход [%d kWt/h]" {mqtt="<[openhab:dacha/electro/kwth:state:default]"}
@@ -81,7 +156,7 @@ Group gDev_POW_03 "Pow 03"	<heating> (gEnergy_Heaters)
 //**********************************************************************************************
 Group Electro_SOnOffPow1_Voltage_Chart  <chart>
 Number Electro_SOnOffPow1_Voltage "Напряжение 1 [%.0f V]" <electricity> 
-									(gMinMax, gLastUpdate, Electro_SOnOffPow1_Voltage_Chart, gHistory, gChart, gMyOpenHab, Electro_SOnOffPow1_Voltage_Min, Electro_SOnOffPow1_Voltage_Max, gDev_POW_01, gInfluxe) 
+									(gMinMax, gLastUpdate, Electro_SOnOffPow1_Voltage_Chart, gChart, gMyOpenHab, Electro_SOnOffPow1_Voltage_Min, Electro_SOnOffPow1_Voltage_Max, gDev_POW_01) 
 									{ channel="mqtt:topic:mosquitto:esp-sonoff-pow-01:Voltage" }
 
 Number Electro_SOnOffPow1_Voltage_Min "Минимум сегодня [%.0f V]" <electricity>
@@ -92,9 +167,9 @@ Number Electro_SOnOffPow1_Voltage_Chart_Period     "Период"
 
 //**********************************************************************************************
 Group Electro_SOnOffPow1_Current_Chart  <chart>
-Number Electro_SOnOffPow1_CurrentF "Ток 1 [%.1f A]" <current> (gInfluxe) { channel="mqtt:topic:mosquitto:esp-sonoff-pow-01:Current" } 
+Number Electro_SOnOffPow1_CurrentF "Ток 1 [%.1f A]" <current> { channel="mqtt:topic:mosquitto:esp-sonoff-pow-01:Current" } 
 Number Electro_SOnOffPow1_Current "Ток [%.1f A]" <current> 
-								  (gMinMax, gLastUpdate, Electro_SOnOffPow1_Current_Chart, gHistory, gChart, gMyOpenHab, Electro_SOnOffPow1_Current_Min, Electro_SOnOffPow1_Current_Max, gDev_POW_01) 
+								  (gMinMax, gLastUpdate, Electro_SOnOffPow1_Current_Chart, gChart, gMyOpenHab, Electro_SOnOffPow1_Current_Min, Electro_SOnOffPow1_Current_Max, gDev_POW_01) 
 
 Number Electro_SOnOffPow1_Current_Min "Минимум сегодня [%.1f A]" <current> 
 Number Electro_SOnOffPow1_Current_Max "Максимум сегодня [%.1f A]" <current>
@@ -104,7 +179,7 @@ Number Electro_SOnOffPow1_Current_Chart_Period     "Период"
 //**********************************************************************************************
 Group Electro_SOnOffPow1_PowerRMS_Chart  <chart>
 Number Electro_SOnOffPow1_PowerRMS "Мощность RMS 1 [%.0f W]" <powerplug> 
-									(gMinMax, gLastUpdate, Electro_SOnOffPow1_PowerRMS_Chart, gHistory, gChart, gMyOpenHab, Electro_SOnOffPow1_PowerRMS_Min, Electro_SOnOffPow1_PowerRMS_Max, gDev_POW_01, gEnergy_Heaters_Power, gInfluxe) 
+									(gMinMax, gLastUpdate, Electro_SOnOffPow1_PowerRMS_Chart, gChart, gMyOpenHab, Electro_SOnOffPow1_PowerRMS_Min, Electro_SOnOffPow1_PowerRMS_Max, gDev_POW_01, gEnergy_Heaters_Power) 
 									{ channel="mqtt:topic:mosquitto:esp-sonoff-pow-01:PowerRMS" } 
 									
 Number Electro_SOnOffPow1_PowerRMS_Min "Минимум сегодня [%.0f W]" <powerplug> 
@@ -114,13 +189,13 @@ Number Electro_SOnOffPow1_PowerRMS_Chart_Period     "Период"
 
 //**********************************************************************************************
 Number Electro_SOnOffPow1_PowerWH_F "Расход 1 [%.1f kWh]" <powerplug> { channel="mqtt:topic:mosquitto:esp-sonoff-pow-01:PowerWH" } //{mqtt="<[openhab:dacha/livingroom1/hlwwh:state:default]"}
-Number Electro_SOnOffPow1_PowerWH "Расход [%.1f kWh]" <powerplug>  (gDev_POW_01, gHistory, gChart, gMyOpenHab)
+Number Electro_SOnOffPow1_PowerWH "Расход [%.1f kWh]" <powerplug>  (gDev_POW_01, gChart, gMyOpenHab)
 
 
 //**********************************************************************************************
 Group Electro_SOnOffPow2_Voltage_Chart  <chart>
 Number Electro_SOnOffPow2_Voltage "Напряжение 2 [%.0f V]" <electricity> 
-									(gMinMax, gLastUpdate, Electro_SOnOffPow2_Voltage_Chart, gHistory, gChart, gMyOpenHab, Electro_SOnOffPow2_Voltage_Min, Electro_SOnOffPow2_Voltage_Max, gDev_POW_02, gInfluxe) 
+									(gMinMax, gLastUpdate, Electro_SOnOffPow2_Voltage_Chart, gChart, gMyOpenHab, Electro_SOnOffPow2_Voltage_Min, Electro_SOnOffPow2_Voltage_Max, gDev_POW_02) 
 									{ channel="mqtt:topic:mosquitto:esp-sonoff-pow-02:Voltage" }
  
 Number Electro_SOnOffPow2_Voltage_Min "Минимум сегодня [%.0f V]" <electricity>
@@ -131,9 +206,9 @@ Number Electro_SOnOffPow2_Voltage_Chart_Period     "Период"
 
 //**********************************************************************************************
 Group Electro_SOnOffPow2_Current_Chart  <chart>
-Number Electro_SOnOffPow2_CurrentF "Ток 2 [%.1f A]" <current> (gInfluxe) { channel="mqtt:topic:mosquitto:esp-sonoff-pow-02:Current" } 
+Number Electro_SOnOffPow2_CurrentF "Ток 2 [%.1f A]" <current> { channel="mqtt:topic:mosquitto:esp-sonoff-pow-02:Current" } 
 Number Electro_SOnOffPow2_Current "Ток [%.1f A]" <current> 
-								  (gMinMax, gLastUpdate, Electro_SOnOffPow2_Current_Chart, gHistory, gChart, gMyOpenHab, Electro_SOnOffPow2_Current_Min, Electro_SOnOffPow2_Current_Max, gDev_POW_02) 
+								  (gMinMax, gLastUpdate, Electro_SOnOffPow2_Current_Chart, gChart, gMyOpenHab, Electro_SOnOffPow2_Current_Min, Electro_SOnOffPow2_Current_Max, gDev_POW_02) 
 
 Number Electro_SOnOffPow2_Current_Min "Минимум сегодня [%.1f A]" <current> 
 Number Electro_SOnOffPow2_Current_Max "Максимум сегодня [%.1f A]" <current>
@@ -143,7 +218,7 @@ Number Electro_SOnOffPow2_Current_Chart_Period     "Период"
 //**********************************************************************************************
 Group Electro_SOnOffPow2_PowerRMS_Chart  <chart>
 Number Electro_SOnOffPow2_PowerRMS "Мощность RMS 2 [%.0f W]" <powerplug> 
-									(gMinMax, gLastUpdate, Electro_SOnOffPow2_PowerRMS_Chart, gHistory, gChart, gMyOpenHab, Electro_SOnOffPow2_PowerRMS_Min, Electro_SOnOffPow2_PowerRMS_Max, gDev_POW_02, gEnergy_Heaters_Power, gInfluxe) 
+									(gMinMax, gLastUpdate, Electro_SOnOffPow2_PowerRMS_Chart, gChart, gMyOpenHab, Electro_SOnOffPow2_PowerRMS_Min, Electro_SOnOffPow2_PowerRMS_Max, gDev_POW_02, gEnergy_Heaters_Power) 
 									{ channel="mqtt:topic:mosquitto:esp-sonoff-pow-02:PowerRMS" } 
 									
 Number Electro_SOnOffPow2_PowerRMS_Min "Минимум сегодня [%.0f W]" <powerplug> 
@@ -153,7 +228,7 @@ Number Electro_SOnOffPow2_PowerRMS_Chart_Period     "Период"
 
 //**********************************************************************************************
 Number Electro_SOnOffPow2_PowerWH_F "Расход 2 [%.1f kWh]" <powerplug> { channel="mqtt:topic:mosquitto:esp-sonoff-pow-02:PowerWH" } //{mqtt="<[openhab:dacha/livingroom2/hlwwh:state:default]"}
-Number Electro_SOnOffPow2_PowerWH "Расход [%.1f kWh]" <powerplug>  (gDev_POW_02, gHistory, gChart, gMyOpenHab)
+Number Electro_SOnOffPow2_PowerWH "Расход [%.1f kWh]" <powerplug>  (gDev_POW_02, gChart, gMyOpenHab)
 
 
 
@@ -163,7 +238,7 @@ Number Electro_SOnOffPow2_PowerWH "Расход [%.1f kWh]" <powerplug>  (gDev_P
 //**********************************************************************************************
 Group Electro_SOnOffPow3_Voltage_Chart  <chart>
 Number Electro_SOnOffPow3_Voltage "Напряжение 3 [%.0f V]" <electricity> 
-									(gMinMax, gLastUpdate, Electro_SOnOffPow3_Voltage_Chart, gHistory, gChart, gMyOpenHab, Electro_SOnOffPow3_Voltage_Min, Electro_SOnOffPow3_Voltage_Max, gDev_POW_03, gInfluxe) 
+									(gMinMax, gLastUpdate, Electro_SOnOffPow3_Voltage_Chart, gChart, gMyOpenHab, Electro_SOnOffPow3_Voltage_Min, Electro_SOnOffPow3_Voltage_Max, gDev_POW_03) 
 									{ channel="mqtt:topic:mosquitto:esp-sonoff-pow-03:Voltage" } 
 
 Number Electro_SOnOffPow3_Voltage_Min "Минимум сегодня [%.0f V]" <electricity>
@@ -174,9 +249,9 @@ Number Electro_SOnOffPow3_Voltage_Chart_Period     "Период"
 
 //**********************************************************************************************
 Group Electro_SOnOffPow3_Current_Chart  <chart>
-Number Electro_SOnOffPow3_CurrentF "Ток 3 [%.1f A]" <current> (gInfluxe) { channel="mqtt:topic:mosquitto:esp-sonoff-pow-03:Current" }
+Number Electro_SOnOffPow3_CurrentF "Ток 3 [%.1f A]" <current> { channel="mqtt:topic:mosquitto:esp-sonoff-pow-03:Current" }
 Number Electro_SOnOffPow3_Current "Ток [%.1f A]" <current> 
-								  (gMinMax, gLastUpdate, Electro_SOnOffPow3_Current_Chart, gHistory, gChart, gMyOpenHab, Electro_SOnOffPow3_Current_Min, Electro_SOnOffPow3_Current_Max, gDev_POW_03) 
+								  (gMinMax, gLastUpdate, Electro_SOnOffPow3_Current_Chart, gChart, gMyOpenHab, Electro_SOnOffPow3_Current_Min, Electro_SOnOffPow3_Current_Max, gDev_POW_03) 
 
 Number Electro_SOnOffPow3_Current_Min "Минимум сегодня [%.1f A]" <current> 
 Number Electro_SOnOffPow3_Current_Max "Максимум сегодня [%.1f A]" <current>
@@ -186,7 +261,7 @@ Number Electro_SOnOffPow3_Current_Chart_Period     "Период"
 //**********************************************************************************************
 Group Electro_SOnOffPow3_PowerRMS_Chart  <chart>
 Number Electro_SOnOffPow3_PowerRMS "Мощность RMS 3 [%.0f W]" <powerplug> 
-									(gMinMax, gLastUpdate, Electro_SOnOffPow3_PowerRMS_Chart, gHistory, gChart, gMyOpenHab, Electro_SOnOffPow3_PowerRMS_Min, Electro_SOnOffPow3_PowerRMS_Max, gDev_POW_03, gEnergy_Heaters_Power, gInfluxe) 
+									(gMinMax, gLastUpdate, Electro_SOnOffPow3_PowerRMS_Chart, gChart, gMyOpenHab, Electro_SOnOffPow3_PowerRMS_Min, Electro_SOnOffPow3_PowerRMS_Max, gDev_POW_03, gEnergy_Heaters_Power) 
 									{ channel="mqtt:topic:mosquitto:esp-sonoff-pow-03:PowerRMS" } 
 									
 Number Electro_SOnOffPow3_PowerRMS_Min "Минимум сегодня [%.0f W]" <powerplug> 
@@ -196,4 +271,4 @@ Number Electro_SOnOffPow3_PowerRMS_Chart_Period     "Период"
 
 //**********************************************************************************************
 Number Electro_SOnOffPow3_PowerWH_F "Расход 3 [%.1f kWh]" <powerplug> { channel="mqtt:topic:mosquitto:esp-sonoff-pow-03:PowerWH" } //{mqtt="<[openhab:dacha/kitchen/hlwwh:state:default]"}
-Number Electro_SOnOffPow3_PowerWH "Расход [%.1f kWh]" <powerplug>  (gDev_POW_03, gHistory, gChart, gMyOpenHab)
+Number Electro_SOnOffPow3_PowerWH "Расход [%.1f kWh]" <powerplug>  (gDev_POW_03, gChart, gMyOpenHab)

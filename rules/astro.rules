@@ -38,6 +38,7 @@ then
 	//if (gPresent.state == ON)  {
 	//	sendCommand(OutdoorLightsAll, "all_on")
     //}
+    FF_kitchen_SetSunset.sendCommand( ON )
 	val msg = "Солнце зашло за горизонт... Начинает темнеть..." 
 	sendBroadcastNotification(msg)	
 	executeCommandLine(Telegram_Command.state + msg)
@@ -55,9 +56,11 @@ then
 		// можно выключать при рассвете
 	//	if (StairsAutoMode.state == OFF) sendCommand(StairsManualState, OFF)
 	//}
-
+    FF_kitchen_SetSunset.sendCommand( OFF )
 	val msg = "Солнце вышло из-за горизонта... Начинает светлеть..." 
 	sendBroadcastNotification(msg)	
 	executeCommandLine(Telegram_Command.state + msg)
 
 end
+
+

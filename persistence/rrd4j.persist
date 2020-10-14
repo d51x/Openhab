@@ -1,7 +1,7 @@
 // persistence strategies have a name and a definition and are referred to in the "Items" section
 Strategies {
 	// for rrd charts, we need a cron strategy
-	everyMinute : "0 * * * * ?"
+	//everyMinute : "0 * * * * ?"
 	default = everyChange
 }
 
@@ -9,8 +9,9 @@ Items {
 
 // let's store EVERYTHING - we may need it later (:
 	//* : strategy = everyMinute, everyChange, restoreOnStartup
-	gHistory* : strategy = everyUpdate, everyMinute
-	gChart* : strategy = everyUpdate
+	//gHistory* : strategy = everyUpdate, everyMinute
+	gHistory* : strategy = everyChange
+	gChart* : strategy = everyChange
 }
 
 // vim: syntax=Xtend syntax=openhab

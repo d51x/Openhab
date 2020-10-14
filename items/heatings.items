@@ -1,177 +1,119 @@
 /* Heating and Thermo control*/
-String Global_Thermo_Mode "Глобальный терморежим" (gHistory, gMyOpenHab)
-Group:Switch:OR(ON, OFF)  gThermoMode "Авто-режим [(%d)]" <heatingauto>
+String Global_Thermo_Mode "Глобальный терморежим" (gMyOpenHab)
+Group:Switch:OR(ON, OFF)  gThermoMode "Авто-режим обгревателей [(%d)]" <heatingauto>
 
-Group:Switch:OR(ON, OFF) FF_LivingRoom_Heater "Гостинная [(%d)]" <heating> (gActuators, gHeaters)
+Group:Switch:OR(ON, OFF) FF_LivingRoom_Heater "Обогреватели в гостинной [(%d)]" <heating> (gActuators, gHeaters)
 Group:Switch:OR(ON, OFF) FF_LivingRoom_Heater_Mode "Гостинная [(%d)]" <heating> 
-Group:Switch:OR(ON, OFF) gFF_Heaters "Конвекторы [(%d)]" <heating> 
-Group:Switch:OR(ON, OFF) gSF_Heaters "Конвекторы [(%d)]" <heating> 
+Group:Switch:OR(ON, OFF) gFF_Heaters "Обогреватели на этаже 1 [(%d)]" <heating> 
+Group:Switch:OR(ON, OFF) gSF_Heaters "Обогреватели на этаже 2 [(%d)]" <heating> 
 
 Group gThermoSetupTemp
 //****************** First Floor Living Room
-Switch FF_LivingRoom_Heater_01    "Конвектор1 (гостинная)"    <poweroutlet>   (gFF_LivingRoom, FF_LivingRoom_Heater, gFF_Heaters) 
+Switch FF_LivingRoom01_Heater    "Обогреватель в гостинной 1"    <poweroutlet>   (gFF_LivingRoom, FF_LivingRoom_Heater, gFF_Heaters) 
 								{ channel="mqtt:topic:mosquitto:esp-sonoff-pow-01:Power" }
-								//{mqtt=" >[openhab:dacha/livingroom1/output12:command:ON:1],
-								//		>[openhab:dacha/livingroom1/output12:command:OFF:0],
-								//		<[openhab:dacha/livingroom1/output12:state:MAP(switchMQTT.map)]"}
-//Switch vFF_LivingRoom_Heater_01_State    "Конвектор1 (гостинная). Состояние [MAP(presence.map):%s]"    <heating> 
-Switch vFF_LivingRoom_Heater_01_State    "Конвектор1 (гостинная). Греет [MAP(presence.map):%s]"    <heating>  
-								{ channel="mqtt:topic:mosquitto:esp-sonoff-pow-01:State" } //{mqtt="<[openhab:dacha/livingroom1/conv_state:state:MAP(switchMQTT.map)]"}
-										
-Switch FF_LR_Heater_01_Mode    "Термостат1 "        <heatingauto>   (gFF_LivingRoom, FF_LivingRoom_Heater_Mode, gThermoMode) 
-								{ channel="mqtt:topic:mosquitto:esp-sonoff-pow-01:Thermo" }
-								//{mqtt="	>[openhab:dacha/livingroom1/thermo_en1:command:ON:1],
-								//		>[openhab:dacha/livingroom1/thermo_en1:command:OFF:0],
-								//		<[openhab:dacha/livingroom1/thermo_en1:state:MAP(switchMQTT.map)]"}
 
-String FF_LR_Heater_01_sThermo    "[%s]"
-Number FF_LR_Heater_01_tThermo    "Установка [%.1f °C]" <tempauto>  (gThermoSetupTemp)  
+Switch vFF_LivingRoom01_Heater_State    "Обогреватель в гостинной 1 греет [MAP(presence.map):%s]"    <heating>  
+								{ channel="mqtt:topic:mosquitto:esp-sonoff-pow-01:State" } 
+										
+Switch FF_LivingRoom01_Heater_Mode    "Режим термостата в гостинной 1 "        <heatingauto>   (gFF_LivingRoom, FF_LivingRoom_Heater_Mode, gThermoMode) 
+								{ channel="mqtt:topic:mosquitto:esp-sonoff-pow-01:Thermo" }
+
+String FF_LivingRoom01_Heater_sThermo    "[%s]"
+Number FF_LivingRoom01_Heater_tThermo    "Уставка температуры в гостинной 1 [%.1f °C]" <tempauto>  (gThermoSetupTemp)  
 								{ channel="mqtt:topic:mosquitto:esp-sonoff-pow-01:TempSet" }
 								//{mqtt="	>[openhab:dacha/livingroom1/thermo_set1:command:*:default],
 								//		<[openhab:dacha/livingroom1/thermo_set1:state:default]"}
 
 
-Switch FF_LivingRoom_Heater_02    "Конвектор2 (гостинная)"    <poweroutlet>   (gFF_LivingRoom, FF_LivingRoom_Heater, gFF_Heaters) 
+Switch FF_LivingRoom02_Heater    "Обогреватель в гостинной 2"    <poweroutlet>   (gFF_LivingRoom, FF_LivingRoom_Heater, gFF_Heaters) 
 								{ channel="mqtt:topic:mosquitto:esp-sonoff-pow-02:Power" }
-								//{mqtt=" >[openhab:dacha/livingroom2/output12:command:ON:1],
-								//		>[openhab:dacha/livingroom2/output12:command:OFF:0],
-								//		<[openhab:dacha/livingroom2/output12:state:MAP(switchMQTT.map)]"}
-//Switch vFF_LivingRoom_Heater_02_State    "Конвектор2 (гостинная). Состояние [MAP(presence.map):%s]"    <heating> 
-Switch vFF_LivingRoom_Heater_02_State    "Конвектор2 (гостинная). Греет [MAP(presence.map):%s]"    <heating>  
-								{ channel="mqtt:topic:mosquitto:esp-sonoff-pow-02:State" }  //{mqtt="<[openhab:dacha/livingroom2/conv_state:state:MAP(switchMQTT.map)]"}
-								
-Switch FF_LR_Heater_02_Mode    "Термостат2 "        <heatingauto>   (gFF_LivingRoom, FF_LivingRoom_Heater_Mode, gThermoMode) 
-								{ channel="mqtt:topic:mosquitto:esp-sonoff-pow-02:Thermo" }
-								//{mqtt="	>[openhab:dacha/livingroom2/thermo_en1:command:ON:1],
-								//		>[openhab:dacha/livingroom2/thermo_en1:command:OFF:0],
-								//		<[openhab:dacha/livingroom2/thermo_en1:state:MAP(switchMQTT.map)]"}
 
-String FF_LR_Heater_02_sThermo    "[%s]"
-Number FF_LR_Heater_02_tThermo    "Установка [%.1f °C]" <tempauto>   (gThermoSetupTemp) 
+Switch vFF_LivingRoom02_Heater_State    "Обогреватель в гостинной 2 греет [MAP(presence.map):%s]"    <heating>  
+								{ channel="mqtt:topic:mosquitto:esp-sonoff-pow-02:State" }
+								
+Switch FF_LivingRoom02_Heater_Mode    "Режим термостата в гостинной 2 "        <heatingauto>   (gFF_LivingRoom, FF_LivingRoom_Heater_Mode, gThermoMode) 
+								{ channel="mqtt:topic:mosquitto:esp-sonoff-pow-02:Thermo" }
+
+String FF_LivingRoom02_Heater_sThermo    "[%s]"
+Number FF_LivingRoom02_Heater_tThermo    "Уставка температуры в гостинной 2[%.1f °C]" <tempauto>   (gThermoSetupTemp) 
 								{ channel="mqtt:topic:mosquitto:esp-sonoff-pow-02:TempSet" }
-								//{mqtt="	>[openhab:dacha/livingroom2/thermo_set1:command:*:default],
-								//		<[openhab:dacha/livingroom2/thermo_set1:state:default]"}
 
 //*********************** First Floor Kitchen 										
-Switch FF_Kitchen_Heater   "Конвектор (кухня)"       <poweroutlet>   (gFF_Kitchen, gActuators, gHeaters, gFF_Heaters) 
+Switch FF_Kitchen_Heater   "Обогреватель на кухне"       <poweroutlet>   (gFF_Kitchen, gActuators, gHeaters, gFF_Heaters) 
 							{ channel="mqtt:topic:mosquitto:esp-sonoff-pow-03:Power" }
-							//{mqtt="	>[openhab:dacha/kitchen/output12:command:ON:1],
-							//		>[openhab:dacha/kitchen/output12:command:OFF:0],
-							//		<[openhab:dacha/kitchen/output12:state:MAP(switchMQTT.map)]"}
-//Switch vFF_Kitchen_Heater_State    "Конвектор (кухня). Состояние [MAP(presence.map):%s]"    <heating> 
-Switch vFF_Kitchen_Heater_State    "Конвектор (кухня). Греет [MAP(presence.map):%s]"    <heating>  
-								{ channel="mqtt:topic:mosquitto:esp-sonoff-pow-03:State" } //{mqtt="<[openhab:dacha/kitchen/conv_state:state:MAP(switchMQTT.map)]"}
+
+Switch vFF_Kitchen_Heater_State    "Обогреватель на кухня греет [MAP(presence.map):%s]"    <heating>  
+								{ channel="mqtt:topic:mosquitto:esp-sonoff-pow-03:State" } 
 								
-Switch FF_Kitchen_Heater_Mode    "Термостат "        <heatingauto>   (gFF_Kitchen, gThermoMode) 
+Switch FF_Kitchen_Heater_Mode    "Режим термостата на кухне "        <heatingauto>   (gFF_Kitchen, gThermoMode) 
 								{ channel="mqtt:topic:mosquitto:esp-sonoff-pow-03:Thermo" }
-								//{mqtt="	>[openhab:dacha/kitchen/thermo_en1:command:ON:1],
-								//		>[openhab:dacha/kitchen/thermo_en1:command:OFF:0],
-								//		<[openhab:dacha/kitchen/thermo_en1:state:MAP(switchMQTT.map)]"}
 
 String FF_Kitchen_Heater_sThermo    "[%s]"
-Number FF_Kitchen_Heater_tThermo    "Установка [%.1f °C]" <tempauto>   (gThermoSetupTemp) 
+Number FF_Kitchen_Heater_tThermo    "Уставка температуры на кухне [%.1f °C]" <tempauto>   (gThermoSetupTemp) 
 								{ channel="mqtt:topic:mosquitto:esp-sonoff-pow-03:TempSet" }								
-								//{mqtt="	>[openhab:dacha/kitchen/thermo_set1:command:*:default],
-								//			<[openhab:dacha/kitchen/thermo_set1:state:default]"}
+
 
 //********************** First Floor Bathroom
-Switch FF_Bathroom_Heater    "Конвектор (ванная)"        <heating>   (gFF_BathRoom, gActuators, gHeaters, gFF_Heaters) 
+Switch FF_BathRoom_Heater    "Обогреватель в ванной"        <heating>   (gFF_BathRoom, gActuators, gHeaters, gFF_Heaters) 
 							{ channel="mqtt:topic:mosquitto:esp-sonoff-s20-04:Power" }
-							//{mqtt="	>[openhab:dacha/bathroom/output12:command:ON:1],
-							//		>[openhab:dacha/bathroom/output12:command:OFF:0],
-							//		<[openhab:dacha/bathroom/output12:state:MAP(switchMQTT.map)]"}
 									
-Switch FF_Bathroom_Heater_Mode    "Термостат "        <heatingauto>   (gFF_BathRoom, gThermoMode) 
+Switch FF_BathRoom_Heater_Mode    "Режим термостата в ванной "        <heatingauto>   (gFF_BathRoom, gThermoMode) 
 									{ channel="mqtt:topic:mosquitto:esp-sonoff-s20-04:Thermo" }
-									//{mqtt="	>[openhab:dacha/bathroom/thermo_en1:command:ON:1],
-									//		>[openhab:dacha/bathroom/thermo_en1:command:OFF:0],
-									//		<[openhab:dacha/bathroom/thermo_en1:state:MAP(switchMQTT.map)]"}
 
-String FF_Bathroom_Heater_sThermo    "[%s]"
-Number FF_Bathroom_Heater_tThermo    "Установка [%.1f °C]" <tempauto>   (gThermoSetupTemp) 
+String FF_BathRoom_Heater_sThermo    "[%s]"
+Number FF_BathRoom_Heater_tThermo    "Уставка температуры в ванной [%.1f °C]" <tempauto>   (gThermoSetupTemp) 
 								{ channel="mqtt:topic:mosquitto:esp-sonoff-s20-04:TempSet" }
-								//{mqtt="	>[openhab:dacha/bathroom/thermo_set1:command:*:default],
-								//		<[openhab:dacha/bathroom/thermo_set1:state:default]"}
 
 //***************** Second Floor Room 1
-Group g_SF_Bedroom1_Heater "Термостат в спальне" [ "Thermostat" ]
-Switch SF_Bedroom1_Heater   "Конвектор (спальня)"          <heating>   (gSF_BedRoom_1, gActuators, gHeaters, gSF_Heaters) 
+//Group g_SF_Room1_Heater "Термостат в спальне (группа)" { ga="Thermostat" [ lang="en" , ordered=true, modes="off=OFF,heat=COMFORT,eco=ECO,on=ON,auto" ] }
+Group g_SF_Room1_Heater "Термостат в спальне (группа)" { ga="Thermostat" [ lang="en" , ordered=true, modes="off=OFF,heat=COMFORT,eco=ECO,on=ON,auto" ] }
+String SF_Room1_Therm_Mode    "Режим термостата в спальне"        <heatingauto>   (g_SF_Room1_Heater)  
+							{ ga="thermostatMode" }
+
+Switch SF_Room1_Heater   "Обогреватель в спальне"          <heating>   (gSF_BedRoom_1, gActuators, gHeaters, gSF_Heaters) 
 							{ channel="mqtt:topic:mosquitto:esp-sonoff-s20-01:Power" }
-							//{mqtt="	>[openhab:dacha/bedroom1/output12:command:ON:1],
-								//	>[openhab:dacha/bedroom1/output12:command:OFF:0],
-									//<[openhab:dacha/bedroom1/output12:state:MAP(switchMQTT.map)]"}
 
-Switch SF_Bedroom1_Thermostat   "Термостат"          <heating>   (gSF_BedRoom_1, gActuators, gHeaters, gSF_Heaters) 
+Switch SF_Room1_Thermostat   "Термостат в спальне"          <heating>   (gSF_BedRoom_1, gActuators, gHeaters, gSF_Heaters) 
 							{ channel="mqtt:topic:mosquitto:esp-sonoff-s20-01:Thermo" }
-							//{mqtt="	>[openhab:dacha/bedroom1/output40:command:ON:1],
-							//		>[openhab:dacha/bedroom1/output40:command:OFF:0],
-							//		<[openhab:dacha/bedroom1/output40:state:MAP(switchMQTT.map)]"}
 									
-Switch SF_Bedroom1_Heater_Mode    "Термостат"        <heatingauto>   (gSF_BedRoom_1, gThermoMode, g_SF_Bedroom1_Heater)  [ "homekit:HeatingCoolingMode" ]
-							{ channel="mqtt:topic:mosquitto:esp-sonoff-s20-01:Thermo" }
-							//{mqtt="	>[openhab:dacha/bedroom1/thermo_en1:command:ON:1],
-							//		>[openhab:dacha/bedroom1/thermo_en1:command:OFF:0],
-							//		<[openhab:dacha/bedroom1/thermo_en1:state:MAP(switchMQTT.map)]"}
+Switch SF_Room1_Heater_Mode    "Режим термостата в спальне"        <heatingauto>   (gSF_BedRoom_1, gThermoMode)  
+							{ channel="mqtt:topic:mosquitto:esp-sonoff-s20-01:Thermo"}
 
-String SF_Bedroom1_Heater_sThermo    "[%s]"
-Number SF_Bedroom1_Heater_tThermo    "Установка [%.1f °C]" <tempauto>   (gThermoSetupTemp, g_SF_Bedroom1_Heater) [ "TargetTemperature" ] 
-								{ channel="mqtt:topic:mosquitto:esp-sonoff-s20-01:TempSet" }
-								//{mqtt="	>[openhab:dacha/bedroom1/thermo_set1:command:*:default],
-								//		<[openhab:dacha/bedroom1/thermo_set1:state:default]"}
-
+Number SF_Room1_Heater_Temp    "Температуры в спальне [%.1f °C]" (g_SF_Room1_Heater) { ga="thermostatTemperatureAmbient" }
+String SF_Room1_Heater_sThermo    "[%s]" (g_SF_Room1_Heater) 
+Number SF_Room1_Heater_tThermo    "Уставка температуры в спальне [%.1f °C]" <tempauto>   (gThermoSetupTemp, g_SF_Room1_Heater) 
+							{ channel="mqtt:topic:mosquitto:esp-sonoff-s20-01:TempSet", ga="thermostatTemperatureSetpoint" }
 										
 //****************** 	Second Floor Room 2								
-Switch SF_Bedroom2_Heater   "Конвектор (детская 1)"          <heating>   (gSF_BedRoom_2, gActuators, gHeaters, gSF_Heaters) 
+Switch SF_Room2_Heater   "Обогреватель в детской 1"          <heating>   (gSF_BedRoom_2, gActuators, gHeaters, gSF_Heaters) 
 							{ channel="mqtt:topic:mosquitto:esp-sonoff-s20-02:Power" }
-							//{mqtt="	>[openhab:dacha/bedroom2/output12:command:ON:1],
-							//		>[openhab:dacha/bedroom2/output12:command:OFF:0],
-							//		<[openhab:dacha/bedroom2/output12:state:MAP(switchMQTT.map)]"}
 
-Switch SF_Bedroom2_Thermostat   "Термостат"          <heating>   (gSF_BedRoom_2, gActuators, gHeaters, gSF_Heaters) 
+Switch SF_Room2_Thermostat   "Термостат в детской 1"          <heating>   (gSF_BedRoom_2, gActuators, gHeaters, gSF_Heaters) 
 							{ channel="mqtt:topic:mosquitto:esp-sonoff-s20-02:Thermo" }
-							//{mqtt="	>[openhab:dacha/bedroom2/output40:command:ON:1],
-							//		>[openhab:dacha/bedroom2/output40:command:OFF:0],
-							//		<[openhab:dacha/bedroom2/output40:state:MAP(switchMQTT.map)]"}
 									
-Switch SF_Bedroom2_Heater_Mode    "Термостат"        <heatingauto>   (gSF_BedRoom_2, gThermoMode) 
+Switch SF_Room2_Heater_Mode    "Режим термостата в детской 1"        <heatingauto>   (gSF_BedRoom_2, gThermoMode) 
 							{ channel="mqtt:topic:mosquitto:esp-sonoff-s20-02:Thermo" }
-							//{mqtt="	>[openhab:dacha/bedroom2/thermo_en1:command:ON:1],
-							//		>[openhab:dacha/bedroom2/thermo_en1:command:OFF:0],
-							//		<[openhab:dacha/bedroom2/thermo_en1:state:MAP(switchMQTT.map)]"}
-
-String SF_Bedroom2_Heater_sThermo    "[%s]"
-Number SF_Bedroom2_Heater_tThermo    "Установка [%.1f °C]" <tempauto>   (gThermoSetupTemp) 
+ 
+String SF_Room2_Heater_sThermo    "[%s]"
+Number SF_Room2_Heater_tThermo    "Уставка температуры в детской 1 [%.1f °C]" <tempauto>   (gThermoSetupTemp) 
 								{ channel="mqtt:topic:mosquitto:esp-sonoff-s20-02:TempSet" }
-								//{mqtt="	>[openhab:dacha/bedroom2/thermo_set1:command:*:default],
-								//		<[openhab:dacha/bedroom2/thermo_set1:state:default]"}
-
 										
 //****************** 	Second Floor Room 3
-Switch SF_Bedroom3_Heater   "Конвектор (Детская 2)"          <heating>   (gSF_BedRoom_3, gActuators, gHeaters, gSF_Heaters) 
+Switch SF_Room3_Heater   "Обогреватель в детской 2"          <heating>   (gSF_BedRoom_3, gActuators, gHeaters, gSF_Heaters) 
 							{ channel="mqtt:topic:mosquitto:esp-sonoff-s20-03:Power" }
-							//{mqtt="	>[openhab:dacha/bedroom3/output12:command:ON:1],
-							//		>[openhab:dacha/bedroom3/output12:command:OFF:0],
-							//		<[openhab:dacha/bedroom3/output12:state:MAP(switchMQTT.map)]"}
 
-Switch SF_Bedroom3_Thermostat   "Термостат"          <heating>   (gSF_BedRoom_3, gActuators, gHeaters, gSF_Heaters) 
+Switch SF_Room3_Thermostat   "Термостат в детской 2"          <heating>   (gSF_BedRoom_3, gActuators, gHeaters, gSF_Heaters) 
 							{ channel="mqtt:topic:mosquitto:esp-sonoff-s20-03:Thermo" }
-							//{mqtt="	>[openhab:dacha/bedroom3/output40:command:ON:1],
-							//		>[openhab:dacha/bedroom3/output40:command:OFF:0],
-							//		<[openhab:dacha/bedroom3/output40:state:MAP(switchMQTT.map)]"}
 									
-Switch SF_Bedroom3_Heater_Mode    "Термостат"        <heatingauto>   (gSF_BedRoom_3, gThermoMode) 
+Switch SF_Room3_Heater_Mode    "Редим термостата в детской 2"        <heatingauto>   (gSF_BedRoom_3, gThermoMode) 
 							{ channel="mqtt:topic:mosquitto:esp-sonoff-s20-03:Thermo" }
-							//{mqtt="	>[openhab:dacha/bedroom3/thermo_en1:command:ON:1],
-							//		>[openhab:dacha/bedroom3/thermo_en1:command:OFF:0],
-							//		<[openhab:dacha/bedroom3/thermo_en1:state:MAP(switchMQTT.map)]"}
 
-String SF_Bedroom3_Heater_sThermo    "[%s]"
-Number SF_Bedroom3_Heater_tThermo    "Установка [%.1f °C]" <tempauto>   (gThermoSetupTemp) 
+String SF_Room3_Heater_sThermo    "[%s]"
+Number SF_Room3_Heater_tThermo    "Уставка температуры в детской 2 [%.1f °C]" <tempauto>   (gThermoSetupTemp) 
 								{ channel="mqtt:topic:mosquitto:esp-sonoff-s20-03:TempSet" }
-								//{mqtt="	>[openhab:dacha/bedroom3/thermo_set1:command:*:default],
-								//		<[openhab:dacha/bedroom3/thermo_set1:state:default]"}
 									
-//*********************** boiler room									
+//*********************** boiler room	
+/*								
 Switch BoilerRoom_Heater   "Конвектор (котельная)"          <heating>   (gBoilerRoom, gActuators, gHeaters) 
 							{mqtt="	>[openhab:dacha/esp-s20-05/output12:command:ON:1],
 									>[openhab:dacha/esp-s20-05/output12:command:OFF:0],
@@ -186,4 +128,4 @@ String BoilerRoom_Heater_sThermo    "[%s]"
 Number BoilerRoom_Heater_tThermo    "Установка [%.1f °C]" <tempauto>   (gThermoSetupTemp) 
 								{mqtt="	>[openhab:dacha/esp-s20-05/thermo_set1:command:*:default],
 										<[openhab:dacha/esp-s20-05/thermo_set1:state:default]"}
-									
+*/									

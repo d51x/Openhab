@@ -1,11 +1,19 @@
 // 192.168.2.202
-Thing mqtt:topic:mosquitto:esp-electro "Electro (PZEM)" (mqtt:broker:mosquitto) @ "Устройства" {
+Thing mqtt:topic:mosquitto:esp-electro "Electro" (mqtt:broker:mosquitto) @ "Устройства" {
 	Channels:
 		Type number: Voltage 			"Напряжение" 			[ stateTopic="dacha/electro/pmv"]
+		//Type number: Voltage_SDM 			"Напряжение" 			[ stateTopic="dacha/sdm230/mb0101"]
+		Type number: Voltage_SDM 			"Напряжение" 			[ stateTopic="dacha/sdm230/pmv"]
 		Type number: Current 			"Сила тока" 					[ stateTopic="dacha/electro/pmc"]
+		//Type number: Current_SDM 			"Сила тока" 					[ stateTopic="dacha/sdm230/mb0102"]
+		Type number: Current_SDM 			"Сила тока" 					[ stateTopic="dacha/sdm230/pmc"]
 		Type number: PowerRMS 			"Потребляемая мощность" 					[ stateTopic="dacha/electro/pmw"]
+		//Type number: PowerRMS_SDM 			"Потребляемая мощность" 					[ stateTopic="dacha/sdm230/mb0103"]
+		Type number: PowerRMS_SDM 			"Потребляемая мощность" 					[ stateTopic="dacha/sdm230/pmw"]
 		Type number: PowerWH 		"Расход кВтч" 					[ stateTopic="dacha/electro/pmwh"]
-		
-		Type number: rssi			"Уровень сигнала" 			[ stateTopic="dacha/electro/rssi" ]
-		Type number: uptime			"Время работы" 				[ stateTopic="dacha/electro/uptime" ]
+		//Type number: PowerWH_SDM 		"Расход кВтч" 					[ stateTopic="dacha/sdm230/mb0201"]
+		Type number: PowerWH_SDM 		"Расход кВтч" 					[ stateTopic="dacha/sdm230/pmwh"]
+
+		//Type number: rssi			"Уровень сигнала" 			[ stateTopic="dacha/electro/rssi" ]
+		//Type number: uptime			"Время работы" 				[ stateTopic="dacha/electro/uptime" ]
 }

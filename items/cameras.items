@@ -4,21 +4,21 @@ Group:Switch:OR(ON, OFF)  gCameraBlind
 
 Switch CameraTelegramSnapshot "Snapshot to Telegram" (gNotify)
 
-Switch Motion_Camera_1 "Движение [%s]" <motion> (gCameras, gCameraMotion, gHistory, gMyOpenHab) {channel="mqtt:topic:mosquitto:camera_01:MotionDetect"}
-String MotionTime_Camera_1 "Время движения [%s]" <camera> (gCameras, gHistory, gMyOpenHab) {channel="mqtt:topic:mosquitto:camera_01:MotionTime"}
+Switch Motion_Camera_1 "Движение [%s]" <motion> (gCameras, gCameraMotion, gMyOpenHab) {channel="mqtt:topic:mosquitto:camera_01:MotionDetect"}
+String MotionTime_Camera_1 "Время движения [%s]" <camera> (gCameras, gMyOpenHab) {channel="mqtt:topic:mosquitto:camera_01:MotionTime"}
 
-Switch Blind_Camera_1 "Засветка [%s]" <camera> (gCameras, gCameraBlind, gHistory, gMyOpenHab) {channel="mqtt:topic:mosquitto:camera_01:BlindDetect"}
-String BlindTime_Camera_1 "Время засветки [%s]" <camera> (gCameras, gHistory, gMyOpenHab) {channel="mqtt:topic:mosquitto:camera_01:BlindTime"}
+Switch Blind_Camera_1 "Засветка [%s]" <camera> (gCameras, gCameraBlind, gMyOpenHab) {channel="mqtt:topic:mosquitto:camera_01:BlindDetect"}
+String BlindTime_Camera_1 "Время засветки [%s]" <camera> (gCameras, gMyOpenHab) {channel="mqtt:topic:mosquitto:camera_01:BlindTime"}
 
 
-Switch Motion_Camera_2 "Движение [%s]" <motion> (gCameras, gCameraMotion, gHistory, gMyOpenHab) {channel="mqtt:topic:mosquitto:camera_02:MotionDetect"}
-String MotionTime_Camera_2 "Время движения [%s]" <camera> (gCameras, gHistory, gMyOpenHab) {channel="mqtt:topic:mosquitto:camera_02:MotionTime"}
+Switch Motion_Camera_2 "Движение [%s]" <motion> (gCameras, gCameraMotion, gMyOpenHab) {channel="mqtt:topic:mosquitto:camera_02:MotionDetect"}
+String MotionTime_Camera_2 "Время движения [%s]" <camera> (gCameras, gMyOpenHab) {channel="mqtt:topic:mosquitto:camera_02:MotionTime"}
 
-Switch Blind_Camera_2 "Засветка [%s]" <camera> (gCameras, gCameraBlind, gHistory, gMyOpenHab) {channel="mqtt:topic:mosquitto:camera_02:BlindDetect"}
-String BlindTime_Camera_2 "Время засветки [%s]" <camera> (gCameras, gHistory, gMyOpenHab) {channel="mqtt:topic:mosquitto:camera_02:BlindTime"}
+Switch Blind_Camera_2 "Засветка [%s]" <camera> (gCameras, gCameraBlind, gMyOpenHab) {channel="mqtt:topic:mosquitto:camera_02:BlindDetect"}
+String BlindTime_Camera_2 "Время засветки [%s]" <camera> (gCameras, gMyOpenHab) {channel="mqtt:topic:mosquitto:camera_02:BlindTime"}
 
-Switch Motion_Camera_3 "Движение [%s]" <motion> (gCameras, gCameraMotion, gHistory, gMyOpenHab) {channel="mqtt:topic:mosquitto:camera_03:MotionDetect"}
-String MotionTime_Camera_3 "Время движения [%s]" <camera> (gCameras, gHistory, gMyOpenHab) {channel="mqtt:topic:mosquitto:camera_03:MotionTime"}
+Switch Motion_Camera_3 "Движение [%s]" <motion> (gCameras, gCameraMotion, gMyOpenHab) {channel="mqtt:topic:mosquitto:camera_03:MotionDetect"}
+String MotionTime_Camera_3 "Время движения [%s]" <camera> (gCameras, gMyOpenHab) {channel="mqtt:topic:mosquitto:camera_03:MotionTime"}
 
-Switch Blind_Camera_3 "Засветка [%s]" <camera> (gCameras, gCameraBlind, gHistory, gMyOpenHab) {channel="mqtt:topic:mosquitto:camera_03:BlindDetect"}
-String BlindTime_Camera_3 "Время засветки [%s]" <camera> (gCameras, gHistory, gMyOpenHab) {channel="mqtt:topic:mosquitto:camera_03:BlindTime"}
+Switch Blind_Camera_3 "Засветка [%s]" <camera> (gCameras, gCameraBlind, gMyOpenHab) {channel="mqtt:topic:mosquitto:camera_03:BlindDetect"}
+String BlindTime_Camera_3 "Время засветки [%s]" <camera> (gCameras, gMyOpenHab) {channel="mqtt:topic:mosquitto:camera_03:BlindTime"}

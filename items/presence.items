@@ -1,13 +1,20 @@
-Group:Switch:OR(ON,OFF) gPresent      "Кто-то есть на даче [MAP(presence.map):%s]" <presence> (gHistory, gMyOpenHab)
+Group:Switch:OR(ON,OFF) gPresent      "Кто-то есть на даче [MAP(presence.map):%s]" <presence> (gMyOpenHab, gInfluxe)
 
-Group:Switch:OR(ON,OFF) gPresent_My "Я на даче [MAP(presence.map):%s]" <presence> (gPresent, gHistory, gMyOpenHab)
+Group:Switch:OR(ON,OFF) gPresent_My "Я на даче [MAP(presence.map):%s]" <presence> (gPresent, gMyOpenHab)
 
-Switch Presence_My_Phone 		 "Я (phone)" 		<network> (gPresent_My, gHistory, gMyOpenHab) {channel="network:pingdevice:mimix2s:online", expire="25m, command=OFF"}
-Switch Presence_My_IFTTT 		 "Я (IFTTT)"		<network> (gPresent_My, gHistory, gMyOpenHab) 
-Switch Presence_My_Tablet 		 "Я (tablet)"		<network> (gPresent_My, gHistory, gMyOpenHab) 
+Switch Presence_My_Phone 		 "Я (phone)" 		<network> (gPresent_My, gMyOpenHab) {channel="network:pingdevice:mimix2s:online", expire="25m, command=OFF"}
+//Switch Presence_My_IFTTT 		 "Я (IFTTT)"		<network> (gPresent_My, gMyOpenHab) 
+Switch Presence_My_Tablet 		 "Я (tablet)"		<network> (gPresent_My, gMyOpenHab) 
+Switch Presence_Car 		 "Машина"		<network> (gPresent, gMyOpenHab) {channel="network:pingdevice:Citroen:online", expire="10m, command=OFF"}
 
-Switch Presence_Wife_Phone 		 "Жена (phone)" 	<network> (gPresent, gHistory, gMyOpenHab) {channel="network:pingdevice:mi5s:online", expire="25m, command=OFF"}
-Switch Presence_Daughter_Phone 	 "Дочь (phone)" 	<network> (gPresent, gHistory, gMyOpenHab) {channel="network:pingdevice:honor7c:online", expire="25m, command=OFF"}
-Switch Presence_Son_Phone 	     "Сын (phone)" 	    <network> (gPresent, gHistory, gMyOpenHab) {channel="network:pingdevice:redmi4x:online", expire="25m, command=OFF"}
+Switch Presence_Wife_Phone 		 "Жена (note8)" 	<network> (gPresent, gMyOpenHab)  {channel="network:pingdevice:redmi_note_8_pro:online", expire="25m, command=OFF"}
+Switch Presence_Wife2_Phone 		 "Жена (mi5s)" 	<network> (gPresent, gMyOpenHab)  {channel="network:pingdevice:mi5s:online", expire="25m, command=OFF"}
+Switch Presence_Daughter_Phone 	 "Дочь" 	<network> (gPresent, gMyOpenHab)          {channel="network:pingdevice:honor7c:online", expire="25m, command=OFF"}
+Switch Presence_Son_Phone 	     "Сын" 	    <network> (gPresent, gMyOpenHab)          {channel="network:pingdevice:redmi4x:online", expire="25m, command=OFF"}
 
 
+/*
+owntracks/dmitry/mimix2s {"_type":"location","acc":29,"alt":158,"batt":55,"conn":"w","inregions":["work danilovskaya"],"lat":55.7004289,"lon":37.6238061,"tid":"ds","tst":1566284969,"vac":3,"vel":0}
+Switch atHomeEX "Home presence" {channel="gpstracker:tracker:EX:regionTrigger" [profile="gpstracker:trigger-geofence", regionName="Home"]}
+
+*/

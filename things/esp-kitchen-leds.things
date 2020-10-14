@@ -1,0 +1,31 @@
+// 192.168.2.223
+Thing mqtt:topic:mosquitto:kitchen-led "Kitchen Leds" (mqtt:broker:mosquitto) @ "Устройства" {
+	Channels:
+		//Type switch: Red 			"Красный" 			[ stateTopic="dacha/kitchen-led/output4", commandTopic="dacha/kitchen-led/output4", on="1", off="0"]
+		//Type switch: Green 			"Зеленый" 			[ stateTopic="dacha/kitchen-led/output5", commandTopic="dacha/kitchen-led/output5", on="1", off="0" ]
+		//Type switch: Blue 			"Синий" 			[ stateTopic="dacha/kitchen-led/output14", commandTopic="dacha/kitchen-led/output14", on="1", off="0" ]
+		//Type switch: White 			"Белый" 			[ stateTopic="dacha/kitchen-led/output12", commandTopic="dacha/kitchen-led/output12", on="1", off="0" ]
+		//Type switch: WarmWhite 		"Белый теплый" 		[ stateTopic="dacha/kitchen-led/output13", commandTopic="dacha/kitchen-led/output13", on="1", off="0" ]
+		//Type switch: FanRelay 		"Вентилятор" 		[ stateTopic="dacha/kitchen-led/output15", commandTopic="dacha/kitchen-led/output15", on="1", off="0" ]
+		Type switch: FanRelay 		"Вентилятор" 		[ stateTopic="dacha/kitchen-leds/output15", commandTopic="dacha/kitchen-leds/output15", on="1", off="0" ]
+	
+		//Type switch: PirMode 		"Датчик движения (режим)" 			[ stateTopic="dacha/kitchen-led/valuedes1", commandTopic="dacha/kitchen-led/valuedes1", on="1", off="0"]
+		//Type switch: SetSunset 		"Установить закат" 			[ stateTopic="dacha/kitchen-led/valuedes0", commandTopic="dacha/kitchen-led/valuedes0", on="1", off="0"]
+		Type switch: SetSunset 		"Установить закат" 			[ stateTopic="dacha/kitchen-leds/sunset", commandTopic="dacha/kitchen-leds/sunset", on="1", off="0"]
+		Type number: AdcThreshhold  "Отсечка по датчику" 		[ stateTopic="dacha/kitchen-leds/adcthld", commandTopic="dacha/kitchen-leds/adcthld"]
+		Type dimmer: RedLevel 		"Красный (уровень)" 		[ stateTopic="dacha/kitchen-leds/ledc0", commandTopic="dacha/kitchen-leds/ledc0", min="0", max="255", step="1" ]
+		Type dimmer: GreenLevel 	"Зеленый (уровень)" 		[ stateTopic="dacha/kitchen-leds/ledc1", commandTopic="dacha/kitchen-leds/ledc1", min="0", max="255", step="1" ]
+		Type dimmer: BlueLevel 		"Синий (уровень)" 			[ stateTopic="dacha/kitchen-leds/ledc2", commandTopic="dacha/kitchen-leds/ledc2", min="0", max="255", step="1" ]
+		Type dimmer: WhiteLevel 	"Белый (уровень)" 			[ stateTopic="dacha/kitchen-leds/ledc3", commandTopic="dacha/kitchen-leds/ledc3", min="0", max="255", step="1" ]
+		//Type dimmer: WarmWhiteLevel "Белый теплый (уровень)" 	[ stateTopic="dacha/kitchen-leds/ledc4", commandTopic="dacha/kitchen-led/pwm4", min="0", max="255", step="1" ]
+
+		
+		Type number: rssi			"Уровень сигнала" 			[ stateTopic="dacha/kitchen-leds/rssi" ]
+		Type number: uptime			"Время работы" 				[ stateTopic="dacha/kitchen-leds/uptime" ]
+
+		// new
+		//Type string: effect			"Световой эффект" 		[ stateTopic="dacha/esp-kitchen/effect", commandTopic="dacha/esp-kitchen/effect" ]
+		Type number: effect			"Световой эффект" 			[ stateTopic="dacha/kitchen-leds/effect/id", commandTopic="dacha/kitchen-leds/effect/id" ]
+		//Type string: colorrgb			"Цвет" 					[ stateTopic="dacha/esp-kitchen/color/rgb", commandTopic="dacha/esp-kitchen/color/rgb" ]
+		Type number: colorint			"Цвет" 					[ commandTopic="dacha/kitchen-leds/color/int" ]
+}	

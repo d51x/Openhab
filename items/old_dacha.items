@@ -20,12 +20,6 @@ Group FF_BedRoom_2     "Спальня 2"   <bedroom_red>    (gFF)
 Group FF_BedRoom_3     "Спальня 3"  	<bedroom_blue>   (gFF)
 Group FF_Corridor     "Коридор"     <corridor>  	 (gFF)
 
-Group ESP8266
-Group ESP_Witty
-Group ESP_SOnOff
-Group ESP_D1_mini
-Group ESP_Garden
-Group ESP_Boiler
 
 /* active groups */
 Group:Switch:OR(ON, OFF)        Lights      "Все освещение [(%d)]"

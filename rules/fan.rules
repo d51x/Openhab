@@ -1,0 +1,289 @@
+val kitchenFanOffDelay = 60*5
+val atticFanOffDelay = 60*5
+var Timer kitchenFanTimer
+var Timer atticFanTimer
+val bathroomHummidityThreshold = 40.0f
+val kitchenHummidityThreshold = 50.0f
+var attic_fan_mode = 0 // "single" - manual single mod - 10, 15, 20 min
+var kitchen_fan_mode = 0 // "single" - manual single mod - 10, 15, 20 min
+
+
+
+//var allowKitchenFanNotify = new Boolean(true)
+val TAG = "FAN"
+
+rule "Fan kitchen is changed from OFF to ON"
+when
+	Item FF_kitchen_FanRelay changed from OFF to ON 
+then 
+    if ( FF_kitchen_Fan_AutoOff.state == OFF) {
+        return;
+    } 
+
+    if ( kitchen_fan_mode > 0 ) {
+        return;  // single time mode
+    }
+
+    if ( kitchenFanTimer === null || kitchenFanTimer.hasTerminated )
+    {
+        var Integer autooff_time = (Attic_Fan_AutoOffTime.state as DecimalType).intValue * 60
+        kitchenFanTimer = createTimer(now.plusSeconds(autooff_time), [ |
+            //        allowKitchenFanNotify = true
+            kitchenFanTimer.cancel()
+            kitchenFanTimer = null
+            FF_kitchen_FanRelay.sendCommand(OFF)
+            val telegram = getActions("telegram","telegram:telegramBot:telegram")
+            val msg = "Вентилятор на кухне выключен по таймеру"
+            //sendBroadcastNotification(msg)	
+            //executeCommandLine(Telegram_Command.state + msg) 
+            telegram.sendTelegram( msg )
+        ])
+    }   
+end
+
+rule "Fan kitchen is changed from ON to OFF"
+when 
+    Item FF_kitchen_FanRelay changed from ON to OFF 
+then
+    if ( kitchenFanTimer !== null) {
+        kitchenFanTimer.cancel()
+        
+        kitchenFanTimer = null
+    }
+    sendCommand(FF_kitchen_Fan_Mode, "MODE_0")    
+end 
+
+rule "Fan attic is changed from OFF to ON"
+when
+	Item Attic_Fan changed from OFF to ON 
+then 
+    if ( Attic_Fan_AutoOff.state == OFF) {
+        return;
+    } 
+
+    if ( attic_fan_mode > 0 ) {
+        return;  // single time mode
+    }
+
+    if ( atticFanTimer === null || atticFanTimer.hasTerminated )
+    {
+        var Integer autooff_time = (Attic_Fan_AutoOffTime.state as DecimalType).intValue * 60
+        atticFanTimer = createTimer(now.plusSeconds(autooff_time), [ |
+            //        allowKitchenFanNotify = true
+            atticFanTimer.cancel()
+            atticFanTimer = null
+            Attic_Fan.sendCommand(OFF)
+            val msg = "Вентилятор на чердаке выключен по таймеру"
+            val telegram = getActions("telegram","telegram:telegramBot:telegram")
+            //sendBroadcastNotification(msg)	
+            //executeCommandLine(Telegram_Command.state + msg) 
+            telegram.sendTelegram( msg )
+        ])
+    }        
+end
+
+rule "Fan attic is changed from ON to OFF"
+when 
+    Item Attic_Fan changed from ON to OFF 
+then
+    if ( atticFanTimer !== null) {
+        atticFanTimer.cancel()
+        atticFanTimer = null
+    }
+    sendCommand(Attic_Fan_Mode, "MODE_0")
+end 
+
+rule "Fan attic and bathroom hummidity"
+when
+    Item FF_BathRoom_sHumidity changed
+then
+    if ( attic_fan_mode > 0 ) {
+        return; // single time mode
+    }
+
+    var Double hum = (FF_BathRoom_sHumidity.state as DecimalType).doubleValue
+    var Double humTreshold = (Attic_Fan_HumTreshold.state as DecimalType).doubleValue
+    var Integer autooff_time = (Attic_Fan_AutoOffTime.state as DecimalType).intValue * 60
+
+    //logInfo("Fan", "FF_BathRoom_sHumidity = {}", hum)
+    //logInfo("Fan", "Attic_Fan_AutoHummidity = {}", Attic_Fan_AutoHummidity.state)
+    //logInfo("Fan", "Treshold = {}", humTreshold)
+    //logInfo("Fan", "autooff_time = {}", autooff_time)
+    if ( Attic_Fan_AutoHummidity.state == OFF ) {
+        //logInfo("Fan", "rule exit")
+        return;
+    }   
+
+    
+    //if ( hum >= bathroomHummidityThreshold ) { 
+    if ( hum >= humTreshold ) { 
+        //logInfo("Fan", "hum >= treshold")
+
+        if ( atticFanTimer === null ) {
+            val msg = "Вентилятор на чердаке включен по превышению влажности"
+            //sendBroadcastNotification(msg)	
+            val telegram = getActions("telegram","telegram:telegramBot:telegram")
+            //executeCommandLine(Telegram_Command.state + msg)             
+            telegram.sendTelegram( msg )
+        }
+
+        sendCommand(Attic_Fan, ON) // после включения запустится таймер на 5 мин на выключение, если вентилятор был выключен
+        // каждое включение должно рестартовать таймер выключения, т.е. пока влажность высокая, не дадим выключиться вентилятору по таймеру
+        //logInfo("Fan", "atticFanTimer.reschedule")
+        if ( atticFanTimer !== null ) atticFanTimer.reschedule(now.plusSeconds(autooff_time))
+    } else {
+        //logInfo("Fan", "Attic Fan rule exit: hum < treshold")
+        if ( Attic_Fan_AutoOff.state == OFF ) {
+            // выключим сами при понижении влажности
+            sendCommand(Attic_Fan, OFF)
+
+            val msg = "Вентилятор на чердаке выключен по нормализации влажности"
+            val telegram = getActions("telegram","telegram:telegramBot:telegram")
+            //sendBroadcastNotification(msg)	
+            //executeCommandLine(Telegram_Command.state + msg)               
+            telegram.sendTelegram( msg )
+        }
+    }
+end
+
+rule "Fan kitchen and bathroom hummidity"
+when
+    Item FF_Kitchen_sHumidity changed
+then
+    if ( kitchen_fan_mode > 0 ) {
+        return;  // single timer mode
+    }
+
+    var Double hum = (FF_Kitchen_sHumidity.state as DecimalType).doubleValue
+    var Double humTreshold = (FF_kitchen_Fan_HumTreshold.state as DecimalType).doubleValue
+    var Integer autooff_time = (FF_kitchen_Fan_AutoOffTime.state as DecimalType).intValue * 60
+
+    if ( FF_kitchen_FanRelay_AutoHummidity.state == OFF ) {
+        return;
+    }    
+
+    if ( hum >= humTreshold ) { 
+    //if ( hum >= kitchenHummidityThreshold ) { 
+
+        if ( kitchenFanTimer === null ) {
+            val msg = "Вентилятор на кухне включен по превышению влажности"
+            //sendBroadcastNotification(msg)	
+            val telegram = getActions("telegram","telegram:telegramBot:telegram")
+            //executeCommandLine(Telegram_Command.state + msg)             
+            telegram.sendTelegram( msg )
+        }
+
+        sendCommand(FF_kitchen_FanRelay, ON) // после включения запустится таймер на 5 мин на выключение, если вентилятор был выключен
+        // каждое включение должно рестартовать таймер выключения, т.е. пока влажность высокая, не дадим выключиться вентилятору по таймеру
+        //logInfo("Fan", "kitchenFanTimer.reschedule")
+        if ( kitchenFanTimer !== null ) kitchenFanTimer.reschedule(now.plusSeconds(autooff_time))
+    } else {
+         if ( FF_kitchen_Fan_AutoOff.state == OFF ) {
+            // выключим сами при понижении влажности
+            sendCommand(FF_kitchen_FanRelay, OFF)
+
+            val msg = "Вентилятор на кухне выключен по нормализации влажности"
+            val telegram = getActions("telegram","telegram:telegramBot:telegram")
+            //sendBroadcastNotification(msg)	
+            //executeCommandLine(Telegram_Command.state + msg)               
+            telegram.sendTelegram( msg )
+        }       
+    }
+end
+
+rule "Fan rules system started"
+when
+    System started
+then
+	if (( Attic_Fan_Mode.state == NULL ) || (Attic_Fan_Mode.state == UNDEF)) {
+		sendCommand(Attic_Fan_Mode, "MODE_0")
+	}
+	if (( FF_kitchen_Fan_Mode.state == NULL ) || (FF_kitchen_Fan_Mode.state == UNDEF)) {
+		sendCommand(FF_kitchen_Fan_Mode, "MODE_0")
+	}
+    
+end
+
+rule "Change attic single time work"
+when
+	Item Attic_Fan_Mode received command  
+then
+	switch(receivedCommand) {
+	    case "MODE_0": 	attic_fan_mode = 0
+	    case "MODE_1": 	attic_fan_mode = 10
+	    case "MODE_2": 	attic_fan_mode = 15
+		case "MODE_3": 	attic_fan_mode = 20
+	}
+
+    if ( attic_fan_mode > 0) {
+        // single time mode
+        // stop timer
+        if ( atticFanTimer !== null) {
+            atticFanTimer.cancel()
+            atticFanTimer = null
+        }        
+
+        
+        Attic_Fan.sendCommand(ON)
+        var msg = "Вентилятор на чердаке включен на %d минут"
+        val telegram = getActions("telegram","telegram:telegramBot:telegram")
+        telegram.sendTelegram( String::format(msg, attic_fan_mode ) )
+        
+        // start new timer
+        atticFanTimer = createTimer(now.plusMinutes(attic_fan_mode), [ |
+            //        allowKitchenFanNotify = true
+            atticFanTimer.cancel()
+            atticFanTimer = null
+            Attic_Fan.sendCommand(OFF)
+            msg = "Вентилятор на чердаке выключен по таймеру (%d минут)"
+            msg = String::format(msg, attic_fan_mode )
+            //sendBroadcastNotification(msg)	
+            val telegram2 = getActions("telegram","telegram:telegramBot:telegram")
+            //executeCommandLine(Telegram_Command.state + msg) 
+            telegram2.sendTelegram( msg )
+        ])
+    
+    }
+end
+
+
+rule "Change kitchen single time work"
+when
+	Item FF_kitchen_Fan_Mode received command  
+then
+	switch(receivedCommand) {
+	    case "MODE_0": 	kitchen_fan_mode = 0
+	    case "MODE_1": 	kitchen_fan_mode = 10
+	    case "MODE_2": 	kitchen_fan_mode = 15
+		case "MODE_3": 	kitchen_fan_mode = 20
+	}
+
+    if ( kitchen_fan_mode > 0) {
+        // single time mode
+        // stop timer
+        if ( kitchenFanTimer !== null) {
+            kitchenFanTimer.cancel()
+            kitchenFanTimer = null
+        }        
+
+        
+        FF_kitchen_FanRelay.sendCommand(ON)
+        var msg = "Вентилятор на кухне включен на %d минут"
+        val telegram = getActions("telegram","telegram:telegramBot:telegram")
+        telegram.sendTelegram( String::format(msg, kitchen_fan_mode ) )
+        
+        // start new timer
+        kitchenFanTimer = createTimer(now.plusMinutes(kitchen_fan_mode), [ |
+            kitchenFanTimer.cancel()
+            kitchenFanTimer = null
+            FF_kitchen_FanRelay.sendCommand(OFF)
+            msg = "Вентилятор на кухне выключен по таймеру (%d минут)"
+            msg = String::format(msg, kitchen_fan_mode )
+            //sendBroadcastNotification(msg)	
+            //executeCommandLine(Telegram_Command.state + msg) 
+            val telegram2 = getActions("telegram","telegram:telegramBot:telegram")
+            telegram2.sendTelegram( msg )
+        ])
+    
+    }
+end

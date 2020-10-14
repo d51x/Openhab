@@ -5,61 +5,10 @@ import org.eclipse.smarthome.model.script.ScriptServiceUtil
 rule "Update temperature item LastUpdate"
 when
 	Member of gLastUpdate received update
-	/*-------- temperatures --------------*/
-	// Item FF_LivingRoom_sTemp_01 						received update or
-	// Item FF_LivingRoom_sTemp_02 						received update or
-	// Item FF_Kitchen_sTemp 								received update or
-	// Item FF_BathRoom_sTemp 								received update or
-	// Item SF_Room1_sTemp 								received update or
-	// Item SF_Room2_sTemp 								received update or
-	// Item SF_Room3_sTemp 								received update or
-	// Item BoilerRoom_sTemp_01 							received update or
-	// Item BoilerRoom_Boiler_sTemperature 				received update or
-	// Item BoilerRoom_Hotcab_sTemperature 				received update or
-	// Item Septic_sTemperature 							received update or
-	
-	/*--------- humidity -------------------*/
-	// Item BoilerRoom_sHumidity 							received update or
-	// Item FF_LivingRoom_sHumidity_01						received update or
-	// Item FF_LivingRoom_sHumidity_02						received update or
-	// Item FF_Kitchen_sHumidity 							received update or
-	// Item FF_BathRoom_sHumidity 							received update or
-	// Item SF_Room1_sHumidity 							received update or
-	// Item SF_Room2_sHumidity 							received update or
-	// Item SF_Room3_sHumidity 							received update or
-	
-	/*--------- electricity -----------------*/
-	// Item Electro_Voltage 								received update or
-	// Item Electro_Current 								received update or
-	// Item Electro_PowerRMS 								received update or
-	// Item Electro_SOnOffPow1_Voltage 					received update or
-	// Item Electro_SOnOffPow1_Current 					received update or
-	// Item Electro_SOnOffPow1_PowerRMS 					received update or
-	// Item Electro_SOnOffPow2_Voltage 					received update or
-	// Item Electro_SOnOffPow2_Current 					received update or
-	// Item Electro_SOnOffPow2_PowerRMS 					received update or
-	// Item Electro_SOnOffPow3_Voltage 					received update or
-	// Item Electro_SOnOffPow3_Current 					received update or
-	// Item Electro_SOnOffPow3_PowerRMS 					received update or
-	
-	// Item Electro_ADC 									received update or
-
-	/*---------- old items -------------------*/
-	// Item Temp_BoilerRoom 								received update or   ///Temp_BoilerRoom_Cur
-	// Item BoilerRoom_Hum 								received update or
-	// Item Temp_BoilerRoom_Boiler 						received update or
-	// Item Temp_BoilerRoom_Hotcab							received update or		///Temp_BoilerRoom_Hotcab_Cur
-	// Item Septic_Temperature 							received update or 
-	// Item Temp_Attic	 									received update or 	//Temp_Attic_Cur
-	// Item Weather_Temperature 							received update or //Weather_Temp
-	// Item Temp_FL1_Living1 								received update or ///Temp_FL1_Living_Cur1
-	// Item Temp_FL1_Living2 								received update or ///Temp_FL1_Living_Cur2
-	// Item Temp_FL1_Kitchen 								received update or ///Temp_FL1_Kitchen_Cur
-	// Item Temp_FL1_Toilet 								received update or ///Temp_FL1_Toilet_Cur
-	// Item Temp_FL2_Room1 								received update  ///Temp_FL2_Room1_Cur	
 then
 	//logInfo("triggeringItem.name = ", triggeringItem.name)
 	val  item_name = triggeringItem.name + "_LastUpdate"
+	//logInfo("LastUpdate", "item_name = " + item_name)
 	//logInfo("new_item.name = ", item_name)
 	val item = ScriptServiceUtil.getItemRegistry.getItem( item_name )
 	item.postUpdate(new DateTimeType())
@@ -69,16 +18,16 @@ end
 
 rule "Get min last update time for FF living room temp 1 and temp 2"
 when
-	Item FF_LivingRoom_sTemp_02_LastUpdate received update or
-	Item FF_LivingRoom_sTemp_01_LastUpdate received update
+	Item FF_LivingRoom01_sTemp_LastUpdate received update or
+	Item FF_LivingRoom02_sTemp_LastUpdate received update
 then
-	val d1 = new DateTime(FF_LivingRoom_sTemp_01_LastUpdate.state.toString)
-	val d2 = new DateTime(FF_LivingRoom_sTemp_02_LastUpdate.state.toString)
+	val d1 = new DateTime(FF_LivingRoom01_sTemp_LastUpdate.state.toString)
+	val d2 = new DateTime(FF_LivingRoom02_sTemp_LastUpdate.state.toString)
 	if ( d1.compareTo(d2) > 0 ) 
 	{
-		FF_LivingRoom_Temp_LastUpdate.postUpdate(FF_LivingRoom_sTemp_02_LastUpdate.state)
+		FF_LivingRoom_Temp_LastUpdate.postUpdate(FF_LivingRoom02_sTemp_LastUpdate.state)
 	} else {
-		FF_LivingRoom_Temp_LastUpdate.postUpdate(FF_LivingRoom_sTemp_01_LastUpdate.state)
+		FF_LivingRoom_Temp_LastUpdate.postUpdate(FF_LivingRoom01_sTemp_LastUpdate.state)
 	}
 end	
 

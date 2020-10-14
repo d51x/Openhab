@@ -1,1 +1,2 @@
-Thing exec:command:freehdd [command="/bin/bash /home/pi/free_hdd.sh", transform="REGEX((.*?))", interval=60, timeout=5]
+//Thing exec:command:freehdd [command="/bin/bash /home/pi/free_hdd.sh", transform="REGEX((.*?))", interval=60, autoupdate=true, timeout=5]
+Thing exec:command:freehdd [command="/bin/bash /etc/openhab2/scripts/free_hdd.sh", interval=60, autoupdate=true, timeout=5]

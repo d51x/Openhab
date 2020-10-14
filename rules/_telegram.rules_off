@@ -1,0 +1,108 @@
+val light_street_main = "Освещение улицы %s"
+val light_street_back = "Освещение во дворе %s"
+val pump_power_state = "Питание насоса %s"
+val boiler_state = "Водонагреватель %s"
+val hotcab_state = "Греющий кабель %s. Температура %.1f °C"
+val septic_state = "Обогрев септика %s. Температура %.1f °C"
+val sonoffpow1_state = "Обогреватель 1 в комнате %s. Температура %.1f °C"
+val sonoffpow2_state = "Обогреватель 2 в комнате %s. Температура %.1f °C"
+val sonoffpow3_state = "Обогреватель на кухне %s. Температура %.1f °C"
+
+
+rule "Street Main Light Relay state changed"
+when
+    Item Street_Main_Light changed
+then
+	var String str;
+	if (Street_Main_Light.state.toString == "ON" ) str = "ВКЛЮЧЕНО"
+	if (Street_Main_Light.state.toString == "OFF" ) str = "ВЫКЛЮЧЕНО"
+    sendTelegram("bot1", light_street_main, str)
+end
+
+rule "Street Back Light Relay state changed"
+when		
+    Item Street_Back_Light changed
+then
+	var String str;
+	if (Street_Back_Light.state.toString == "ON" ) str = "ВКЛЮЧЕНО"
+	if (Street_Back_Light.state.toString == "OFF" ) str = "ВЫКЛЮЧЕНО"
+    sendTelegram("bot1", light_street_back, str)
+end
+
+rule "Septic Heating Relay state changed"
+when
+    Item Septic_Heating changed
+then
+	var String str;
+	if (Septic_Heating.state.toString == "ON" ) str = "ВКЛЮЧЕН"
+	if (Septic_Heating.state.toString == "OFF" ) str = "ВЫКЛЮЧЕН"	
+	str = String::format(septic_state, str, (Septic_Temperature.state as DecimalType).doubleValue)
+    sendTelegram("bot1", str)			
+end
+
+/*
+rule "Heating GF Living Room Relay state changed"
+when
+    Item Heating_GF_Living changed
+then
+    //sendTelegram("bot1", "Item <Heating_GF_Living> changed to %s", Heating_GF_Living.state.toString)
+end
+*/
+
+rule "ESP_Boiler Pump_Power state changed"
+when
+    Item BoilerRoom_Pump_Power changed
+then
+	var String str;
+	if (BoilerRoom_Pump_Power.state.toString == "ON" ) str = "ВКЛЮЧЕНО"
+	if (BoilerRoom_Pump_Power.state.toString == "OFF" ) str = "ВЫКЛЮЧЕНО"
+    sendTelegram("bot1", pump_power_state, str)			
+end
+
+rule "ESP_Boiler BoilerRoom_Boiler state changed"
+when
+    Item BoilerRoom_Boiler changed
+then
+	var String str;
+	if (BoilerRoom_Boiler.state.toString == "ON" ) str = "ВКЛЮЧЕН"
+	if (BoilerRoom_Boiler.state.toString == "OFF" ) str = "ВЫКЛЮЧЕН"
+    sendTelegram("bot1", boiler_state, str)			
+end
+
+rule "ESP_Boiler BoilerRoom_Hotcab state changed"
+when
+    Item BoilerRoom_Hotcab changed
+then
+	var String str;
+	if (BoilerRoom_Hotcab.state.toString == "ON" ) str = "ВКЛЮЧЕН"
+	if (BoilerRoom_Hotcab.state.toString == "OFF" ) str = "ВЫКЛЮЧЕН"
+	str = String::format(hotcab_state, str, (Temp_BoilerRoom_Hotcab_Cur.state as DecimalType).doubleValue)
+    sendTelegram("bot1", str)					
+end
+
+
+/*
+rule "Heating_GF_Living1 state changed"
+when
+    Item Heating_GF_Living1 changed
+then
+		var String str;
+		if (Heating_GF_Living1.state.toString == "ON" ) str = "ВКЛЮЧЕН"
+		if (Heating_GF_Living1.state.toString == "OFF" ) str = "ВЫКЛЮЧЕН"
+		str = String::format(sonoffpow1_state, str, (Temp_FL1_Living_Cur1.state as DecimalType).doubleValue)
+    sendTelegram("bot1", str)			
+end
+*/
+
+/*
+rule "Heating_GF_Kitchen state changed"
+when
+    Item Heating_GF_Kitchen changed
+then
+		var String str;
+		if (Heating_GF_Kitchen.state.toString == "ON" ) str = "ВКЛЮЧЕН"
+		if (Heating_GF_Kitchen.state.toString == "OFF" ) str = "ВЫКЛЮЧЕН"
+		str = String::format(sonoffpow3_state, str, (Temp_FL1_Kitchen_Cur.state as DecimalType).doubleValue)
+    sendTelegram("bot1", str)			
+end
+*/

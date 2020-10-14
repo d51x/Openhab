@@ -1,0 +1,280 @@
+	
+val mail_to = "d.pyatykh@gmail.com"  //TODO: прочитать из файла
+val subject = "OpenHAB Alarm"
+
+val light_street_main = "Освещение улицы %s"
+val light_street_back = "Освещение во дворе %s"
+val pump_power_state = "Питание насоса %s"
+val boiler_state = "Водонагреватель %s"
+val hotcab_state = "Греющий кабель %s. Температура %.1f °C"
+val septic_state = "Обогрев септика %s. Температура %.1f °C"
+val sonoffpow1_state = "Обогреватель 1 в комнате %s. Температура %.1f °C"
+val sonoffpow2_state = "Обогреватель 2 в комнате %s. Температура %.1f °C"
+val sonoffpow3_state = "Обогреватель на кухне %s. Температура %.1f °C"
+val bathroom_state = "Обогреватель в ванной %s. Температура %.1f °C"
+val bedroom1_state = "Обогреватель в спальне %s. Температура %.1f °C"
+val bedroom2_state = "Обогреватель у Тани %s. Температура %.1f °C"
+val bedroom3_state = "Обогреватель у Саши %s. Температура %.1f °C"
+
+val light_livingroom_state = "Свет в гостинной %s. Выключатель %d"
+val light_corridor_state = "Свет в коридоре на 2-м этаже %s"
+val light_stair_state = "Лестничное освещение %s"
+val light_led_stairs_state = "Подсветка ступеней %s"
+val light_bedroom1_state = "Свет в спальне %s"
+
+
+rule "Street Main Light Relay state changed"
+when
+    Item Street_Main_Light changed
+then
+	if (gPresent.state.toString == "OFF") {
+		var String str;
+		if (Street_Main_Light.state.toString == "ON" ) str = "ВКЛЮЧЕНО"
+		if (Street_Main_Light.state.toString == "OFF" ) str = "ВЫКЛЮЧЕНО"
+		str = String::format(light_street_main, str)
+		sendMail(mail_to, subject + ": Освещение", str  + "\r\n" + now.toString("dd.MM.yy HH:mm:ss"))
+	}	
+end
+
+rule "Street Back Light Relay state changed"
+when		
+    Item Street_Back_Light changed
+then
+	if (gPresent.state.toString == "OFF") {
+		var String str;
+		if (Street_Back_Light.state.toString == "ON" ) str = "ВКЛЮЧЕНО"
+		if (Street_Back_Light.state.toString == "OFF" ) str = "ВЫКЛЮЧЕНО"
+		str = String::format(light_street_back, str)
+		sendMail(mail_to, subject + ": Освещение", str  + "\r\n" + now.toString("dd.MM.yy HH:mm:ss"))
+	}
+end
+
+/*
+rule "Septic Heating Relay state changed"
+when
+    Item Septic_Heating changed
+then
+	if (gPresent.state.toString == "OFF") {	
+		var String str;
+		if (Septic_Heating.state.toString == "ON" ) str = "ВКЛЮЧЕН"
+		if (Septic_Heating.state.toString == "OFF" ) str = "ВЫКЛЮЧЕН"
+		
+		str = String::format(septic_state, str, (Septic_Temperature.state as DecimalType).doubleValue)
+		sendMail(mail_to, subject + ": Обогрев", str  + "\r\n" + now.toString)		
+	}
+end
+*/
+
+
+
+rule "ESP_Boiler Pump_Power state changed"
+when
+    Item BoilerRoom_Pump_Power changed
+then
+	if (gPresent.state.toString == "OFF") {
+		var String str;
+		if (BoilerRoom_Pump_Power.state.toString == "ON" ) str = "ВКЛЮЧЕНО"
+		if (BoilerRoom_Pump_Power.state.toString == "OFF" ) str = "ВЫКЛЮЧЕНО"
+		str = String::format(pump_power_state, str)
+		sendMail(mail_to, subject + ": Насос", str  + "\r\n" + now.toString("dd.MM.yy HH:mm:ss"))
+	}
+end
+
+rule "ESP_Boiler BoilerRoom_Boiler state changed"
+when
+    Item BoilerRoom_Boiler changed
+then
+	if (gPresent.state.toString == "OFF") {
+		var String str;
+		if (BoilerRoom_Boiler.state.toString == "ON" ) str = "ВКЛЮЧЕН"
+		if (BoilerRoom_Boiler.state.toString == "OFF" ) str = "ВЫКЛЮЧЕН"
+		str = String::format(boiler_state, str)
+		sendMail(mail_to, subject + ": Бойлер", str  + "\r\n" + now.toString("dd.MM.yy HH:mm:ss"))				
+	}
+end
+
+/*
+rule "ESP_Boiler BoilerRoom_Hotcab state changed"
+when
+    Item BoilerRoom_Hotcab changed
+then
+	if (gPresent.state.toString == "OFF") {
+		var String str;
+		if (BoilerRoom_Hotcab.state.toString == "ON" ) str = "ВКЛЮЧЕН"
+		if (BoilerRoom_Hotcab.state.toString == "OFF" ) str = "ВЫКЛЮЧЕН"
+		str = String::format(hotcab_state, str, (Temp_BoilerRoom_Hotcab_Cur.state as DecimalType).doubleValue)
+		sendMail(mail_to, subject + ": Обогрев", str  + "\r\n" + now.toString)	
+	}
+end
+*/
+
+
+/* rule "FF_LivingRoom_Heater_01 state changed"
+when
+    Item FF_LivingRoom_Heater_01 changed
+then
+	if (gPresent.state.toString == "OFF") {	
+		var String str;
+		if (FF_LivingRoom_Heater_01.state.toString == "ON" ) str = "ВКЛЮЧЕН"
+		if (FF_LivingRoom_Heater_01.state.toString == "OFF" ) str = "ВЫКЛЮЧЕН"
+		str = String::format(sonoffpow1_state, str, (FF_LivingRoom_sTemp_01.state as DecimalType).doubleValue)
+		sendMail(mail_to, subject + ": Обогрев", str  + "\r\n" + now.toString)		
+	}		
+end */
+
+/* rule "FF_LivingRoom_Heater_02 state changed"
+when
+    Item FF_LivingRoom_Heater_02 changed
+then
+	if (gPresent.state.toString == "OFF") {	
+		var String str;
+		if (FF_LivingRoom_Heater_02.state.toString == "ON" ) str = "ВКЛЮЧЕН"
+		if (FF_LivingRoom_Heater_02.state.toString == "OFF" ) str = "ВЫКЛЮЧЕН"
+		str = String::format(sonoffpow2_state, str, (FF_LivingRoom_sTemp_02.state as DecimalType).doubleValue)
+		sendMail(mail_to, subject + ": Обогрев", str  + "\r\n" + now.toString)		
+	}		
+end */
+
+/* rule "FF_Kitchen_Heater state changed"
+when
+    Item FF_Kitchen_Heater changed
+then
+	if (gPresent.state.toString == "OFF") {	
+		var String str;
+		if (FF_Kitchen_Heater.state.toString == "ON" ) str = "ВКЛЮЧЕН"
+		if (FF_Kitchen_Heater.state.toString == "OFF" ) str = "ВЫКЛЮЧЕН"
+		str = String::format(sonoffpow3_state, str, (FF_Kitchen_sTemp.state as DecimalType).doubleValue)
+		sendMail(mail_to, subject + ": Обогрев", str  + "\r\n" + now.toString)		
+	}		
+end */
+
+/*
+rule "FF_Bathroom_Heater state changed"
+when
+    Item FF_Bathroom_Heater changed
+then
+	if (gPresent.state.toString == "OFF") {	
+		var String str;
+		if (FF_Bathroom_Heater.state.toString == "ON" ) str = "ВКЛЮЧЕН"
+		if (FF_Bathroom_Heater.state.toString == "OFF" ) str = "ВЫКЛЮЧЕН"
+		str = String::format(bathroom_state, str, (FF_BathRoom_sTemp.state as DecimalType).doubleValue)
+		sendMail(mail_to, subject + ": Обогрев", str  + "\r\n" + now.toString)		
+	}		
+end
+*/
+
+/* rule "SF_Bedroom1_Heater state changed"
+when
+    Item SF_Bedroom1_Heater changed
+then
+	if (gPresent.state.toString == "OFF") {	
+		var String str;
+		if (SF_Bedroom1_Heater.state.toString == "ON" ) str = "ВКЛЮЧЕН"
+		if (SF_Bedroom1_Heater.state.toString == "OFF" ) str = "ВЫКЛЮЧЕН"
+		str = String::format(bedroom1_state, str, (SF_Room1_sTemp.state as DecimalType).doubleValue)
+		sendMail(mail_to, subject + ": Обогрев", str  + "\r\n" + now.toString)		
+	}		
+end */
+
+/* rule "SF_Bedroom2_Heater state changed"
+when
+    Item SF_Bedroom2_Heater changed
+then
+	if (gPresent.state.toString == "OFF") {	
+		var String str;
+		if (SF_Bedroom2_Heater.state.toString == "ON" ) str = "ВКЛЮЧЕН"
+		if (SF_Bedroom2_Heater.state.toString == "OFF" ) str = "ВЫКЛЮЧЕН"
+		str = String::format(bedroom2_state, str, (SF_Room2_sTemp.state as DecimalType).doubleValue)
+		sendMail(mail_to, subject + ": Обогрев", str  + "\r\n" + now.toString)		
+	}		
+end */
+
+/* rule "SF_Bedroom3_Heater state changed"
+when
+    Item SF_Bedroom3_Heater changed
+then
+	if (gPresent.state.toString == "OFF") {	
+		var String str;
+		if (SF_Bedroom3_Heater.state.toString == "ON" ) str = "ВКЛЮЧЕН"
+		if (SF_Bedroom3_Heater.state.toString == "OFF" ) str = "ВЫКЛЮЧЕН"
+		str = String::format(bedroom3_state, str, (SF_Room3_sTemp.state as DecimalType).doubleValue)
+		sendMail(mail_to, subject + ": Обогрев", str  + "\r\n" + now.toString)		
+	}		
+end */
+
+rule "FF_LivingRoom_Light_01 state changed"
+when
+    Item FF_LivingRoom_Light_01 changed
+then
+	if (gPresent.state.toString == "OFF") {	
+		var String str;
+		if (FF_LivingRoom_Light_01.state.toString == "ON" ) str = "ВКЛЮЧЕН"
+		if (FF_LivingRoom_Light_01.state.toString == "OFF" ) str = "ВЫКЛЮЧЕН"
+		str = String::format(light_livingroom_state, str, 1)
+		sendMail(mail_to, subject + ": Свет", str  + "\r\n" + now.toString("dd.MM.yy HH:mm:ss"))	
+	}		
+end
+
+rule "FF_LivingRoom_Light_02 state changed"
+when
+    Item FF_LivingRoom_Light_02 changed
+then
+	if (gPresent.state.toString == "OFF") {	
+		var String str;
+		if (FF_LivingRoom_Light_02.state.toString == "ON" ) str = "ВКЛЮЧЕН"
+		if (FF_LivingRoom_Light_02.state.toString == "OFF" ) str = "ВЫКЛЮЧЕН"
+		str = String::format(light_livingroom_state, str, 2)
+		sendMail(mail_to, subject + ": Свет", str  + "\r\n" + now.toString("dd.MM.yy HH:mm:ss"))		
+	}		
+end
+
+rule "SF_BedRoom1_Light state changed"
+when
+    Item SF_BedRoom1_Light changed
+then
+	if (gPresent.state.toString == "OFF") {	
+		var String str;
+		if (SF_BedRoom1_Light.state.toString == "ON" ) str = "ВКЛЮЧЕН"
+		if (SF_BedRoom1_Light.state.toString == "OFF" ) str = "ВЫКЛЮЧЕН"
+		str = String::format(light_bedroom1_state, str)
+		sendMail(mail_to, subject + ": Свет", str  + "\r\n" + now.toString("dd.MM.yy HH:mm:ss"))		
+	}		
+end
+
+rule "SF_Corridor1_Light state changed"
+when
+    Item SF_Corridor1_Light changed
+then
+	if (gPresent.state.toString == "OFF") {	
+		var String str;
+		if (SF_Corridor1_Light.state.toString == "ON" ) str = "ВКЛЮЧЕН"
+		if (SF_Corridor1_Light.state.toString == "OFF" ) str = "ВЫКЛЮЧЕН"
+		str = String::format(light_corridor_state, str)
+		sendMail(mail_to, subject + ": Свет", str  + "\r\n" + now.toString("dd.MM.yy HH:mm:ss"))		
+	}		
+end
+
+rule "SF_Corridor2_Light state changed"
+when
+    Item SF_Corridor2_Light changed
+then
+	if (gPresent.state.toString == "OFF") {	
+		var String str;
+		if (SF_Corridor2_Light.state.toString == "ON" ) str = "ВКЛЮЧЕНО"
+		if (SF_Corridor2_Light.state.toString == "OFF" ) str = "ВЫКЛЮЧЕНО"
+		str = String::format(light_stair_state, str)
+		sendMail(mail_to, subject + ": Свет", str  + "\r\n" + now.toString("dd.MM.yy HH:mm:ss"))		
+	}		
+end
+
+rule "StairsManualState state changed"
+when
+    Item StairsManualState changed
+then
+	//if (gPresent.state == ON ) {	
+		var String str = "ВЫКЛЮЧЕНА"
+		if ( StairsManualState.state == ON ) str = "ВКЛЮЧЕНА"
+		str = String::format(light_led_stairs_state, str)
+		sendMail(mail_to, subject + ": Внутреннее освещение", str + "\r\n" + now.toString("dd.MM.yy HH:mm:ss"))	
+	//}		
+end

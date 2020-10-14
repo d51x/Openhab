@@ -1,0 +1,87 @@
+rule "Set RGB leds color"
+when 
+    Item FF_Kitchen_RGB_Led changed
+then 
+    val hsb = FF_Kitchen_RGB_Led.state as HSBType
+    val r = (hsb.getRed * 255 / 100).intValue
+    val g = (hsb.getGreen * 255 / 100).intValue
+    val b = (hsb.getBlue * 255 / 100).intValue
+
+    logInfo("RGB rule1", "From HSB to RGB Conversion: r" + r + " g" + g + " b" + b)
+
+    var intValue = r
+    intValue = (intValue << 8) + g;
+    intValue = (intValue << 8) + b;
+
+    logInfo("RGB rule1", "From HSB to Int Conversion: " + intValue)
+    
+    //FF_Kitchen_Dimmer_Red.sendCommand((r*100/255).intValue)
+    //FF_Kitchen_Dimmer_Green.sendCommand((g*100/255).intValue)
+    //FF_Kitchen_Dimmer_Blue.sendCommand((b*100/255).intValue)
+
+    //var base = String::format("http://192.168.2.122/colors?rgb=%d,%d,%d",  r, g, b)
+    //var base = String::format("%d,%d,%d",  r, g, b)
+    //logInfo("RGB", "Sending " + base)
+    //sendHttpGetRequest(base)    
+    vFF_Kitchen_RGB_Led.sendCommand( intValue )
+end
+
+
+/*
+rule "Update colorpicker"
+when 
+    Item FF_Kitchen_Dimmer_Red received update or
+    Item FF_Kitchen_Dimmer_Green received update or
+    Item FF_Kitchen_Dimmer_Blue received update
+then 
+    //hsbValue = FF_Kitchen_RGB_Led.state as HSBType
+    val Integer r = (FF_Kitchen_Dimmer_Red.state as DecimalType).intValue
+    val Integer g = (FF_Kitchen_Dimmer_Green.state as DecimalType).intValue
+    val Integer b = (FF_Kitchen_Dimmer_Blue.state as DecimalType).intValue
+
+    val HSBType hsb = HSBType.fromRGB(r, g, b)
+
+    //logInfo("RGB rule2", "From HSB to RGB Conversion: hsb" + hsb) 
+    //FF_Kitchen_RGB_Led.postUpdate(hsb)
+end
+*/
+
+/*
+rule "Kithen RGB Effect changed"
+when
+    Item FF_Kitchen_RBG_Effect_Id changed
+then
+    var base = String::format("http://192.168.2.122/colors?type=effect&id=%d",  (FF_Kitchen_RBG_Effect_Id.state as DecimalType).intValue)
+    //logInfo("Effect", "Sending " + base)
+    //sendHttpGetRequest(base)
+end
+*/
+
+rule "Set Tree RGB leds color"
+when 
+    Item FF_Tree_RGB changed
+then 
+    val hsb = FF_Tree_RGB.state as HSBType
+    val r = (hsb.getRed * 255 / 100).intValue
+    val g = (hsb.getGreen * 255 / 100).intValue
+    val b = (hsb.getBlue * 255 / 100).intValue
+
+    logInfo("RGB rule1", "From HSB to RGB Conversion: r" + r + " g" + g + " b" + b)
+    logInfo("HSV", "HSV value: {}", hsb)
+
+    var base = String::format("http://192.168.2.225/ledctrl?color=rgb2&rgb=%d,%d,%d",  r, g, b)
+    logInfo("HSV", "Sending " + base)
+    sendHttpGetRequest(base)
+
+end
+
+rule "Tree Effect changed"
+when
+    Item FF_Tree_Effect_Id changed
+then
+    var base = String::format("http://192.168.2.225/ledctrl?effectid=%d",  (FF_Tree_Effect_Id.state as DecimalType).intValue)
+    logInfo("Effect", "Sending " + base)
+    sendHttpGetRequest(base)
+end
+
+

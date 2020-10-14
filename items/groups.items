@@ -53,8 +53,8 @@ String vFF_BathRoom     	"Ванная [%s]"      			<bath>
 Group gFF_Hall   		"Прихожая [%s]"      		<corridor>  		(gFirstFloor)
 	
 // second floor placements	
-Group gSF_BedRoom_1     "Спальня [%s]"   			<bedroom_orange> 	(gSecondFloor)
-String vSF_BedRoom_1     "Спальня [%s]"   			<bedroom_orange> 	
+Group gSF_BedRoom_1     "Спальня группа [%s]"   			<bedroom_orange> 	(gSecondFloor)
+String vSF_BedRoom_1     "Спальня виртуальная [%s]"   			<bedroom_orange> 	
 
 Group gSF_BedRoom_2     "Детская 1 [%s]"   			<bedroom_red>    	(gSecondFloor)
 String vSF_BedRoom_2     "Детская 1 [%s]"   			<bedroom_red>    	
@@ -76,10 +76,7 @@ Group:Number 	gHum			"Влажность [%.0f %%]"				<humidity>			(gSensors)
 // Actuators	
 Group:Switch:OR(ON, OFF) gHeaters			"Обогреватели [вкл (%d)]"			<heating>			(gActuators) // все обогреватели
 
-Group gFan				"Вентилятор"			<fan>				(gFF_Kitchen)
-
-
-
+Group:Switch:OR(ON, OFF) gFan				"Вентилятор [вкл (%d)]"			<fan>				(gFF_Kitchen)
 
 // Temperatures в доме   
 Group:Number:MIN gTemp_House_Min "Температура [min. %.1f °C]" <temperature_cold>					

@@ -14,6 +14,8 @@ val light_livingroom_state = "Свет в гостинной %s. Выключа�
 val light_corridor_state = "Свет в коридоре на 2-м этаже %s"
 val light_stair_state = "Лестничное освещение %s"
 val light_bedroom1_state = "Свет в спальне %s"
+val light_bedroom2_state = "Свет в детской 1 %s"
+val light_bedroom3_state = "Свет в детской 2 %s"
 
 
 
@@ -44,7 +46,9 @@ then
 		if (BoilerRoom_Pump_Power.state.toString == "ON" ) str = "ВКЛЮЧЕНО"
 		if (BoilerRoom_Pump_Power.state.toString == "OFF" ) str = "ВЫКЛЮЧЕНО"
 		str = String::format(pump_power_state, str)
-		sendBroadcastNotification(str  + "\r\n" + now.toString)
+		//sendBroadcastNotification(str  + "\r\n" + now.toString)
+		var telegramm = getActions("telegram","telegram:telegramBot:telegram")
+		telegramm.sendTelegram( str  + "\r\n" + now.toString )				
 	//}
 end
 
@@ -57,7 +61,9 @@ then
 		if (BoilerRoom_Boiler.state.toString == "ON" ) str = "ВКЛЮЧЕН"
 		if (BoilerRoom_Boiler.state.toString == "OFF" ) str = "ВЫКЛЮЧЕН"
 		str = String::format(boiler_state, str)
-		sendBroadcastNotification(str  + "\r\n" + now.toString)				
+		//sendBroadcastNotification(str  + "\r\n" + now.toString)				
+		var telegramm = getActions("telegram","telegram:telegramBot:telegram")
+		telegramm.sendTelegram( str  + "\r\n" + now.toString )				
 	//}
 end
 
@@ -174,64 +180,104 @@ rule "FF_LivingRoom_Light_01 state changed"
 when
     Item FF_LivingRoom_Light_01 changed
 then
-	//if (gPresent.state.toString == "OFF") {	
+	if (gPresent.state == OFF && FF_LR_Light1_Notify.state == ON) {	
 		var String str;
 		if (FF_LivingRoom_Light_01.state.toString == "ON" ) str = "ВКЛЮЧЕН"
 		if (FF_LivingRoom_Light_01.state.toString == "OFF" ) str = "ВЫКЛЮЧЕН"
 		str = String::format(light_livingroom_state, str, 1)
-		sendBroadcastNotification(str  + "\r\n" + now.toString)	
-	//}		
+		//sendBroadcastNotification(str  + "\r\n" + now.toString)	
+		var telegramm = getActions("telegram","telegram:telegramBot:telegram")
+		telegramm.sendTelegram( str  + "\r\n" + now.toString )				
+	}		
 end
 
 rule "FF_LivingRoom_Light_02 state changed"
 when
     Item FF_LivingRoom_Light_02 changed
 then
-	//if (gPresent.state.toString == "OFF") {	
+	if (gPresent.state == OFF && FF_LR_Light2_Notify.state == ON) {	
 		var String str;
 		if (FF_LivingRoom_Light_02.state.toString == "ON" ) str = "ВКЛЮЧЕН"
 		if (FF_LivingRoom_Light_02.state.toString == "OFF" ) str = "ВЫКЛЮЧЕН"
 		str = String::format(light_livingroom_state, str, 2)
-		sendBroadcastNotification(str  + "\r\n" + now.toString)		
-	//}		
+		//sendBroadcastNotification(str  + "\r\n" + now.toString)		
+		var telegramm = getActions("telegram","telegram:telegramBot:telegram")
+		telegramm.sendTelegram( str  + "\r\n" + now.toString )				
+	}		
 end
 
 rule "SF_BedRoom1_Light state changed"
 when
     Item SF_BedRoom1_Light changed
 then
-	//if (gPresent.state.toString == "OFF") {	
+	if (gPresent.state == OFF && SF_Bedroom1_Light_Notify.state == ON) {	
 		var String str;
 		if (SF_BedRoom1_Light.state.toString == "ON" ) str = "ВКЛЮЧЕН"
 		if (SF_BedRoom1_Light.state.toString == "OFF" ) str = "ВЫКЛЮЧЕН"
 		str = String::format(light_bedroom1_state, str)
-		sendBroadcastNotification(str  + "\r\n" + now.toString)		
-	//}		
+		//sendBroadcastNotification(str  + "\r\n" + now.toString)		
+		var telegramm = getActions("telegram","telegram:telegramBot:telegram")
+		telegramm.sendTelegram( str  + "\r\n" + now.toString )				
+	}		
+end
+
+rule "SF_BedRoom2_Light state changed"
+when
+    Item SF_BedRoom2_Light changed
+then
+	if (gPresent.state == OFF && SF_Bedroom2_Light_Notify.state == ON) {	
+		var String str;
+		if (SF_BedRoom2_Light.state.toString == "ON" ) str = "ВКЛЮЧЕН"
+		if (SF_BedRoom2_Light.state.toString == "OFF" ) str = "ВЫКЛЮЧЕН"
+		str = String::format(light_bedroom2_state, str)
+		//sendBroadcastNotification(str  + "\r\n" + now.toString)		
+		var telegramm = getActions("telegram","telegram:telegramBot:telegram")
+		telegramm.sendTelegram( str  + "\r\n" + now.toString )				
+	}		
+end
+
+rule "SF_BedRoom3_Light state changed"
+when
+    Item SF_BedRoom3_Light changed
+then
+	if (gPresent.state == OFF && SF_Bedroom3_Light_Notify.state == ON) {	
+		var String str;
+		if (SF_BedRoom3_Light.state.toString == "ON" ) str = "ВКЛЮЧЕН"
+		if (SF_BedRoom3_Light.state.toString == "OFF" ) str = "ВЫКЛЮЧЕН"
+		str = String::format(light_bedroom3_state, str)
+		//sendBroadcastNotification(str  + "\r\n" + now.toString)		
+		var telegramm = getActions("telegram","telegram:telegramBot:telegram")
+		telegramm.sendTelegram( str  + "\r\n" + now.toString )				
+	}		
 end
 
 rule "SF_Corridor1_Light state changed"
 when
     Item SF_Corridor1_Light changed
 then
-	//if (gPresent.state.toString == "OFF") {	
+	if (gPresent.state == OFF && SF_Corridor_Light1_Notify.state == ON) {	
 		var String str;
 		if (SF_Corridor1_Light.state.toString == "ON" ) str = "ВКЛЮЧЕН"
 		if (SF_Corridor1_Light.state.toString == "OFF" ) str = "ВЫКЛЮЧЕН"
 		str = String::format(light_corridor_state, str)
-		sendBroadcastNotification(str  + "\r\n" + now.toString)		
-	//}		
+		//sendBroadcastNotification(str  + "\r\n" + now.toString)		
+		var telegramm = getActions("telegram","telegram:telegramBot:telegram")
+		telegramm.sendTelegram( str  + "\r\n" + now.toString )				
+	}		
 end
 
 rule "SF_Corridor2_Light state changed"
 when
     Item SF_Corridor2_Light changed
 then
-	//if (gPresent.state.toString == "OFF") {	
+	if (gPresent.state == OFF && SF_Corridor_Light2_Notify.state == ON) {	
 		var String str;
 		if (SF_Corridor2_Light.state.toString == "ON" ) str = "ВКЛЮЧЕНО"
 		if (SF_Corridor2_Light.state.toString == "OFF" ) str = "ВЫКЛЮЧЕНО"
 		str = String::format(light_stair_state, str)
-		sendBroadcastNotification(str  + "\r\n" + now.toString)		
-	//}		
+		//sendBroadcastNotification(str  + "\r\n" + now.toString)		
+		var telegramm = getActions("telegram","telegram:telegramBot:telegram")
+		telegramm.sendTelegram( str  + "\r\n" + now.toString )		
+	}		
 end
 

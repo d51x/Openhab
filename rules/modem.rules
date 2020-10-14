@@ -6,6 +6,7 @@ rule "Modem get info"
 when 
 	Time cron "0/20 * * * * ?" 
 then
+
 	//logInfo(LOG_TAG, "********* Modem info START ************")
 	executeCommandLine("sh@@/etc/openhab2/scripts/modem_get_info.sh", 5000)
 	var String cmd
@@ -16,6 +17,9 @@ then
 		//logInfo(LOG_TAG, "File '{}' exists", fname)
 		cmd = "cat@@" + fname
 		xml = executeCommandLine(cmd, 1000)
+		if ( xml == "") {
+			return;
+		}
 		var String rssi
 		try {
 			rssi = transform("XPATH","/response/rssi/text()", xml)
@@ -29,7 +33,7 @@ then
 			} 
 			postUpdate(Modem_RSSI, rssi)
 		} catch (Exception e) {
-
+			logError(LOG_TAG, "Modem rssi error")
 		}
 		
 		var String sinr = transform("XPATH","/response/sinr/text()", xml)
@@ -96,7 +100,8 @@ then
 
 		var String rssi2 = transform("XPATH","/config/rssi/text()", xml)
 		//logInfo(LOG_TAG, "Modem rssi2: {}", rssi2)
-		postUpdate(Modem_RSSI2, rssi2)
+		//postUpdate(Modem_RSSI2, rssi2)
+		postUpdate(Modem_RSSI2, Integer.parseInt(rssi2))
 	} else {
 		logError(LOG_TAG, "File '{}' not exists", fname)
 	}	

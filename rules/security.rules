@@ -18,9 +18,10 @@ then
     val msg = "Входная дверь была открыта"
     logInfo(TAG, msg)
     
-    sendBroadcastNotification(msg)	
-    executeCommandLine(Telegram_Command.state + msg)    
-	
+    //sendBroadcastNotification(msg)	
+    //executeCommandLine(Telegram_Command.state + msg)    
+	var telegramm = getActions("telegram","telegram:telegramBot:telegram")
+	telegramm.sendTelegram( msg )		
 end
 
 //TODO: add timer for determine how long the door is opened
@@ -51,8 +52,10 @@ then
 
     if ( allowPirSensorNotify ) {
         allowPirSensorNotify = false
-        sendBroadcastNotification(msg)	
-        executeCommandLine(Telegram_Command.state + msg)    
+        // sendBroadcastNotification(msg)	
+        // executeCommandLine(Telegram_Command.state + msg) 
+        var telegramm = getActions("telegram","telegram:telegramBot:telegram")
+        telegramm.sendTelegram( msg )	           
     }
 
     pirSensorTimer = createTimer(now.plusSeconds(pirSensorDelay), [ |

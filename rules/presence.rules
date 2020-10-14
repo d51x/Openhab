@@ -4,14 +4,24 @@ rule "gPresence state changed"
 when
     Item gPresent changed
 then
+	//logError("presence", "gPresent: " + gPresent.state)
+	Attic_Present.sendCommand( if (gPresent.state == ON) ON else OFF )
+	// gPresent.previousState  is always NULL ????
+
 	// если выключить руками, то шлет столько писем, сколько мемберов
-	if ( gPresent.state == gPresent.previousState().state) {
+	if ( gPresent.state == gPresent.previousState) {
 		logInfo(TAG, "Значение gPresent не изменилось: {}", gPresent.state.toString)
 		return;
 	}
+
+	//send notification
 	val String str = if (gPresent.state == ON) "Кто-то есть на даче" else "Никого нет на даче"
-	sendBroadcastNotification(str)	
-	executeCommandLine(Telegram_Command.state + str)
+	//sendBroadcastNotification(str)	
+	//executeCommandLine(Telegram_Command.state + str)
+	var telegramm = getActions("telegram","telegram:telegramBot:telegram")
+	telegramm.sendTelegram( str )	
+
+	
 end
 
 /*
@@ -35,3 +45,15 @@ then
 
 end
 */
+
+rule "Send presence every 10 min"
+when
+	//Time cron "* */10 * * * ?" // каждые 10 минут
+	Time cron "*/10 * * * * ?" // каждые 10 секунд
+then
+	//sendCommand(Attic_Present, gPresent.state)
+	if ( gPresent.state == ON ) 
+		Attic_Present.sendCommand(ON)
+	else	
+		Attic_Present.sendCommand(OFF)
+end

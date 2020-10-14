@@ -1,0 +1,10 @@
+// 192.168.2.205
+Thing mqtt:topic:mosquitto:terrace "ESP Terrace" (mqtt:broker:mosquitto) @ "Устройства" {
+	Channels:
+		Type switch: StreetLightSwitch 	"Прожектор на улице" 	[ stateTopic="dacha/terrace/output208", commandTopic="dacha/terrace/output208", on="1", off="0"]
+		Type switch: BackLightSwitch 	"Прожектор во дворе" 	[ stateTopic="dacha/terrace/output209", commandTopic="dacha/terrace/output209", on="1", off="0"]
+		Type switch: SideLightSwitch 	"Прожектор сбоку" 		[ stateTopic="dacha/terrace/output210", commandTopic="dacha/terrace/output210", on="1", off="0"]
+		Type number: Temperature	"Температура на веранде" 	[ stateTopic="dacha/terrace/dsw1" ]
+		Type number: rssi				"Уровень сигнала" 		[ stateTopic="dacha/terrace/rssi" ]
+		Type number: uptime				"Время работы" 			[ stateTopic="dacha/terrace/uptime" ]
+}

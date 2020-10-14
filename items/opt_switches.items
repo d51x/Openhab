@@ -3,17 +3,26 @@ Group gNotify "Настройка уведомлений"
 Switch FF_LR_Heater_01_Notify    "Конвектор1 (гостинная)"  (gNotify) 
 Switch FF_LR_Heater_02_Notify    "Конвектор2 (гостинная)"  (gNotify) 
 
+Switch FF_LR_Thermo_01_Notify    "Термостат1 (гостинная)"  (gNotify) 
+Switch FF_LR_Thermo_02_Notify    "Термостат2 (гостинная)"  (gNotify) 
+
 Switch FF_LR_Light1_Notify    "Свет1 (гостинная)"  (gNotify) 
 Switch FF_LR_Light2_Notify    "Свет2 (гостинная)"  (gNotify) 
 
 Switch FF_Kitchen_Heater_Notify    "Конвектор (кухня)"  (gNotify) 
+Switch FF_Kitchen_Thermo_Notify    "Термостат (кухня)"  (gNotify) 
+
 Switch FF_BR_Heater_Notify    "Конвектор (ванная)"  (gNotify) 
+Switch FF_BR_Thermo_Notify    "Термостат (ванная)"  (gNotify) 
 
 Switch SF_Bedroom1_Heater_Notify    "Конвектор (спальня)"  (gNotify) 
 Switch SF_Bedroom2_Heater_Notify    "Конвектор (детская1)"  (gNotify) 
 Switch SF_Bedroom3_Heater_Notify    "Конвектор (детская2)"  (gNotify) 
 
 Switch SF_Bedroom1_Light_Notify    "Свет (спальня)"  (gNotify) 
+Switch SF_Bedroom2_Light_Notify    "Свет (детская 1)"  (gNotify) 
+Switch SF_Bedroom3_Light_Notify    "Свет (детская 2)"  (gNotify) 
+
 Switch SF_Corridor_Light1_Notify    "Свет (коридор, этаж2)"  (gNotify) 
 Switch SF_Corridor_Light2_Notify    "Свет (коридор, лестница)"  (gNotify) 
 

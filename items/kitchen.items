@@ -1,0 +1,15 @@
+Switch FF_kitchen_FanRelay      "Вентилятор на кухне" <fan> (gFan)
+							{ channel="mqtt:topic:mosquitto:kitchen-led:FanRelay" }
+
+//Switch FF_kitchen_PirMode      "Датчик движения (режим)" <alarm> 
+//							{ channel="mqtt:topic:mosquitto:kitchen-led:PirMode" }
+
+Switch FF_kitchen_SetSunset      "Установить закат" <sunset> (gMyOpenHab)
+							{ channel="mqtt:topic:mosquitto:kitchen-led:SetSunset" }
+
+Switch FF_kitchen_FanRelay_AutoHummidity "Автовключение по влажности" (gMyOpenHab)
+Switch FF_kitchen_Fan_AutoOff "Автовыключение" (gMyOpenHab)
+Number FF_kitchen_Fan_HumTreshold "Предел влажности для включения [%.1f %%]" (gMyOpenHab)
+Number FF_kitchen_Fan_AutoOffTime "Время автоотключения [%d мин]" (gMyOpenHab)
+
+String FF_kitchen_Fan_Mode "Ручной выбор времени работы"

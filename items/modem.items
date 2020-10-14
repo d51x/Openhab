@@ -3,11 +3,11 @@ Group gModemChart
 //String Modem_Data {http="<[http://192.168.99.1/goform/goform_get_cmd_process?cmd=signalbar,wan_csq,network_type,network_provider,cell_id,lac_code,rssi,rscp,lte_rssi,lte_rsrq,lte_rsrp,lte_snr,realtime_time,realtime_tx_bytes,realtime_rx_bytes,net_select,ConnectionMode,monthly_tx_bytes,monthly_rx_bytes,total_tx_bytes,total_rx_bytes{referer=http://192.168.99.1/index.html}:20000:REGEX((.*))]"}
 
 String Modem_Proxy_Data "Модем [%s]"
-Number Modem_RSSI 	"RSSI [%s dBm]" <network> (gModem, gHistory, gModemChart, gInfluxe) 
-Number Modem_RSSI2 	"RSSI2 [%s dBm]" <network> (gModem, gHistory, gModemChart, gInfluxe) 
-Number Modem_SINR 	"SINR [%s dB]" <network> (gModem, gHistory, gModemChart, gInfluxe)
-Number Modem_RSRQ 	"RSRQ [%s dB]" <network> (gModem, gHistory, gModemChart, gInfluxe)
-Number Modem_RSRP 	"RSRP [%s dBm]" <network> (gModem, gHistory, gModemChart, gInfluxe)
+Number Modem_RSSI 	"RSSI [%s dBm]" <network> (gModem, gModemChart) 
+Number Modem_RSSI2 	"RSSI2 [%s dBm]" <network> (gModem, gModemChart) 
+Number Modem_SINR 	"SINR [%s dB]" <network> (gModem, gModemChart)
+Number Modem_RSRQ 	"RSRQ [%s dB]" <network> (gModem, gModemChart)
+Number Modem_RSRP 	"RSRP [%s dBm]" <network> (gModem, gModemChart)
 String Modem_NetworkType "Тип сети [%s]"
 Number Modem_Signalbar "Уровень сигнала [%d]" (gModem)
 String Modem_NetworkBand "Band [%s]" (gModem)
@@ -21,11 +21,11 @@ Number Modem_FrequencyUp 	"frequency-up [%s mHz]" <network> (gModem) {channel="e
 //
 //Number Modem_SignalQuality "Качество сигнала [%d]" (gModem)
 
-//Number Modem_LTE_Rsrq "RSRQ [%.1f dB]" (gModem, gHistory, gModemChart, gInfluxe)
-//Number Modem_LTE_Rsrp "RSRP [%d dBm]" (gModem, gHistory, gModemChart, gInfluxe)
+//Number Modem_LTE_Rsrq "RSRQ [%.1f dB]" (gModem, gModemChart)
+//Number Modem_LTE_Rsrp "RSRP [%d dBm]" (gModem, gModemChart)
 
-//Number Modem_3G_SNR "SNR [%.1f]" (gModem, gHistory, gInfluxe, gModemChart)
-//Number Modem_3G_RSCP "RSCP [%d dBm]" (gModem, gHistory, gInfluxe, gModemChart)
+//Number Modem_3G_SNR "SNR [%.1f]" (gModem, gModemChart)
+//Number Modem_3G_RSCP "RSCP [%d dBm]" (gModem, gModemChart)
 
 
 //DateTime Modem_Uptime "Modem uptime [%1$tA, %1$td.%1$tm.%1$tY]" (gModem)

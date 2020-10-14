@@ -1,0 +1,180 @@
+val TAG = "Energy"	
+
+val initialEnergy = 0 //3271260 // стартовое показание счетчика для учета данных за месяц
+val priceDay = 3.89
+val priceDayTime = 1.89
+val priceNightTime = 4.41
+val nightTimeHour = 23
+val dayTimeHour = 7
+
+rule "Energy Counter every change"
+when
+	Item Electro_PowerWH_F changed
+then
+	// текущее показание счетчика
+
+    val energyCounterPrev = Electro_PowerWH_F.previousState().state as DecimalType
+	val enegryCounter = Electro_PowerWH_F.state as DecimalType
+
+    //logInfo(TAG, "Текущее показание: {}", enegryCounter)
+    //logInfo(TAG, "Предыдущее показание: {}", energyCounterPrev)
+    
+    if ( enegryCounter == 0 || energyCounterPrev >= enegryCounter) {
+        // workaround for SDM230 and wifi-iot firmware
+        // иногда SDM230 отдает текущие показания меньше предыдущих, в этом случае ничего не делаем и ждем нормальных показаний
+        // это нормально, потому что данные показаний снимаются раз в 10 сек, а отправляются по mqtt раз в 5 сек ( и в 60 сек)
+        //logWarn(TAG, "Текущее показание 0 или меньше предыдущего. Выход...")
+        return;
+    }
+
+
+    var energyDelta =  enegryCounter - energyCounterPrev
+    Energy_Counter_Total.postUpdate( enegryCounter )
+
+    // вычисление потраченной энергии с начала часа
+    val energyHourStart = Electro_PowerWH_F.historicState(now.minusMinutes( now.getMinuteOfHour() )).state as DecimalType
+    logInfo(TAG, "Показания на начало часа: {}", energyHourStart)
+
+    var energyHour = enegryCounter - energyHourStart
+    logInfo(TAG, "Потребление за текущий час: {}", energyHour)
+
+    Energy_Counter_Hour_Current.postUpdate( energyHour ) 
+    
+    // вычисление потраченной энергии за текущий день
+    var day_current = 0
+    if ( Energy_Counter_Day_Current.state != NULL ) {
+        day_current = Energy_Counter_Day_Current.state as DecimalType
+    }
+
+    day_current += energyDelta
+    logInfo(TAG, "Потребление за день: {}", day_current)
+
+    Energy_Counter_Day_Current.postUpdate( day_current )
+
+    // обновить расход за текущую неделю
+    var energy_week = 0
+    if ( Energy_Counter_Week_Current.state != NULL ) {
+        energy_week = Energy_Counter_Week_Current.state as DecimalType
+    }    
+    energy_week += energyDelta
+    Energy_Counter_Week_Current.postUpdate( energy_week )
+
+    // вычисляем текущие показания день / ночь
+    if ( now.getHourOfDay >= dayTimeHour && now.getHourOfDay < nightTimeHour ) {
+        // дневное потребление
+        Energy_Counter_Zone.postUpdate( "День Т1" )
+
+        var energyT1 = 0
+        if ( Energy_Counter_DayTime_Current.state != NULL ) {
+            energyT1 = Energy_Counter_DayTime_Current.state as DecimalType
+        }
+        
+        energyT1 += energyDelta
+        logInfo(TAG, "Дневное потребление: {}", energyT1)
+        Energy_Counter_DayTime_Current.postUpdate( energyT1 )
+
+        var energy_week_T1 = 0
+        if ( Energy_Counter_WeekDayTime_Current.state != NULL ) {
+            energy_week_T1 = Energy_Counter_WeekDayTime_Current.state as DecimalType
+        }           
+        energy_week_T1 += energyDelta
+        Energy_Counter_WeekDayTime_Current.postUpdate( energy_week_T1 )
+
+    } else {
+        // ночное потребление
+        Energy_Counter_Zone.postUpdate( "Ночь Т2" )
+
+        var energyT2 = 0    
+        if ( Energy_Counter_NightTime_Current.state != NULL ) {
+            energyT2 = Energy_Counter_NightTime_Current.state as DecimalType
+        }
+        
+        energyT2 += energyDelta       
+        logInfo(TAG, "Ночное потребление: {}", energyT2)
+        Energy_Counter_NightTime_Current.postUpdate( energyT2 )    
+
+        var energy_week_T2 = 0
+        if ( Energy_Counter_WeekDayTime_Current.state != NULL ) {
+            energy_week_T2 = Energy_Counter_WeekDayTime_Current.state as DecimalType
+        }           
+        energy_week_T2 += energyDelta
+        Energy_Counter_WeekDayTime_Current.postUpdate( energy_week_T2 )
+
+    }
+
+end
+
+
+rule "Energy counter get value every hour"
+when
+    Time cron "0 0 * * * ?"  // ровно каждый час (0 минут)
+then
+    // вычисление потраченной энергии за предыдущий час: Energy_Counter_Hour_Past
+    // текущие показания счетчика
+    val enegryCounter = Electro_PowerWH_F.state as DecimalType
+
+    // показания счетчика час назад
+    var hour = 0
+    if ( Electro_PowerWH_F.historicState(now.minusHours(1)) !== null ) { 
+        var energyHourPast = Electro_PowerWH_F.historicState(now.minusHours(1)).state as DecimalType
+        logInfo(TAG, "Energy counter hour ago: {}", energyHourPast)
+        hour = enegryCounter - energyHourPast
+    } else {
+        logInfo(TAG, "Energy counter hour ago: is NULL")
+    }
+
+    logInfo(TAG, "Energy counter past hour: {}", hour)
+    Energy_Counter_Hour_Past.postUpdate( hour )
+
+end
+
+rule "Energy counter day Reset"
+when
+    Time cron "0 0 0 ? * *"    // power on at 0:00 every day
+then
+    // сохранить дневные показания и сбросить
+    Energy_Counter_Day_Past.postUpdate( Energy_Counter_Day_Current.state )
+    Energy_Counter_Day_Current.postUpdate( 0 )
+end
+
+rule "Energy counter DayTime Reset"
+when
+    Time cron "0 0 7 ? * *"     // power on at 7:00 every day
+then
+    // сохранить дневные показания и сбросить
+    Energy_Counter_DayTime_Past.postUpdate( Energy_Counter_DayTime_Current.state )
+    Energy_Counter_DayTime_Current.postUpdate( 0 )
+end
+
+rule "Energy counter NightTime Reset"
+when
+    Time cron "0 0 23 ? * *"     // power on at 23:00 every day
+then
+    // сохранить ночные показания и сбросить
+    Energy_Counter_NightTime_Past.postUpdate( Energy_Counter_NightTime_Current.state )
+    Energy_Counter_NightTime_Current.postUpdate( 0 ) 
+end
+
+rule "Energy counter week reset"
+when
+	Time cron "0 0 0 ? * MON"    // power on at 0:00 on monday
+then
+    Energy_Counter_Week_Past.postUpdate( Energy_Counter_Week_Current.state )
+    Energy_Counter_Week_Current.postUpdate( 0 )  
+end
+
+rule "Energy counter night time week reset"
+when
+	Time cron "0 0 23 ? * MON"    // power on at 23:00 on monday
+then
+    Energy_Counter_WeekNightTime_Past.postUpdate( Energy_Counter_WeekNightTime_Current.state )
+    Energy_Counter_WeekNightTime_Current.postUpdate( 0 )
+end
+
+rule "Energy counter day time week reset"
+when
+	Time cron "0 0 7 ? * MON"    // power on at 23:00 on monday
+then
+    Energy_Counter_WeekDayTime_Past.postUpdate( Energy_Counter_WeekDayTime_Current.state )
+    Energy_Counter_WeekDayTime_Current.postUpdate( 0 )
+end

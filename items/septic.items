@@ -1,21 +1,58 @@
-Group:String gSeptic "Септик" (gRoot)
+Group:String gSeptic "Септик (группа)" (gRoot)
 Group Septic_Chart  <chart>
+Group gSepticLevel_Chart <chart>
 
-String Septic_vText "Септик [%s]" 
-Number Septic_sTemperature      "Септик [%.1f °C]" <temperature> (gMinMax, gLastUpdate, gSeptic, Septic_Chart, gHistory, gChart, gMyOpenHab) 
-								{mqtt="<[openhab:dacha/ESP-SONOFF/dsw1:state:default]"}
+String Septic_vText "Виртуальная температура в септик [%s]" 
+Number Septic_sTemperature      "Температура в септике [%.1f °C]" <temperature> (gMinMax, gLastUpdate, gSeptic, Septic_Chart, gChart, gMyOpenHab) 
+								{ channel="mqtt:topic:mosquitto:septic:TemperatureSeptic" } 
+
+Number Septic_sTemperature_Min "Минимальная температура в септике [%.1f °C]" <temperature_cold> (gSeptic)
+Number Septic_sTemperature_Max "Максимальная температура в септике [%.1f °C]" <temperature_hot> (gSeptic)
+DateTime Septic_sTemperature_LastUpdate     "Температура в септике обновлена [%1$ta %1$tR]"     <lastupdate> (gSeptic)
+
+Number SepticTubeIn_sTemperature      "Температура в трубе [%.1f °C]" <temperature> (gMinMax, gLastUpdate, gSeptic, Septic_Chart, gChart, gMyOpenHab) 
+								{ channel="mqtt:topic:mosquitto:septic:TemperatureTube" } 
+Number SepticTubeIn_sTemperature_Min "Минимальная температура в трубе [%.1f °C]" <temperature_cold> (gSeptic)
+Number SepticTubeIn_sTemperature_Max "Максимальная температура в трубе [%.1f °C]" <temperature_hot> (gSeptic)
+DateTime SepticTubeIn_sTemperature_LastUpdate     "Температура в трубе обновлена [%1$ta %1$tR]"     <lastupdate> (gSeptic)
+
+
+
+Number SepticTank1_sTemperature      "Температура в септике1 [%.1f °C]" <temperature> (gMinMax, gLastUpdate, gSeptic, Septic_Chart, gChart, gMyOpenHab) 
+								{ channel="mqtt:topic:mosquitto:cellar:SepticTemperature1" } 
+
+Number SepticTank1_sTemperature_Min "Минимальная температура в септике1 [%.1f °C]" <temperature_cold> (gSeptic)
+Number SepticTank1_sTemperature_Max "Максимальная температура в септике1 [%.1f °C]" <temperature_hot> (gSeptic)
+DateTime SepticTank1_sTemperature_LastUpdate     "Температура в септике1 обновлена [%1$ta %1$tR]"     <lastupdate> (gSeptic)
+
+Number SepticTank3_sTemperature      "Температура в септике3 [%.1f °C]" <temperature> (gMinMax, gLastUpdate, gSeptic, Septic_Chart, gChart, gMyOpenHab) 
+								{ channel="mqtt:topic:mosquitto:cellar:SepticTemperature2" } 
+
+Number SepticTank3_sTemperature_Min "Минимальная температура в септике3 [%.1f °C]" <temperature_cold> (gSeptic)
+Number SepticTank3_sTemperature_Max "Максимальная температура в септике3 [%.1f °C]" <temperature_hot> (gSeptic)
+DateTime SepticTank3_sTemperature_LastUpdate     "Температура в септике3 обновлена [%1$ta %1$tR]"     <lastupdate> (gSeptic)
+
 
 Switch Septic_aHeating      "Обогрев септика" <heating> (gSeptic) 
-							{mqtt="	>[openhab:dacha/ESP-SONOFF/output12:command:ON:1],
-									>[openhab:dacha/ESP-SONOFF/output12:command:OFF:0],
-									<[openhab:dacha/ESP-SONOFF/output12:state:MAP(switchMQTT.map)]"}
+							{ channel="mqtt:topic:mosquitto:septic:Light" }
+
+Switch SepticTube_aHeating      "Обогрев трубы" <heating> (gSeptic) 
+							{ channel="mqtt:topic:mosquitto:septic:Cabel" }
+
+Switch DrainagePump      "Дренажный насос" <pump> (gSeptic) 
+							{ channel="mqtt:topic:mosquitto:cellar:Pump" }									
 									
-Number Septic_sTemperature_Min "Минимальная сегодня [%.1f °C]" <temperature_cold> (gSeptic)
-Number Septic_sTemperature_Max "Максимальная сегодня [%.1f °C]" <temperature_hot> (gSeptic)
-DateTime Septic_sTemperature_LastUpdate     "Последнее обновление [%1$ta %1$tR]"     <lastupdate> (gSeptic)
+Number WaterDistance      "Расстояние до воды [%d мм]" <returnpipe> (gMinMax, gLastUpdate, gSeptic, gChart, gMyOpenHab, gSepticLevel_Chart) 
+								{ channel="mqtt:topic:mosquitto:cellar:WaterDistance" } 
+Number WaterDistance_Min "Минимальное расстояние до воды [%d мм]" <returnpipe> (gSeptic)
+Number WaterDistance_Max "Максимальное расстояние до воды [%d мм]" <returnpipe> (gSeptic)
+DateTime WaterDistance_LastUpdate     "Расстояние обновлено [%1$ta %1$tR]"     <lastupdate> (gSeptic)
 
+Switch SonarFail "Ошибка измерения уровня воды" <error> (gSeptic) 
+							{ channel="mqtt:topic:mosquitto:cellar:SonarFail" }	
 
-Number Septic_Chart_Period     "" <chart> (gSeptic)
-
-
-									
+Number TankFill      "Заполненность [%d %%]" <cistern> (gMinMax, gLastUpdate, gSeptic, gChart, gMyOpenHab, gSepticLevel_Chart) 
+								{ channel="mqtt:topic:mosquitto:cellar:TankFill" } 							
+Number TankFill_Min "Минимальная заполненность бака [%d %%]" <returnpipe> (gSeptic)
+Number TankFill_Max "Максимальная заполненность бака [%d %%]" <returnpipe> (gSeptic)
+DateTime TankFill_LastUpdate     "Заполненность бака обновлена [%1$ta %1$tR]"     <lastupdate> (gSeptic)								
