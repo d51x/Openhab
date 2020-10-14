@@ -72,3 +72,10 @@ Number FF_Tree_Effect_Id "Эффект [%d]" <rgb>
 
 Switch GF_Cellar_Light      "Свет в цоколе [MAP(ui.map):%s]" <light> (gLightIndoor, gMyOpenHab) [ "Lighting" ] 
 { channel="mqtt:topic:mosquitto:cellar:Light" }
+
+
+
+Switch NightBulb_Power "Power" <bulb> {channel="mqtt:topic:mosquitto:nightbulb:Power"}
+Dimmer NightBulb_WhiteBrightness "White Brightness [%d%%]" <bulb> {channel="mqtt:topic:mosquitto:nightbulb:WhiteBrightness"}
+String NightBulb_Mode "Mode" <rgb> {channel="mqtt:topic:mosquitto:nightbulb:Mode"}
+Color NightBulb_Color "Color" <rgb> {channel="mqtt:topic:mosquitto:nightbulb:Colour"}

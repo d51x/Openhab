@@ -129,3 +129,11 @@ Number BoilerRoom_Heater_tThermo    "Установка [%.1f °C]" <tempauto>  
 								{mqtt="	>[openhab:dacha/esp-s20-05/thermo_set1:command:*:default],
 										<[openhab:dacha/esp-s20-05/thermo_set1:state:default]"}
 */									
+
+Switch Thermostate_Power   "Power"          <heating>   (gActuators, gHeaters)  { channel="mqtt:topic:mosquitto:thermostat:Power" }
+Number Thermostate_TempSet 	"TempSet [%.1f °C]" <temperature> { channel="mqtt:topic:mosquitto:thermostat:TempSet" }
+Number Thermostate_Temperature	"Temperature [%.1f °C]" <temperature> { channel="mqtt:topic:mosquitto:thermostat:Temperature" }
+Switch Thermostate_Shedule   "Schedule"           { channel="mqtt:topic:mosquitto:thermostat:Shedule" }
+Switch Thermostate_EcoMode   "Energy saving"           { channel="mqtt:topic:mosquitto:thermostat:EcoMode" }
+Switch Thermostate_Lock   "Lock"           { channel="mqtt:topic:mosquitto:thermostat:Lock" }
+

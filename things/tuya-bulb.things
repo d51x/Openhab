@@ -1,0 +1,7 @@
+Thing mqtt:topic:mosquitto:nightbulb "Tuya Night Bulb" (mqtt:broker:mosquitto) @ "Tuya" {
+	Channels:
+		Type switch: Power 	"Ночник" 	   [ stateTopic="tuya/night_bulb/dps/1/state",  commandTopic="tuya/night_bulb/dps/1/command", on="true", off="false" ]
+		Type string: Mode 	"Режим" 	   [ stateTopic="tuya/night_bulb/dps/2/state",  commandTopic="tuya/night_bulb/dps/2/command", allowedStates="white,colour,scene,scene_1,scene_2,scene_3,scene_4" ]
+		Type dimmer: WhiteBrightness 	"Яркость белого" 	   [ stateTopic="tuya/night_bulb/white_brightness_state",  commandTopic="tuya/night_bulb/white_brightness_command", min="1", max="100", step="1"]
+        Type colorHSB: Colour    "Color"         [ stateTopic="tuya/night_bulb/hsb_state",  commandTopic="tuya/night_bulb/hsb_command" ]        
+}
