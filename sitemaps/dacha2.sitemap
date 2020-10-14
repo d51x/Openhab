@@ -825,10 +825,6 @@ sitemap dacha2 label="Dacha2"
 					}
 					Frame label="Обогреватель" {
 						Switch label="Состояние" icon="heating" item=SF_Bedroom1_Heater
-					}	
-					Frame label="Управление" {					
-						Switch item=SF_Bedroom1_Heater_Mode
-						Setpoint item=SF_Bedroom1_Heater_tThermo minValue=7 maxValue=30 step=1				
 					}					
 				}
 				
