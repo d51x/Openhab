@@ -13,16 +13,19 @@ Thing mqtt:topic:mosquitto:esp-boiler "Boiler" (mqtt:broker:mosquitto) @ "Уст
 		Type switch: BoilerPower 			"Питание бойлера" 			[ stateTopic="dacha/esp-boiler/output15", commandTopic="dacha/esp-boiler/output15", on="1", off="0"]
 		Type switch: Boiler2Power 			"Питание бойлера 1/2 мощности" 			[ stateTopic="dacha/esp-boiler/output16", commandTopic="dacha/esp-boiler/output16", on="1", off="0"]
 
-		Type switch: BoilerMode 			"Режим регулировки мощности" 			[ stateTopic="dacha/esp-boiler/valuedes0", commandTopic="dacha/esp-boiler/valuedes0", on="1", off="0"]
-		Type number: BoilerDuty 			"Мощность нагрева" 			[ stateTopic="dacha/esp-boiler/valuedes1", commandTopic="dacha/esp-boiler/valuedes1", min="50", max="100", step="10"]
+		Type switch: BoilerThermo 			"Термостат бойлера" 			[ stateTopic="dacha/esp-boiler/thermo_en1", commandTopic="dacha/esp-boiler/thermo_en1", on="1", off="0"]
+		Type number: BoilerTempSet 			"Уставка бойлера" 			[ stateTopic="dacha/esp-boiler/thermo_set1", commandTopic="dacha/esp-boiler/thermo_set1", min="30", max="70", step="1"]
+
+		//Type switch: BoilerMode 			"Режим регулировки мощности" 			[ stateTopic="dacha/esp-boiler/valuedes0", commandTopic="dacha/esp-boiler/valuedes0", on="1", off="0"]
+		//Type number: BoilerDuty 			"Мощность нагрева" 			[ stateTopic="dacha/esp-boiler/valuedes1", commandTopic="dacha/esp-boiler/valuedes1", min="50", max="100", step="10"]
 
 		Type switch: PumpPower 			"Питание насоса" 			[ stateTopic="dacha/esp-boiler/output12", commandTopic="dacha/esp-boiler/output12", on="1", off="0"]
 		Type switch: PumpState 			"Статус насоса" 			[ stateTopic="dacha/esp-boiler/valuedes0", on="1", off="0"]
 		
 		Type switch: VentPower 			"Питание вентиляции" 			[ stateTopic="dacha/esp-boiler/output13", commandTopic="dacha/esp-boiler/output13", on="1", off="0"]
 		Type switch: HotcabPower 			"Питание кабеля" 			[ stateTopic="dacha/esp-boiler/output14", commandTopic="dacha/esp-boiler/output14", on="1", off="0"]
-		Type switch: HotcabTherm 			"Термостат кабеля" 			[ stateTopic="dacha/esp-boiler/thermo_en1", commandTopic="dacha/esp-boiler/thermo_en1", on="1", off="0"]
-		Type number: HotcabThermTemp 			"Термостат кабеля температура" 			[ stateTopic="dacha/esp-boiler/thermo_set1", commandTopic="dacha/esp-boiler/thermo_set1", min="1", max="7", step="1"]
+		Type switch: HotcabTherm 			"Термостат кабеля" 			[ stateTopic="dacha/esp-boiler/thermo_en2", commandTopic="dacha/esp-boiler/thermo_en2", on="1", off="0"]
+		Type number: HotcabThermTemp 			"Термостат кабеля температура" 			[ stateTopic="dacha/esp-boiler/thermo_set2", commandTopic="dacha/esp-boiler/thermo_set2", min="1", max="7", step="1"]
 		
 	
 		Type number: rssi			"Уровень сигнала" 			[ stateTopic="dacha/esp-boiler/rssi" ]

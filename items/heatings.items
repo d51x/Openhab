@@ -132,7 +132,12 @@ Number BoilerRoom_Heater_tThermo    "Установка [%.1f °C]" <tempauto>  
 
 Switch Thermostate_Power   "Power"          <heating>   (gActuators, gHeaters)  { channel="mqtt:topic:mosquitto:thermostat:Power" }
 Number Thermostate_TempSet 	"TempSet [%.1f °C]" <temperature> { channel="mqtt:topic:mosquitto:thermostat:TempSet" }
-Number Thermostate_Temperature	"Temperature [%.1f °C]" <temperature> { channel="mqtt:topic:mosquitto:thermostat:Temperature" }
+
+Number Thermostate_Temperature	"Temperature [%.1f °C]" <temperature> (gMinMax, gLastUpdate) { channel="mqtt:topic:mosquitto:thermostat:Temperature" }
+Number Thermostate_Temperature_Min	"Min Temperature [%.1f °C]" <temperature_cold>
+Number Thermostate_Temperature_Max	"Max Temperature [%.1f °C]" <temperature_hot>
+DateTime Thermostate_Temperature_LastUpdate     "Temperature обновлена [%1$ta %1$tR]"     <lastupdate> 
+
 Switch Thermostate_Shedule   "Schedule"           { channel="mqtt:topic:mosquitto:thermostat:Shedule" }
 Switch Thermostate_EcoMode   "Energy saving"           { channel="mqtt:topic:mosquitto:thermostat:EcoMode" }
 Switch Thermostate_Lock   "Lock"           { channel="mqtt:topic:mosquitto:thermostat:Lock" }

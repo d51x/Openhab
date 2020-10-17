@@ -25,8 +25,11 @@ Group BoilerRoom_Boiler_Temp_Chart  <chart>
 Switch BoilerRoom_aBoiler    "Водонагреватель (питание)"        <poweroutlet>   (gActuators) { channel="mqtt:topic:mosquitto:esp-boiler:BoilerPower" }
 Switch BoilerRoom_aBoiler2    "Водонагреватель 1/2 (питание)"        <poweroutlet>   (gActuators) { channel="mqtt:topic:mosquitto:esp-boiler:Boiler2Power" }
 
-Switch BoilerRoom_BoilerMode "Режим регулировки мощности"  { channel="mqtt:topic:mosquitto:esp-boiler:BoilerMode" }
-Number BoilerRoom_BoilerDuty    "Мощность нагрева [%d %%]" <heating>  { channel="mqtt:topic:mosquitto:esp-boiler:BoilerDuty" }
+Switch BoilerRoom_Boiler_Thermo    "Термостат водонагревателя"        <poweroutlet>   (gActuators) { channel="mqtt:topic:mosquitto:esp-boiler:BoilerThermo" }
+Number BoilerRoom_Boiler_TempSet    "Уставка водонагревателя [%d °C]" <tempauto> { channel="mqtt:topic:mosquitto:esp-boiler:BoilerTempSet" }
+
+//Switch BoilerRoom_BoilerMode "Режим регулировки мощности"  { channel="mqtt:topic:mosquitto:esp-boiler:BoilerMode" }
+//Number BoilerRoom_BoilerDuty    "Мощность нагрева [%d %%]" <heating>  { channel="mqtt:topic:mosquitto:esp-boiler:BoilerDuty" }
 
 String BoilerRoom_Boiler_pTemp  "Водонагреватель [%s°C]"									
 Number BoilerRoom_Boiler_sTemp "Температура воды [%.1f°C]" <temperature>  (gMinMax, gLastUpdate, BoilerRoom_Boiler_Temp_Chart, gChart, gMyOpenHab, gTemp_Boiler_Chart) 

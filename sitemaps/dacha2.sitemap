@@ -516,11 +516,20 @@ sitemap dacha2 label="Dacha2"
 				Switch item=Kotel_Thermo_Mode label="Авто-режим"		
 				Setpoint item=Kotel_TempSet  label="Уставка" minValue=7 maxValue=30 step=0.5
 			}
+			Frame label="Tuya thermostat" {
+				Default item=Thermostate_Power
+				Setpoint item=Thermostate_TempSet minValue=5 maxValue=35 step=0.5
+				Default item=Thermostate_Temperature
+				Default item=Thermostate_Shedule
+				Default item=Thermostate_EcoMode
+				Default item=Thermostate_Lock
+			}
 			Frame label="Датчики" {
 				Text item=Kotel_Temp_FlowPipe 
 				Text item=Kotel_Temp_ReturnPipe
 				Text item=FF_LivingRoom02_sTemp label="Температура в комнате"
 			}
+		
 			Frame label="Котел Protherm" {
 				Switch item=Kotel_Protherm_Mode label="Термостат"
 				Setpoint item=Kotel_Protherm_vThermo label="Уставка" minValue=7 maxValue=30 step=0.5
@@ -660,6 +669,10 @@ sitemap dacha2 label="Dacha2"
 			}	
 			Frame label="Второй этаж" {
 				Switch item=SF_BedRoom1_Light label="Спальня"
+				Switch item=NightBulb_Power label="Спальня ночник"
+				Slider item=NightBulb_WhiteBrightness label="Яркость" minValue=2 maxValue=100 step=1 sendFrequency=500
+				Default item=NightBulb_Color label="Цвет" 
+
 				Switch item=SF_BedRoom2_Light label="Детская 1"
 				Switch item=SF_BedRoom3_Light label="Детская 2"
 				Switch item=SF_Corridor1_Light label="Коридор"
@@ -724,9 +737,12 @@ sitemap dacha2 label="Dacha2"
 			}	
 
 			Switch item=BoilerRoom_aBoiler	label="Питание"
-			Switch item=BoilerRoom_aBoiler2	label="Питание 1/2" 
-			Switch item=BoilerRoom_BoilerMode label="Регулировка мощности"
-			Setpoint item=BoilerRoom_BoilerDuty label="Мощность нагрева" minValue=50 maxValue=100 step=10
+			Switch item=BoilerRoom_aBoiler2	label="Питание 50%" 
+
+			Switch item=BoilerRoom_Boiler_Thermo
+			Setpoint item=BoilerRoom_Boiler_TempSet minValue=30 maxValue=70 step=1
+			//Switch item=BoilerRoom_BoilerMode label="Регулировка мощности"
+			//Setpoint item=BoilerRoom_BoilerDuty label="Мощность нагрева" minValue=50 maxValue=100 step=10
 
 		}
 		Text item=BoilerRoom_Pump_vPower label="Насос" icon="faucet" {
