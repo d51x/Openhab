@@ -1138,5 +1138,6 @@ sitemap dacha2 label="Dacha2"
 			}	
 		}
 		
+		Default item=BLE_LYWSD03MMC_A4C1386DD473 valuecolor=[BLE_LYWSD03MMC_A4C1386DD473_Data_LastUpdate=="NULL"="lightgray",BLE_LYWSD03MMC_A4C1386DD473_Data_LastUpdate>130="lightgray",>600="red"]
 	}	
 }

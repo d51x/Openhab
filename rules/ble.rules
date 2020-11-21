@@ -1,0 +1,71 @@
+import org.eclipse.smarthome.model.script.ScriptServiceUtil
+
+val mitherm_topic = "dacha/MiThermometr/"
+val TAG = "BLE"	
+val mqttActions = getActions("mqtt","mqtt:broker:mosquitto")
+
+rule "Mi therm data"
+when
+    Member of BLE_Mi_Thermometr changed
+then
+    val item = triggeringItem
+    val name = item.name
+    //logInfo(TAG, "item changed = {}", item)
+
+    val String data = item.state.toString
+    var mac = String::format("%s%s%s%s%s%s" 
+        , transform("JSONPATH", "$.[0]", data)
+        , transform("JSONPATH", "$.[1]", data)
+        , transform("JSONPATH", "$.[2]", data)
+        , transform("JSONPATH", "$.[3]", data)
+        , transform("JSONPATH", "$.[4]", data)
+        , transform("JSONPATH", "$.[5]", data)
+        ).toUpperCase
+
+    val item_mac = name.split("_", 4).get(2)
+
+    if ( item_mac.equals( mac ) ) {
+        val item_temp = ScriptServiceUtil.getItemRegistry.getItem( name.replace("_Data", "_Temperature") )
+        val item_hum = ScriptServiceUtil.getItemRegistry.getItem( name.replace("_Data", "_Humidity") )
+        val item_bat = ScriptServiceUtil.getItemRegistry.getItem( name.replace("_Data", "_Batttery") )
+
+        var temp = (Integer::parseInt(transform("JSONPATH", "$.[6]", data), 16) * 256 + Integer::parseInt(transform("JSONPATH", "$.[7]", data), 16)) / 10.0f
+        item_temp.sendCommand(temp)
+        
+        // hum
+        var hum = Integer::parseInt(transform("JSONPATH", "$.[8]", data), 16)
+        item_hum.sendCommand(hum)
+        
+        // bat
+        var bat = Integer::parseInt(transform("JSONPATH", "$.[9]", data), 16)
+        item_bat.sendCommand(bat)
+    }
+end
+
+rule "Member of BLE_LYWSD03MMC_A4C1386DD473"
+when    
+    Member of BLE_LYWSD03MMC_A4C1386DD473 received update //changed
+then
+    val item = triggeringItem
+    val name = item.name
+    //logInfo(TAG, "item {} changed to {}", item.name, item.state.toString)
+
+    val item_mac = name.split("_", 4).get(2)     
+    val item_type = name.split("_", 4).get(3)
+
+    if ( item_type.equals("Data") ) {
+        return;
+    }
+
+    //BLE_LYWSD03MMC_A4C1386DD473.postUpdate( String::format("%s | %s", ScriptServiceUtil.getItemRegistry.getItem( name.replace("_ProxyData", "_Temperature") ).state.toString
+    //                                                                , ScriptServiceUtil.getItemRegistry.getItem( name.replace("_ProxyData", "_Humidity") ).state.toString)
+    //)
+    // val text = String::format("%s°C/ %s%%", BLE_LYWSD03MMC_A4C1386DD473_Temperature.state.toString, 
+    //                                      BLE_LYWSD03MMC_A4C1386DD473_Humidity.state.toString)
+
+    //BLE_LYWSD03MMC_A4C1386DD473.postUpdate( BLE_LYWSD03MMC_A4C1386DD473_Temperature.state)
+
+    val topic = mitherm_topic + item_mac + "/" + item_type
+
+    mqttActions.publishMQTT( topic, item.state.toString, false);
+end

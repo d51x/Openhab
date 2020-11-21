@@ -9,8 +9,10 @@ Switch Presence_Car 		 "Машина"		<network> (gPresent, gMyOpenHab) {channel
 
 Switch Presence_Wife_Phone 		 "Жена (note8)" 	<network> (gPresent, gMyOpenHab)  {channel="network:pingdevice:redmi_note_8_pro:online", expire="25m, command=OFF"}
 Switch Presence_Wife2_Phone 		 "Жена (mi5s)" 	<network> (gPresent, gMyOpenHab)  {channel="network:pingdevice:mi5s:online", expire="25m, command=OFF"}
-Switch Presence_Daughter_Phone 	 "Дочь" 	<network> (gPresent, gMyOpenHab)          {channel="network:pingdevice:honor7c:online", expire="25m, command=OFF"}
-Switch Presence_Son_Phone 	     "Сын" 	    <network> (gPresent, gMyOpenHab)          {channel="network:pingdevice:redmi4x:online", expire="25m, command=OFF"}
+Switch Presence_Daughter_Phone 	 "Дочь (Honor 7C)" 	<network> (gPresent, gMyOpenHab)          {channel="network:pingdevice:honor7c:online", expire="25m, command=OFF"}
+Switch Presence_Daughter_Phone2 	 "Дочь (Huawei Y8p)" 	<network> (gPresent, gMyOpenHab)          {channel="network:pingdevice:huawei_y8p:online", expire="25m, command=OFF"}
+Switch Presence_Son_Phone 	     "Сын (redmi 4x)" 	    <network> (gPresent, gMyOpenHab)          {channel="network:pingdevice:redmi4x:online", expire="25m, command=OFF"}
+Switch Presence_Son_Phone2 	     "Сын (redmi9)" 	    <network> (gPresent, gMyOpenHab)          {channel="network:pingdevice:redmi9:online", expire="25m, command=OFF"}
 
 
 /*
