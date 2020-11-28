@@ -986,7 +986,7 @@ sitemap dacha2 label="Dacha2"
 						Chart item=Electro_PowerRMS_Chart period=h refresh=3600 visibility=[Chart_Period==0, Chart_Period=="NULL"]
 						Chart item=Electro_PowerRMS_Chart period=D refresh=3600 visibility=[Chart_Period==1]
 						Chart item=Electro_PowerRMS_Chart period=W refresh=3600 visibility=[Chart_Period==2]
-						Chart item=Electro_PowerRMS_Chart period=M refresh=3600 visibility=[Chart_Period==3]
+						Chart item=Electro_PowerRMS_Chart period=M refresh=3600 visibility=[Chart_Period==3] 
 					}								
 				}		
 
@@ -1041,6 +1041,20 @@ sitemap dacha2 label="Dacha2"
 				Text item=Electro_PowerWH_Month			label="Текущий месяц"
 				Text item=Electro_PowerWH_PrevMonth		label="Прошлый месяц"
 			}
+			Frame label="Электрокотел" {
+				Default item=Kotel_Energy_Today
+				Default item=Kotel_Energy_Today_Day
+				Default item=Kotel_Energy_Today_Night
+				Default item=Kotel_Energy_Yesterday
+				Default item=Kotel_Energy_Yesterday_Day
+				Default item=Kotel_Energy_Yesterday_Night	
+
+				Switch item=Kotel_Energy_Chart_Period icon="chart" mappings=[0="Час", 1="День", 2="Неделя", 3="Месяц"]
+				Chart item=Kotel_Energy_Chart period=h refresh=3600 visibility=[Kotel_Energy_Chart_Period==0, Kotel_Energy_Chart_Period=="NULL"]
+				Chart item=Kotel_Energy_Chart period=D refresh=3600 visibility=[Kotel_Energy_Chart_Period==1]
+				Chart item=Kotel_Energy_Chart period=W refresh=3600 visibility=[Kotel_Energy_Chart_Period==2]
+				Chart item=Kotel_Energy_Chart period=M refresh=3600 visibility=[Kotel_Energy_Chart_Period==3]	 						
+			}			
 		}
 		Group label="Показания" item=gEnergy_Counters
 	}	

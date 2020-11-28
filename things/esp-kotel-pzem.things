@@ -1,9 +1,17 @@
 Thing mqtt:topic:mosquitto:kotel-pzem "kotel-pzem" (mqtt:broker:mosquitto) @ "Устройства" {
 	Channels:
 
-    		Type number: voltage			"Напряжение" 				[ stateTopic="dacha/kotel-pzem/pmv" ]           // 221.4 V
-    		Type number: current			"Ток" 				[ stateTopic="dacha/kotel-pzem/pmc" ]                   // 4.3 A    
-    		Type number: power			"Мощность" 				[ stateTopic="dacha/kotel-pzem/pmw" ]                   // 989 W
-    		Type number: energy			"Общий расход" 				[ stateTopic="dacha/kotel-pzem/pmwh" ]                   // 123455 W*h
-    		Type number: uptime			"Время работы" 				[ stateTopic="dacha/kotel-pzem/uptime" ]        
+    		Type number: voltage		"Напряжение" 			[ stateTopic="dacha/kotel-pzem/pmv" ]           // 221.4 V
+    		Type number: current		"Ток" 				    [ stateTopic="dacha/kotel-pzem/pmc" ]           // 4.3 A    
+    		Type number: power			"Мощность" 				[ stateTopic="dacha/kotel-pzem/pmw" ]           // 989 W
+    		Type number: energy			"Общий расход" 			[ stateTopic="dacha/kotel-pzem/pmwh" ]          // 123455 W*h
+
+            // [{"ta":0.20,"tn":0.20,"td":0.00},{"ya":33.19,"yn":12.36,"yd":20.82}]
+    		Type number: energy_today_all	    "Расход сегодня" 		[ stateTopic="dacha/kotel-pzem/pme", transformationPattern="JSONPATH:$[0].ta" ]         
+    		Type number: energy_today_day	    "Расход сегодня (день)"	[ stateTopic="dacha/kotel-pzem/pme", transformationPattern="JSONPATH:$[0].td" ]          
+    		Type number: energy_today_night	    "Расход сегодня (ночь)"	[ stateTopic="dacha/kotel-pzem/pme", transformationPattern="JSONPATH:$[0].tn" ]         
+    		Type number: energy_yesterday_all	"Расход вчера" 		    [ stateTopic="dacha/kotel-pzem/pme", transformationPattern="JSONPATH:$[1].ya" ]         
+    		Type number: energy_yesterday_day	"Расход вчера (день)"	[ stateTopic="dacha/kotel-pzem/pme", transformationPattern="JSONPATH:$[1].yd" ]         
+    		Type number: energy_yesterday_night	"Расход вчера (ночь)"	[ stateTopic="dacha/kotel-pzem/pme", transformationPattern="JSONPATH:$[1].yn" ]                     
+    		Type number: uptime			"Время работы" 		    [ stateTopic="dacha/kotel-pzem/uptime" ]        
 }

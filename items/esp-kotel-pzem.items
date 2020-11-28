@@ -1,0 +1,8 @@
+Group Kotel_Energy_Chart  <chart> 
+Number Kotel_Energy_Chart_Period     "Период"
+Number Kotel_Energy_Today "Расход сегодня [%.1f кВт.ч]" <power> (gChart, Kotel_Energy_Chart) { channel="mqtt:topic:mosquitto:kotel-pzem:energy_today_all" }  
+Number Kotel_Energy_Today_Day "Расход сегодня (день) [%.1f кВт.ч]" <power> (gChart, Kotel_Energy_Chart) { channel="mqtt:topic:mosquitto:kotel-pzem:energy_today_day" }  
+Number Kotel_Energy_Today_Night "Расход сегодня (ночь) [%.1f кВт.ч]" <power> (gChart, Kotel_Energy_Chart) { channel="mqtt:topic:mosquitto:kotel-pzem:energy_today_night" }  
+Number Kotel_Energy_Yesterday "Расход вчера [%.1f кВт.ч]" <power> (gChart, Kotel_Energy_Chart) { channel="mqtt:topic:mosquitto:kotel-pzem:energy_yesterday_all" }  
+Number Kotel_Energy_Yesterday_Day "Расход вчера (день) [%.1f кВт.ч]" <power> (gChart, Kotel_Energy_Chart) { channel="mqtt:topic:mosquitto:kotel-pzem:energy_yesterday_day" }  
+Number Kotel_Energy_Yesterday_Night "Расход вчера (ночь) [%.1f кВт.ч]" <power> (gChart, Kotel_Energy_Chart) { channel="mqtt:topic:mosquitto:kotel-pzem:energy_yesterday_night" }  
