@@ -1,0 +1,9 @@
+Thing mqtt:topic:mosquitto:kotel-pzem "kotel-pzem" (mqtt:broker:mosquitto) @ "Устройства" {
+	Channels:
+
+    		Type number: voltage			"Напряжение" 				[ stateTopic="dacha/kotel-pzem/pmv" ]           // 221.4 V
+    		Type number: current			"Ток" 				[ stateTopic="dacha/kotel-pzem/pmc" ]                   // 4.3 A    
+    		Type number: power			"Мощность" 				[ stateTopic="dacha/kotel-pzem/pmw" ]                   // 989 W
+    		Type number: energy			"Общий расход" 				[ stateTopic="dacha/kotel-pzem/pmwh" ]                   // 123455 W*h
+    		Type number: uptime			"Время работы" 				[ stateTopic="dacha/kotel-pzem/uptime" ]        
+}
