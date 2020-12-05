@@ -1,9 +1,11 @@
 Group BLE_Mi_Thermometr
 
-Group BLE_LYWSD03MMC_A4C1386DD473 "Mi Thermometr [%s]" <temperature> (BLE_Mi_Thermometr)
-String BLE_LYWSD03MMC_A4C1386DD473_Data "BLE Data" <text> (BLE_Mi_Thermometr, gLastUpdate)
-DateTime BLE_LYWSD03MMC_A4C1386DD473_Data_LastUpdate  "Данные обновлены [%1$ta %1$tR]"     <lastupdate> (BLE_LYWSD03MMC_A4C1386DD473)
-//String BLE_LYWSD03MMC_A4C1386DD473_ProxyData "[%s]"
-Number BLE_LYWSD03MMC_A4C1386DD473_Temperature "Температура [%.1f°C]" <temperature> (BLE_LYWSD03MMC_A4C1386DD473, gHistory)
+Group BLE_LYWSD03MMC_A4C1386DD473 "Mi Thermometr" <temperature> (BLE_Mi_Thermometr)
+//String BLE_LYWSD03MMC_A4C1386DD473_Data "BLE Data" <text> (BLE_Mi_Thermometr, gLastUpdate,BLE_LYWSD03MMC_A4C1386DD473)
+//DateTime BLE_LYWSD03MMC_A4C1386DD473_Data_LastUpdate  "Данные обновлены [%1$ta %1$tR]"     <lastupdate> (BLE_LYWSD03MMC_A4C1386DD473)
+Number BLE_LYWSD03MMC_A4C1386DD473_Temperature "Температура [%.1f°C]" <temperature> (BLE_LYWSD03MMC_A4C1386DD473, gHistory, gLastUpdate, BLE_LYWSD03MMC_A4C1386DD473_Chart)
+DateTime BLE_LYWSD03MMC_A4C1386DD473_Temperature_LastUpdate "Данные обновлены [%1$ta %1$tR]" <lastupdate> (BLE_LYWSD03MMC_A4C1386DD473)
 Number BLE_LYWSD03MMC_A4C1386DD473_Humidity "Влажность [%d%%]" <humidity> (BLE_LYWSD03MMC_A4C1386DD473, gHistory)
 Number BLE_LYWSD03MMC_A4C1386DD473_Batttery "Состояние батареи [%d%%]" <batterylevel> (BLE_LYWSD03MMC_A4C1386DD473, gHistory)
+
+Group BLE_LYWSD03MMC_A4C1386DD473_Chart  <chart> (BLE_LYWSD03MMC_A4C1386DD473)

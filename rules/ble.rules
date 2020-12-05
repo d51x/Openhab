@@ -69,3 +69,47 @@ then
 
     mqttActions.publishMQTT( topic, item.state.toString, false);
 end
+
+rule "Mi Thermometr poll"
+when
+    Time cron "0 0/1 * * * ?"  // каждые 15 сек
+then
+    val mac = "A4:C1:38:6D:D4:73"
+    val base_cmd = "sh@@/etc/openhab2/scripts/mi_thermometr.sh@@" + mac 
+
+    // get temp
+    var cmd = base_cmd + "@@0x0012"
+    //logInfo(TAG, "BLE command:" + cmd)
+    var String results = executeCommandLine(cmd, 15000)
+    if ( !results.equals("")) {
+        var float temp = Integer.parseInt( results, 10 ) / 10.0f
+        BLE_LYWSD03MMC_A4C1386DD473_Temperature.sendCommand( temp )
+        //BLE_LYWSD03MMC_A4C1386DD473_Data.sendCommand( temp )
+
+        logInfo(TAG, "BLE polling temperature: {} ", temp)
+    }
+    else
+    logInfo(TAG, "BLE polling: {} ", "empty")
+
+    // get hum
+    cmd = base_cmd + "@@0x0015"
+    results = executeCommandLine(cmd, 15000)
+    if ( !results.equals("")) {
+        var hum = Integer.parseInt( results, 10 ) / 100
+        BLE_LYWSD03MMC_A4C1386DD473_Humidity.sendCommand( hum )
+        logInfo(TAG, "BLE polling humidity: {} ", hum)
+    }
+    else
+        logInfo(TAG, "BLE polling: {} ", "empty")    
+
+    // get hum
+    cmd = base_cmd + "@@0x000e"
+    results = executeCommandLine(cmd, 15000)
+    if ( !results.equals("")) {
+        var bat = Integer.parseInt( results, 10 )
+        BLE_LYWSD03MMC_A4C1386DD473_Batttery.sendCommand( bat )
+        logInfo(TAG, "BLE polling battery: {} ", bat)
+    }
+    else
+        logInfo(TAG, "BLE polling: {} ", "empty")            
+end    

@@ -237,18 +237,56 @@ end
 
 rule "KotelState chanaged"
 when
-	Item gKotelState changed
+	//Item gKotelState changed
+	Member of gKotelState changed
 then
 	val item = triggeringItem
-	val state = if (item.state == ON) OFF else ON
-	logInfo(LOG_TAG, "gKotelState value {}, invers value {}",  item.state, state )
+	//val state = if (item.state == ON) OFF else ON
+	var state = if (gKotelState.state == ON) OFF else ON
+	//logInfo(LOG_TAG, "gKotelState value {}, invers value {}",  item.state, state )
 
 	FF_BathRoom_Heater_Mode.sendCommand( state )
 
+	val t1 = (FF_LivingRoom01_sTemp.state as DecimalType).doubleValue
+	val t2 = (FF_LivingRoom02_sTemp.state as DecimalType).doubleValue
+	val t3 = (SF_Room1_sTemp.state as DecimalType).doubleValue
+	var t = t1
+	if (t > t2 ) t = t2
+	if (t > t3 ) t = t3
+
+// Switch Kotel_Protherm    "Котел Protherm" 
+// Switch Kotel_Kiturami    "Котел Kiturami" 
+
+	var msg = "%s %s. Температура в доме %.1f°C. Подача %.1f°C, обратка %.1f°C"
 	var telegramm = getActions("telegram","telegram:telegramBot:telegram")
-	if ( item.state == ON) {
-		telegramm.sendTelegram( "Котел включен. Температура в доме %.1f°C", (FF_LivingRoom02_sTemp.state as DecimalType).doubleValue )		
+	if (item.state ==  ON ) {
+		state = "включен" 
 	} else {
-		telegramm.sendTelegram( "Котел выключен. Температура в доме %.1f°C", (FF_LivingRoom02_sTemp.state as DecimalType).doubleValue )		
+		state = "выключен" 
 	}
+
+	telegramm.sendTelegram( msg
+							, item.label
+							, state
+							, t
+							, (Kotel_Temp_FlowPipe.state as DecimalType).doubleValue
+							, (Kotel_Temp_ReturnPipe.state as DecimalType).doubleValue 
+							)		
+
+	//if ( item.state == ON) {
+	//	telegramm.sendTelegram( "Котел включен. Температура в доме %.1f°C", t )		
+	//} else {
+		//var t_max = t1
+		//if (t_max < t2 ) t_max = t2
+	//	telegramm.sendTelegram( "Котел выключен. Температура в доме %.1f°C", t )		
+	//}
 end
+
+//rule "Turn on fun in boilerroom when Kiturami on"
+//when 
+//	Item Kotel_Kiturami changed
+//then
+	// TODO: пока что бессмысленно до момента, когда можно буде четко определить включение горелки
+	//BoilerRoom_Hotcab_aPower.sendCommand( triggeringItem.state )
+	//BoilerRoom_Vent_aPower
+//end

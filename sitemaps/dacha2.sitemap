@@ -55,8 +55,8 @@ sitemap dacha2 label="Dacha2"
 		
 		Text item=Septic_vText label="Септик" icon="cistern" valuecolor=[SepticTank3_sTemperature_LastUpdate=="NULL"="lightgray",
 																		SepticTank3_sTemperature_LastUpdate>90="lightgray",
-																		SepticTank3_sTemperature<2="red",
-																		SepticTank3_sTemperature>=2="blue",
+																		SepticTank3_sTemperature<0="red",
+																		SepticTank3_sTemperature>=0="blue",
 																		SepticTank3_sTemperature>=5="orange",
 																		SepticTank3_sTemperature>=10="green"]
 		{
@@ -148,7 +148,10 @@ sitemap dacha2 label="Dacha2"
 								Text item=FF_LivingRoom02_sTemp_Min
 								Text item=FF_LivingRoom02_sTemp_Max
 								Text item=FF_LivingRoom02_sTemp_LastUpdate
-							}						
+							}	
+							Frame label="Датчик Xiaomi" {
+								Text item=BLE_LYWSD03MMC_A4C1386DD473_Temperature
+							}
 						}
 						Text item=gTemp_FF_LivingRoom_Min label="Минимальная" icon="temperature_cold"
 						Text item=gTemp_FF_LivingRoom_Max label="Максимальная" icon="temperature_hot"
@@ -1152,6 +1155,22 @@ sitemap dacha2 label="Dacha2"
 			}	
 		}
 		
-		Default item=BLE_LYWSD03MMC_A4C1386DD473 valuecolor=[BLE_LYWSD03MMC_A4C1386DD473_Data_LastUpdate=="NULL"="lightgray",BLE_LYWSD03MMC_A4C1386DD473_Data_LastUpdate>130="lightgray",>600="red"]
+		Text item=BLE_LYWSD03MMC_A4C1386DD473
+		{
+			Frame label="Показания" {
+				Text item=BLE_LYWSD03MMC_A4C1386DD473_Temperature
+				Text item=BLE_LYWSD03MMC_A4C1386DD473_Humidity
+				Text item=BLE_LYWSD03MMC_A4C1386DD473_Batttery
+				Text item=BLE_LYWSD03MMC_A4C1386DD473_Temperature_LastUpdate
+			}
+			
+			Frame {
+				Switch item=Chart_Period icon="chart" mappings=[0="Час", 1="День", 2="Неделя", 3="Месяц"]
+				Chart item=BLE_LYWSD03MMC_A4C1386DD473_Chart period=h refresh=3600 visibility=[Chart_Period==0, Chart_Period=="NULL"]
+				Chart item=BLE_LYWSD03MMC_A4C1386DD473_Chart period=D refresh=3600 visibility=[Chart_Period==1]
+				Chart item=BLE_LYWSD03MMC_A4C1386DD473_Chart period=W refresh=3600 visibility=[Chart_Period==2]
+				Chart item=BLE_LYWSD03MMC_A4C1386DD473_Chart period=M refresh=3600 visibility=[Chart_Period==3]			
+			}			
+		}
 	}	
 }
