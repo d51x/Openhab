@@ -98,7 +98,8 @@ end
 
 rule "Turn on the drainage pump every hour for 5 minutes"
 when
-	Time cron "0 0 * * * ?"  // ровно каждый час (0 минут)
+	//Time cron "0 0 * * * ?"  // ровно каждый час (0 минут)
+	Time cron "0 0/15 * * * ?"  // ровно каждые 15 мин 
 then
 	flag_hour = 1  // здесь может не совпасть время cron и время esp
 	//DrainagePump.sendCommand(ON)
@@ -119,25 +120,25 @@ then
 
 	if ( triggeringItem.state == ON ) {
 		if ( flag_hour == 1) {
-			if ( notify_hour == 1 ) 
-				telegram.sendTelegram(  String::format("Дренажный насос включен по расписанию на %d минут. Уровень в колодце %d %%%%", pump_schedule_time, value))
+			//if ( notify_hour == 1 ) 
+				//telegram.sendTelegram(  String::format("Дренажный насос включен по расписанию на %d минут. Уровень в колодце %d %%%%", pump_schedule_time, value))
 		} else if ( flag_treshold == 1 ) {
 			if ( notify_level == 1 )
 				telegram.sendTelegram(  String::format("Дренажный насос включен по превышению уровня. Уровень в колодце %d %%%%", value))
 		} else {
-			if ( notify_default == 1 ) 
-				telegram.sendTelegram(  String::format("Дренажный насос включен. Уровень в колодце %d %%%%", value))
+			//if ( notify_default == 1 ) 
+				//telegram.sendTelegram(  String::format("Дренажный насос включен. Уровень в колодце %d %%%%", value))
 		}
 	} else if ( triggeringItem.state == OFF ) {
 		if ( flag_hour == 0) {
-			if ( notify_hour == 1 )
-				telegram.sendTelegram(  String::format("Дренажный насос выключен по таймеру (%d минут). Уровень в колодце %d %%%%", pump_schedule_time, value))
+			//if ( notify_hour == 1 )
+				//telegram.sendTelegram(  String::format("Дренажный насос выключен по таймеру (%d минут). Уровень в колодце %d %%%%", pump_schedule_time, value))
 		} else if ( flag_treshold == 0 ) {
-			if ( notify_level == 1 )
-				telegram.sendTelegram(  String::format("Дренажный насос выключен по нормализации уровня. Уровень в колодце %d %%%%", value))
+			//if ( notify_level == 1 )
+				//telegram.sendTelegram(  String::format("Дренажный насос выключен по нормализации уровня. Уровень в колодце %d %%%%", value))
 		} else {
-			if ( notify_default == 1 ) 
-				telegram.sendTelegram(  String::format("Дренажный насос выключен. Уровень в колодце %d %%%%", value))
+			//if ( notify_default == 1 ) 
+				//telegram.sendTelegram(  String::format("Дренажный насос выключен. Уровень в колодце %d %%%%", value))
 		}
 	}
 

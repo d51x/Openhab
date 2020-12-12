@@ -1113,14 +1113,17 @@ sitemap dacha2 label="Dacha2"
 
 				Frame label="Жена" {
 					Switch item=Presence_Wife_Phone icon="man_3" mappings=[OFF="Ушел", ON="Дома"] 
+					Switch item=Presence_Wife2_Phone icon="man_3" mappings=[OFF="Ушел", ON="Дома"] 
 				}
 
 				Frame label="Дочь" {
 					Switch item=Presence_Daughter_Phone icon="man_3" mappings=[OFF="Ушел", ON="Дома"] 
+					Switch item=Presence_Daughter_Phone2 icon="man_3" mappings=[OFF="Ушел", ON="Дома"] 
 				}
 				
 				Frame label="Сын" {
 					Switch item=Presence_Son_Phone icon="man_3" mappings=[OFF="Ушел", ON="Дома"] 
+					Switch item=Presence_Son_Phone2 icon="man_3" mappings=[OFF="Ушел", ON="Дома"] 
 				}
 			}
 			Switch item=Night_State
