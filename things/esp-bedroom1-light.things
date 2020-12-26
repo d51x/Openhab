@@ -3,6 +3,7 @@ Thing mqtt:topic:mosquitto:esp-bedroom1-light "Bedroom 1 Light" (mqtt:broker:mos
 	Channels:
 		Type switch: Light 			"Лампочка" 			[ stateTopic="dacha/br1-light/output12", commandTopic="dacha/br1-light/output12", on="1", off="0"]
 		Type switch: wifi_led 			"Wifi led" 			[ stateTopic="dacha/br1-light/output13", commandTopic="dacha/br1-light/output13", on="0", off="1"]
+		Type switch: Light2 			"Подсветка" 			[ stateTopic="dacha/br1-light/output14", commandTopic="dacha/br1-light/output14", on="0", off="1"] 
 		Type dimmer: wifi_dimmer	"Wifi dimmer"			[ stateTopic="dacha/br1-light/pwm0", commandTopic="dacha/br1-light/pwm0", min="0", max="255", step="1"]
 		Type number: rssi			"Уровень сигнала" 			[ stateTopic="dacha/br1-light/rssi" ]
 		Type number: uptime			"Время работы" 				[ stateTopic="dacha/br1-light/uptime" ]

@@ -132,3 +132,10 @@ then
 	vFF_Kitchen_RGB_Led.sendCommand(0)
 
 end
+
+rule "Подсветка в спальне"
+when
+	Item SF_BedRoom1_Light2 changed 
+then
+	AK001ZJ200_Power.sendCommand( SF_BedRoom1_Light2.state )  
+end
