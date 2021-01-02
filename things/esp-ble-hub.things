@@ -1,0 +1,39 @@
+// 192.168.2.150
+Thing mqtt:topic:mosquitto:ble-hub "BLE-Hub" (mqtt:broker:mosquitto) @ "Устройства" {
+	Channels:
+		Type number: BLE1_Temperature 			"Температура ble1" 			    [ stateTopic="dacha/ble-hub/bt1t"]
+		Type number: BLE1_Humidity 			    "Влажность ble1" 			    [ stateTopic="dacha/ble-hub/bt1h"]
+		Type number: BLE1_Battery 			    "Заряд батарейки ble1" 			[ stateTopic="dacha/ble-hub/bt1b"]
+		Type number: BLE1_SignalLevel		    "Уровень сигнала ble1" 			[ stateTopic="dacha/ble-hub/bt1rssi"]
+		Type number: BLE1_LastTime		        "Данные обновлены ble1" 		[ stateTopic="dacha/ble-hub/bt1time"]
+		Type string: BLE1_MAC		            "MAC-адрес ble1" 		        [ stateTopic="dacha/ble-hub/bt1mac"]
+
+		Type number: BLE2_Temperature 			"Температура ble2" 			    [ stateTopic="dacha/ble-hub/bt2t"]
+		Type number: BLE2_Humidity 			    "Влажность ble2" 			    [ stateTopic="dacha/ble-hub/bt2h"]
+		Type number: BLE2_Battery 			    "Заряд батарейки ble2" 			[ stateTopic="dacha/ble-hub/bt2b"]
+		Type number: BLE2_SignalLevel		    "Уровень сигнала ble2" 			[ stateTopic="dacha/ble-hub/bt2rssi"]
+		Type number: BLE2_LastTime		        "Данные обновлены ble2" 		[ stateTopic="dacha/ble-hub/bt2time"]
+		Type string: BLE2_MAC		            "MAC-адрес ble2" 		        [ stateTopic="dacha/ble-hub/bt2mac"]
+
+		Type number: BLE3_Temperature 			"Температура ble3" 			    [ stateTopic="dacha/ble-hub/bt3t"]
+		Type number: BLE3_Humidity 			    "Влажность ble3" 			    [ stateTopic="dacha/ble-hub/bt3h"]
+		Type number: BLE3_Battery 			    "Заряд батарейки ble3" 			[ stateTopic="dacha/ble-hub/bt3b"]
+		Type number: BLE3_SignalLevel		    "Уровень сигнала ble3" 			[ stateTopic="dacha/ble-hub/bt3rssi"]
+		Type number: BLE3_LastTime		        "Данные обновлены ble3" 		[ stateTopic="dacha/ble-hub/bt3time"]
+		Type string: BLE3_MAC		            "MAC-адрес ble3" 		        [ stateTopic="dacha/ble-hub/bt3mac"]
+
+		Type number: BLE4_Temperature 			"Температура ble4" 			    [ stateTopic="dacha/ble-hub/bt4t"]
+		Type number: BLE4_Humidity 			    "Влажность ble4" 			    [ stateTopic="dacha/ble-hub/bt4h"]
+		Type number: BLE4_Battery 			    "Заряд батарейки ble4" 			[ stateTopic="dacha/ble-hub/bt4b"]
+		Type number: BLE4_SignalLevel		    "Уровень сигнала ble4" 			[ stateTopic="dacha/ble-hub/bt4rssi"]
+		Type number: BLE4_LastTime		        "Данные обновлены ble4" 		[ stateTopic="dacha/ble-hub/bt4time"]
+		Type string: BLE4_MAC		            "MAC-адрес ble4" 		        [ stateTopic="dacha/ble-hub/bt4mac"]
+
+		Type number: BLE5_Temperature 			"Температура ble5" 			    [ stateTopic="dacha/ble-hub/bt5t"]
+		Type number: BLE5_Humidity 			    "Влажность ble5" 			    [ stateTopic="dacha/ble-hub/bt5h"]
+		Type number: BLE5_Battery 			    "Заряд батарейки ble5" 			[ stateTopic="dacha/ble-hub/bt5b"]
+		Type number: BLE5_SignalLevel		    "Уровень сигнала ble5" 			[ stateTopic="dacha/ble-hub/bt5rssi"]
+		Type number: BLE5_LastTime		        "Данные обновлены ble5" 		[ stateTopic="dacha/ble-hub/bt5time"]
+		Type string: BLE5_MAC		            "MAC-адрес ble5" 		        [ stateTopic="dacha/ble-hub/bt5mac"]
+
+}

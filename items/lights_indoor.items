@@ -58,8 +58,8 @@ Dimmer FF_Kitchen_Dimmer_Blue      "Яркость синей ленты (кух
 Dimmer FF_Kitchen_Dimmer_White      "Яркость белой ленты (кухня) [%d]" <rgb> (gLedsKitchen, gMyOpenHab)
 { channel="mqtt:topic:mosquitto:kitchen-led:WhiteLevel" }
 
-Color FF_Kitchen_RGB_Led    "RGB Leds"  <rgb> (gLedsKitchen, gMyOpenHab)
-Number vFF_Kitchen_RGB_Led    "RGB Leds"   { channel="mqtt:topic:mosquitto:kitchen-led:colorint" }
+Color FF_Kitchen_RGB_Led    "Kitchen RGB Leds"  <rgb> (gLedsKitchen, gMyOpenHab)
+Number vFF_Kitchen_RGB_Led    "Kitchen RGB Leds"   { channel="mqtt:topic:mosquitto:kitchen-led:colorint" }
 
 //Number FF_Kitchen_RBG_Effect_Id "Световой эффект [%d]" <rgb> (gLedsKitchen) //{ channel="mqtt:topic:mosquitto:kitchen-led:effect" }
 Number FF_Kitchen_RBG_Effect_Id "Световой эффект [%d]" <rgb> (gLedsKitchen) { channel="mqtt:topic:mosquitto:kitchen-led:effect" }
@@ -70,7 +70,8 @@ Switch FF_Garland      "Гирлянда [MAP(ui.map):%s]" <rgb> (FF_Lights, gLi
 
 Color FF_Tree_RGB    "Елка"  <rgb> (gMyOpenHab)
 //String V_Tree_RGB    "[%s]"  <rgb> (gMyOpenHab) {http=">[CHANGED:GET:http://192.168.2.225/ledctrl?color=hsv2&hsv=0,100,100]"}
-Number FF_Tree_Effect_Id "Эффект [%d]" <rgb> 
+Number vFF_Tree_RGB    "Елка RGB Leds"   { channel="mqtt:topic:mosquitto:esp-tree:colorint" }
+Number FF_Tree_Effect_Id "Эффект [%d]" <rgb> { channel="mqtt:topic:mosquitto:esp-tree:effect" } 
 
 
 Switch GF_Cellar_Light      "Свет в цоколе [MAP(ui.map):%s]" <light> (gLightIndoor, gMyOpenHab) [ "Lighting" ] 

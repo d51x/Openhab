@@ -14,7 +14,7 @@ Number FF_LivingRoom01_sTemp 	"Температура в гостинной 1 [%
 							{ channel="mqtt:topic:mosquitto:esp-sonoff-pow-01:Temperature" }
 
 Number FF_LivingRoom02_sTemp 	"Температура в гостинной 2 [%.1f °C]" <temperature> (gInfluxe, gMinMax, gLastUpdate, gTemp_FF_LivingRoom_Avg, gTemp_FF_LivingRoom_Min, gTemp_FF_LivingRoom_Max, FF_LivingRoom_Chart, gChart, gMyOpenHab, IndoorTemp_Chart, FF_Chart) 
-							{ channel="mqtt:topic:mosquitto:esp-sonoff-pow-02:Temperature" }
+							{ channel="mqtt:topic:mosquitto:esp-ble-hub:Temperature" }
 
 
 Number 	FF_LivingRoom01_sTemp_Min "Минимальная температура в гостинной 1 [%.1f °C]" <temperature_cold> 						
@@ -114,3 +114,4 @@ DateTime Cellar_sTemp2_LastUpdate     "Температура2 в цоколе �
 
 // chart
 Group Chart_Temperature <chart>
+

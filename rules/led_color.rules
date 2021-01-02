@@ -69,19 +69,23 @@ then
     logInfo("RGB rule1", "From HSB to RGB Conversion: r" + r + " g" + g + " b" + b)
     logInfo("HSV", "HSV value: {}", hsb)
 
-    var base = String::format("http://192.168.2.225/ledctrl?color=rgb2&rgb=%d,%d,%d",  r, g, b)
-    logInfo("HSV", "Sending " + base)
-    sendHttpGetRequest(base)
-
+    //var base = String::format("http://192.168.2.225/ledctrl?color=rgb2&rgb=%d,%d,%d",  r, g, b)
+    //var base = String::format("http://192.168.2.225/ledctrl?color=rgb2&rgb=%d,%d,%d",  r, g, b)
+    //logInfo("HSV", "Sending " + base)
+    //sendHttpGetRequest(base)
+    var intValue = r 
+    intValue = (intValue << 8) + g;
+    intValue = (intValue << 8) + b;
+    vFF_Kitchen_RGB_Led.sendCommand( intValue )
 end
 
-rule "Tree Effect changed"
-when
-    Item FF_Tree_Effect_Id changed
-then
-    var base = String::format("http://192.168.2.225/ledctrl?effectid=%d",  (FF_Tree_Effect_Id.state as DecimalType).intValue)
-    logInfo("Effect", "Sending " + base)
-    sendHttpGetRequest(base)
-end
+//rule "Tree Effect changed"
+//when
+//    Item FF_Tree_Effect_Id changed
+//then
+    //var base = String::format("http://192.168.2.225/ledctrl?effectid=%d",  (FF_Tree_Effect_Id.state as DecimalType).intValue)
+    //logInfo("Effect", "Sending " + base)
+    //sendHttpGetRequest(base)
+//end
 
 

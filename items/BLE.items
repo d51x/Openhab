@@ -1,0 +1,134 @@
+Group gBLE1_Device "BLE1 Device"
+Number BLE1_Device_Temp 		"Температура [%.1f °C]" <temperature> (gMinMax, gLastUpdate, gBLE1_Device, gChart) 
+							{ channel="mqtt:topic:mosquitto:ble-hub:BLE1_Temperature" }
+Number 	BLE1_Device_Temp_Min "Минимальная температура [%.1f °C]" <temperature_cold> (gBLE1_Device)					
+Number 	BLE1_Device_Temp_Max "Максимальная температура [%.1f °C]" <temperature_hot> (gBLE1_Device)
+DateTime BLE1_Device_Temp_LastUpdate     "Температруа обновлена [%1$ta %1$tR]"     <lastupdate>  (gBLE1_Device)
+
+Number BLE1_Device_Hum 		"Влажность [%.0f %%]" <humidity> (gMinMax, gLastUpdate, gBLE1_Device, gChart) 
+							{ channel="mqtt:topic:mosquitto:ble-hub:BLE1_Humidity" }	
+Number 	BLE1_Device_Hum_Min "Минимальная Влажность [%.0f %%]" <humidity> (gBLE1_Device)					
+Number 	BLE1_Device_Hum_Max "Максимальная Влажность [%.0f %%]" <humidity> (gBLE1_Device)
+DateTime BLE1_Device_Hum_LastUpdate     "Влажность обновлена [%1$ta %1$tR]"     <lastupdate>  (gBLE1_Device)
+
+Number BLE1_Device_Battery 		"Заряд батарейки [%d %%]" <battery> (gLastUpdate, gBLE1_Device, gChart) 
+							{ channel="mqtt:topic:mosquitto:ble-hub:BLE1_Battery" }	
+DateTime BLE1_Device_Battery_LastUpdate     "Заряд батарейки обновлен [%1$ta %1$tR]"     <lastupdate>  (gBLE1_Device)
+
+Number BLE1_Device_Signal 		"Уровень сигнала [%ddB]" <signal> (gLastUpdate, gBLE1_Device, gChart) 
+							{ channel="mqtt:topic:mosquitto:ble-hub:BLE1_SignalLevel" }	
+DateTime BLE1_Device_Signal_LastUpdate     "Уровень сигнала обновлен [%1$ta %1$tR]"     <lastupdate>  (gBLE1_Device)
+
+Number BLE1_Device_LastTime  "Данные обновлены [%d сек]" <lastupdate> (gBLE1_Device) 
+							{ channel="mqtt:topic:mosquitto:ble-hub:BLE1_LastTime" }	
+
+String BLE1_Device_MAC "MAC-адрес [%s]" (gBLE1_Device) { channel="mqtt:topic:mosquitto:ble-hub:BLE1_MAC" }	
+
+// =========================================================================================================================
+
+Group gBLE2_Device "BLE2 Device"
+Number BLE2_Device_Temp 		"Температура [%.1f °C]" <temperature> (gMinMax, gLastUpdate, gBLE2_Device, gChart) 
+							{ channel="mqtt:topic:mosquitto:ble-hub:BLE2_Temperature" }
+Number 	BLE2_Device_Temp_Min "Минимальная температура [%.1f °C]" <temperature_cold> (gBLE2_Device)					
+Number 	BLE2_Device_Temp_Max "Максимальная температура [%.1f °C]" <temperature_hot> (gBLE2_Device)
+DateTime BLE2_Device_Temp_LastUpdate     "Температруа обновлена [%1$ta %1$tR]"     <lastupdate>  (gBLE2_Device)
+
+Number BLE2_Device_Hum 		"Влажность [%.0f %%]" <humidity> (gMinMax, gLastUpdate, gBLE2_Device, gChart) 
+							{ channel="mqtt:topic:mosquitto:ble-hub:BLE2_Humidity" }	
+Number 	BLE2_Device_Hum_Min "Минимальная Влажность [%.0f %%]" <humidity> (gBLE2_Device)					
+Number 	BLE2_Device_Hum_Max "Максимальная Влажность [%.0f %%]" <humidity> (gBLE2_Device)
+DateTime BLE2_Device_Hum_LastUpdate     "Влажность обновлена [%1$ta %1$tR]"     <lastupdate>  (gBLE2_Device)
+
+Number BLE2_Device_Battery 		"Заряд батарейки [%d %%]" <battery> (gLastUpdate, gBLE2_Device, gChart) 
+							{ channel="mqtt:topic:mosquitto:ble-hub:BLE2_Battery" }	
+DateTime BLE2_Device_Battery_LastUpdate     "Заряд батарейки обновлен [%1$ta %1$tR]"     <lastupdate>  (gBLE2_Device)
+
+Number BLE2_Device_Signal 		"Уровень сигнала [%ddB]" <signal> (gLastUpdate, gBLE2_Device, gChart) 
+							{ channel="mqtt:topic:mosquitto:ble-hub:BLE2_SignalLevel" }	
+DateTime BLE2_Device_Signal_LastUpdate     "Уровень сигнала обновлен [%1$ta %1$tR]"     <lastupdate>  (gBLE2_Device)
+
+Number BLE2_Device_LastTime  "Данные обновлены [%d сек]" <lastupdate> (gBLE2_Device) 
+							{ channel="mqtt:topic:mosquitto:ble-hub:BLE2_LastTime" }	
+
+String BLE2_Device_MAC "MAC-адрес [%s]" (gBLE2_Device) { channel="mqtt:topic:mosquitto:ble-hub:BLE2_MAC" }
+
+// =========================================================================================================================
+Group gBLE3_Device "BLE3 Device"
+Number BLE3_Device_Temp 		"Температура [%.1f °C]" <temperature> (gMinMax, gLastUpdate, gBLE3_Device, gChart) 
+							{ channel="mqtt:topic:mosquitto:ble-hub:BLE3_Temperature" }
+Number 	BLE3_Device_Temp_Min "Минимальная температура [%.1f °C]" <temperature_cold> (gBLE3_Device)					
+Number 	BLE3_Device_Temp_Max "Максимальная температура [%.1f °C]" <temperature_hot> (gBLE3_Device)
+DateTime BLE3_Device_Temp_LastUpdate     "Температруа обновлена [%1$ta %1$tR]"     <lastupdate>  (gBLE3_Device)
+
+Number BLE3_Device_Hum 		"Влажность [%.0f %%]" <humidity> (gMinMax, gLastUpdate, gBLE3_Device, gChart) 
+							{ channel="mqtt:topic:mosquitto:ble-hub:BLE3_Humidity" }	
+Number 	BLE3_Device_Hum_Min "Минимальная Влажность [%.0f %%]" <humidity> (gBLE3_Device)					
+Number 	BLE3_Device_Hum_Max "Максимальная Влажность [%.0f %%]" <humidity> (gBLE3_Device)
+DateTime BLE3_Device_Hum_LastUpdate     "Влажность обновлена [%1$ta %1$tR]"     <lastupdate>  (gBLE3_Device)
+
+Number BLE3_Device_Battery 		"Заряд батарейки [%d %%]" <battery> (gLastUpdate, gBLE3_Device, gChart) 
+							{ channel="mqtt:topic:mosquitto:ble-hub:BLE3_Battery" }	
+DateTime BLE3_Device_Battery_LastUpdate     "Заряд батарейки обновлен [%1$ta %1$tR]"     <lastupdate>  (gBLE3_Device)
+
+Number BLE3_Device_Signal 		"Уровень сигнала [%ddB]" <signal> (gLastUpdate, gBLE3_Device, gChart) 
+							{ channel="mqtt:topic:mosquitto:ble-hub:BLE3_SignalLevel" }	
+DateTime BLE3_Device_Signal_LastUpdate     "Уровень сигнала обновлен [%1$ta %1$tR]"     <lastupdate>  (gBLE3_Device)
+
+Number BLE3_Device_LastTime  "Данные обновлены [%d сек]" <lastupdate> (gBLE3_Device) 
+							{ channel="mqtt:topic:mosquitto:ble-hub:BLE3_LastTime" }	
+
+String BLE3_Device_MAC "MAC-адрес [%s]" (gBLE3_Device) { channel="mqtt:topic:mosquitto:ble-hub:BLE3_MAC" }
+
+// =========================================================================================================================
+Group gBLE4_Device "BLE4 Device"
+Number BLE4_Device_Temp 		"Температура [%.1f °C]" <temperature> (gMinMax, gLastUpdate, gBLE4_Device, gChart) 
+							{ channel="mqtt:topic:mosquitto:ble-hub:BLE4_Temperature" }
+Number 	BLE4_Device_Temp_Min "Минимальная температура [%.1f °C]" <temperature_cold> (gBLE4_Device)					
+Number 	BLE4_Device_Temp_Max "Максимальная температура [%.1f °C]" <temperature_hot> (gBLE4_Device)
+DateTime BLE4_Device_Temp_LastUpdate     "Температруа обновлена [%1$ta %1$tR]"     <lastupdate>  (gBLE4_Device)
+
+Number BLE4_Device_Hum 		"Влажность [%.0f %%]" <humidity> (gMinMax, gLastUpdate, gBLE4_Device, gChart) 
+							{ channel="mqtt:topic:mosquitto:ble-hub:BLE4_Humidity" }	
+Number 	BLE4_Device_Hum_Min "Минимальная Влажность [%.0f %%]" <humidity> (gBLE4_Device)					
+Number 	BLE4_Device_Hum_Max "Максимальная Влажность [%.0f %%]" <humidity> (gBLE4_Device)
+DateTime BLE4_Device_Hum_LastUpdate     "Влажность обновлена [%1$ta %1$tR]"     <lastupdate>  (gBLE4_Device)
+
+Number BLE4_Device_Battery 		"Заряд батарейки [%d %%]" <battery> (gLastUpdate, gBLE4_Device, gChart) 
+							{ channel="mqtt:topic:mosquitto:ble-hub:BLE4_Battery" }	
+DateTime BLE4_Device_Battery_LastUpdate     "Заряд батарейки обновлен [%1$ta %1$tR]"     <lastupdate>  (gBLE4_Device)
+
+Number BLE4_Device_Signal 		"Уровень сигнала [%ddB]" <signal> (gLastUpdate, gBLE4_Device, gChart) 
+							{ channel="mqtt:topic:mosquitto:ble-hub:BLE4_SignalLevel" }	
+DateTime BLE4_Device_Signal_LastUpdate     "Уровень сигнала обновлен [%1$ta %1$tR]"     <lastupdate>  (gBLE4_Device)
+
+Number BLE4_Device_LastTime  "Данные обновлены [%d сек]" <lastupdate> (gBLE4_Device) 
+							{ channel="mqtt:topic:mosquitto:ble-hub:BLE4_LastTime" }	
+
+String BLE4_Device_MAC "MAC-адрес [%s]" (gBLE4_Device) { channel="mqtt:topic:mosquitto:ble-hub:BLE4_MAC" }
+
+// =========================================================================================================================
+Group gBLE5_Device "BLE5 Device"
+Number BLE5_Device_Temp 		"Температура [%.1f °C]" <temperature> (gMinMax, gLastUpdate, gBLE5_Device, gChart) 
+							{ channel="mqtt:topic:mosquitto:ble-hub:BLE5_Temperature" }
+Number 	BLE5_Device_Temp_Min "Минимальная температура [%.1f °C]" <temperature_cold> (gBLE5_Device)					
+Number 	BLE5_Device_Temp_Max "Максимальная температура [%.1f °C]" <temperature_hot> (gBLE5_Device)
+DateTime BLE5_Device_Temp_LastUpdate     "Температруа обновлена [%1$ta %1$tR]"     <lastupdate>  (gBLE5_Device)
+
+Number BLE5_Device_Hum 		"Влажность [%.0f %%]" <humidity> (gMinMax, gLastUpdate, gBLE5_Device, gChart) 
+							{ channel="mqtt:topic:mosquitto:ble-hub:BLE5_Humidity" }	
+Number 	BLE5_Device_Hum_Min "Минимальная Влажность [%.0f %%]" <humidity> (gBLE5_Device)					
+Number 	BLE5_Device_Hum_Max "Максимальная Влажность [%.0f %%]" <humidity> (gBLE5_Device)
+DateTime BLE5_Device_Hum_LastUpdate     "Влажность обновлена [%1$ta %1$tR]"     <lastupdate>  (gBLE5_Device)
+
+Number BLE5_Device_Battery 		"Заряд батарейки [%d %%]" <battery> (gLastUpdate, gBLE5_Device, gChart) 
+							{ channel="mqtt:topic:mosquitto:ble-hub:BLE5_Battery" }	
+DateTime BLE5_Device_Battery_LastUpdate     "Заряд батарейки обновлен [%1$ta %1$tR]"     <lastupdate>  (gBLE5_Device)
+
+Number BLE5_Device_Signal 		"Уровень сигнала [%ddB]" <signal> (gLastUpdate, gBLE5_Device, gChart) 
+							{ channel="mqtt:topic:mosquitto:ble-hub:BLE5_SignalLevel" }	
+DateTime BLE5_Device_Signal_LastUpdate     "Уровень сигнала обновлен [%1$ta %1$tR]"     <lastupdate>  (gBLE5_Device)
+
+Number BLE5_Device_LastTime  "Данные обновлены [%d сек]" <lastupdate> (gBLE5_Device) 
+							{ channel="mqtt:topic:mosquitto:ble-hub:BLE5_LastTime" }	
+
+String BLE5_Device_MAC "MAC-адрес [%s]" (gBLE5_Device) { channel="mqtt:topic:mosquitto:ble-hub:BLE5_MAC" }

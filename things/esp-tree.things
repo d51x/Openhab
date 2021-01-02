@@ -1,0 +1,14 @@
+// 192.168.2.225
+Thing mqtt:topic:mosquitto:esp-tree "Tree Leds" (mqtt:broker:mosquitto) @ "Устройства" {
+	Channels:
+		Type dimmer: RedLevel 		"Елка. Красный (уровень)" 		[ stateTopic="dacha/esp-tree/ledc/ch0", commandTopic="dacha/esp-tree/ledc/ch0/set", min="0", max="255", step="1" ]
+		Type dimmer: GreenLevel 	"Елка. Зеленый (уровень)" 		[ stateTopic="dacha/esp-tree/ledc/ch1", commandTopic="dacha/esp-tree/ledc/ch1/set", min="0", max="255", step="1" ]
+		Type dimmer: BlueLevel 		"Елка. Синий (уровень)" 			[ stateTopic="dacha/esp-tree/ledc/ch2", commandTopic="dacha/esp-tree/ledc/ch2/set", min="0", max="255", step="1" ]
+		
+		Type number: rssi			"Уровень сигнала" 			[ stateTopic="dacha/esp-tree/rssi" ]
+		Type number: uptime			"Время работы" 				[ stateTopic="dacha/esp-tree/uptime" ]
+
+		// new
+		Type number: effect			"Елка. Световой эффект" 			[ stateTopic="dacha/esp-tree/effect/id", commandTopic="dacha/esp-tree/effect/id/set" ]
+		Type number: colorint			"Елка. Цвет" 					[ commandTopic="dacha/esp-tree/color/int/set" ] 
+}
