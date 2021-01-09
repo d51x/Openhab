@@ -135,7 +135,22 @@ end
 
 rule "Подсветка в спальне"
 when
-	Item SF_BedRoom1_Light2 changed 
+	//Item SF_BedRoom1_Light2 changed 
+	Item SF_BedRoom1_Short2_Cmd received update
 then
-	AK001ZJ200_Power.sendCommand( SF_BedRoom1_Light2.state )  
+	//triggeringItem
+	logInfo("Light", "2nd short command = {}", SF_BedRoom1_Short2_Cmd.state)
+	logInfo("Light", "AK001ZJ200_Power.state = {}", AK001ZJ200_Power.state)
+	
+	//AK001ZJ200_Power.sendCommand( SF_BedRoom1_Light2.state )  
+	var ledState = AK001ZJ200_Power.state
+	if ( ledState == OFF ) {
+		ledState = ON
+	}
+	else 
+	{
+		ledState = OFF
+	}
+	logInfo("Light", "AK001ZJ200_Power.new state = {}", ledState)
+	AK001ZJ200_Power.sendCommand( ledState )  
 end

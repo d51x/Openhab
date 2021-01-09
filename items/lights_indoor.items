@@ -18,8 +18,10 @@ Switch FF_Corridor_Light      "Свет в прихожей [MAP(ui.map):%s]" <l
 Switch SF_BedRoom1_Light      "Свет в спальне [MAP(ui.map):%s]" <light> (SF_Lights, gLightIndoor, gMyOpenHab) [ "Lighting" ] 
 { channel="mqtt:topic:mosquitto:esp-bedroom1-light:Light" }
 									
-Switch SF_BedRoom1_Light2      "Подсветка в спальне [MAP(ui.map):%s]" <light> (SF_Lights, gLightIndoor, gMyOpenHab) [ "Lighting" ] 
-{ channel="mqtt:topic:mosquitto:esp-bedroom1-light:Light2" }
+// Switch SF_BedRoom1_Light2      "Подсветка в спальне [MAP(ui.map):%s]" <light> (SF_Lights, gLightIndoor, gMyOpenHab) [ "Lighting" ] 
+// { channel="mqtt:topic:mosquitto:esp-bedroom1-light:Light2" }
+
+Number SF_BedRoom1_Short2_Cmd   "Команда2" { channel="mqtt:topic:mosquitto:esp-bedroom1-light:short2_cmd" }
 
 Switch SF_BedRoom2_Light      "Свет у Тани [MAP(ui.map):%s]" <light> (SF_Lights, gLightIndoor, gMyOpenHab) [ "Lighting" ] 
 { channel="mqtt:topic:mosquitto:esp-bedroom2-light:Light" }
