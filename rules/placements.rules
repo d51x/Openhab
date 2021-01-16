@@ -85,14 +85,14 @@ end
 rule "Update placements temperature and humidity for living room"
 when
 	/*-------- temperatures --------------*/
-	Item gTemp_FF_LivingRoom_Avg 					changed or
-	Item gHumidity_FF_LivingRoom_Avg 					changed 	//or
+	Item FF_LivingRoom_sTemp 					changed or
+	Item FF_LivingRoom_sHumidity 					changed 	//or
 	//Time cron "0/5 * * * * ?"
 then
 	//val item = triggeringItem
 	//logInfo(LOG_TAG, "Update placements temperature for placements")
-	val temp = (gTemp_FF_LivingRoom_Avg.state as Number).floatValue
-	val hum = (gHumidity_FF_LivingRoom_Avg.state as Number).intValue
+	val temp = (FF_LivingRoom_sTemp.state as Number).floatValue
+	val hum = (FF_LivingRoom_sHumidity.state as Number).intValue
 	val String str = String::format("%d%%\u202F/\u202F%.0f°C", hum, temp) 
 	//logInfo(LOG_TAG, str)
 	postUpdate(vFF_LivingRoom, str)

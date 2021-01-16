@@ -15,33 +15,3 @@ then
 	//item.lastUpdate("mapdb")
 end
 
-
-rule "Get min last update time for FF living room temp 1 and temp 2"
-when
-	Item FF_LivingRoom01_sTemp_LastUpdate received update or
-	Item FF_LivingRoom02_sTemp_LastUpdate received update
-then
-	val d1 = new DateTime(FF_LivingRoom01_sTemp_LastUpdate.state.toString)
-	val d2 = new DateTime(FF_LivingRoom02_sTemp_LastUpdate.state.toString)
-	if ( d1.compareTo(d2) > 0 ) 
-	{
-		FF_LivingRoom_Temp_LastUpdate.postUpdate(FF_LivingRoom02_sTemp_LastUpdate.state)
-	} else {
-		FF_LivingRoom_Temp_LastUpdate.postUpdate(FF_LivingRoom01_sTemp_LastUpdate.state)
-	}
-end	
-
-rule "Get min last update time for FF living room humidity 1 and humidity 2"
-when
-	Item FF_LivingRoom_sHumidity_01_LastUpdate received update or
-	Item FF_LivingRoom_sHumidity_02_LastUpdate received update
-then
-	val d1 = new DateTime(FF_LivingRoom_sHumidity_01_LastUpdate.state.toString)
-	val d2 = new DateTime(FF_LivingRoom_sHumidity_02_LastUpdate.state.toString)
-	if ( d1.compareTo(d2) > 0 ) 
-	{
-		FF_LivingRoom_Humidity_LastUpdate.postUpdate(FF_LivingRoom_sHumidity_02_LastUpdate.state)
-	} else {
-		FF_LivingRoom_Humidity_LastUpdate.postUpdate(FF_LivingRoom_sHumidity_01_LastUpdate.state)
-	}
-end	

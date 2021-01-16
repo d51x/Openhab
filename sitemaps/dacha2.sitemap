@@ -134,27 +134,14 @@ sitemap dacha2 label="Dacha2"
 	Frame label="Дом" {
 		Text item=vHouse_Temperature {
 			Frame label="Первый этаж" {
-				Text item=gTemp_FF_LivingRoom_Avg label="Гостинная" icon="sofa" {
+				Text item=FF_LivingRoom_sTemp label="Гостинная" icon="sofa" {
 					Frame label="Температура" {
-						Text item=gTemp_FF_LivingRoom_Avg label="Сейчас" {
-							Frame label="Датчик 1" {
-								Text item=FF_LivingRoom01_sTemp
-								Text item=FF_LivingRoom01_sTemp_Min
-								Text item=FF_LivingRoom01_sTemp_Max
-								Text item=FF_LivingRoom01_sTemp_LastUpdate
-							}
-							Frame label="Датчик 2" {
-								Text item=FF_LivingRoom02_sTemp
-								Text item=FF_LivingRoom02_sTemp_Min
-								Text item=FF_LivingRoom02_sTemp_Max
-								Text item=FF_LivingRoom02_sTemp_LastUpdate
-							}	
-						}
-						Text item=BLE3_Device_Temp  label="BLE Temp"
-						Text item=gTemp_FF_LivingRoom_Min label="Минимальная" icon="temperature_cold"
-						Text item=gTemp_FF_LivingRoom_Max label="Максимальная" icon="temperature_hot"
-						Text item=FF_LivingRoom_Temp_LastUpdate
-					}
+						Text item=FF_LivingRoom_sTemp label="Сейчас"
+						Text item=FF_LivingRoom_sTemp_Min 
+						Text item=FF_LivingRoom_sTemp_Max
+						Text item=FF_LivingRoom_sTemp_LastUpdate					
+					}					
+
 					Frame label="Графики" {
 						Switch item=Chart_Period label="График" icon="chart" mappings=[0="Час", 1="День", 2="Неделя", 3="Месяц"]
 						Chart item=FF_LivingRoom_Chart period=h refresh=3600 visibility=[Chart_Period==0, Chart_Period=="NULL"]
@@ -182,7 +169,6 @@ sitemap dacha2 label="Dacha2"
 				Text item=FF_BathRoom_sTemp icon="bath" {
 					Frame label="Температура" {
 						Text item=FF_BathRoom_sTemp label="Сейчас"
-						Text item=BLE5_Device_Temp  label="BLE Temp"
 						Text item=FF_BathRoom_sTemp_Min
 						Text item=FF_BathRoom_sTemp_Max
 						Text item=FF_BathRoom_sTemp_LastUpdate					
@@ -215,7 +201,6 @@ sitemap dacha2 label="Dacha2"
 				Text item=SF_Room1_sTemp icon="bedroom_orange" {
 					Frame label="Температура" {
 						Text item=SF_Room1_sTemp  label="Сейчас"
-						Text item=BLE1_Device_Temp  label="BLE Temp"
 						Text item=SF_Room1_sTemp_Min
 						Text item=SF_Room1_sTemp_Max
 						Text item=SF_Room1_sTemp_LastUpdate					
@@ -231,7 +216,6 @@ sitemap dacha2 label="Dacha2"
 				Text item=SF_Room2_sTemp icon="bedroom_red" {
 					Frame label="Температура" {
 						Text item=SF_Room2_sTemp  label="Сейчас"
-						Text item=BLE2_Device_Temp  label="BLE Temp"
 						Text item=SF_Room2_sTemp_Min
 						Text item=SF_Room2_sTemp_Max
 						Text item=SF_Room2_sTemp_LastUpdate					
@@ -248,7 +232,6 @@ sitemap dacha2 label="Dacha2"
 				Text item=SF_Room3_sTemp icon="bedroom_blue" {
 					Frame label="Температура" {
 						Text item=SF_Room3_sTemp  label="Сейчас"
-						Text item=BLE4_Device_Temp  label="BLE Temp"
 						Text item=SF_Room3_sTemp_Min
 						Text item=SF_Room3_sTemp_Max
 						Text item=SF_Room3_sTemp_LastUpdate					
@@ -336,27 +319,13 @@ sitemap dacha2 label="Dacha2"
 
 		Text item=gHumidity_House {
 			Frame label="Первый этаж" {
-				Text item=gHumidity_FF_LivingRoom_Avg label="Гостинная" icon="sofa" {
+				Text item=FF_LivingRoom_sHumidity label="Гостинная" icon="sofa" {
 					Frame label="Влажность" {
-						Text item=gHumidity_FF_LivingRoom_Avg label="Сейчас" {
-							Frame label="Датчик 1" {
-								Text item=FF_LivingRoom_sHumidity_01
-								Text item=FF_LivingRoom_sHumidity_01_Min
-								Text item=FF_LivingRoom_sHumidity_01_Max
-								Text item=FF_LivingRoom_sHumidity_01_LastUpdate
-							}
-							Frame label="Датчик 2" {
-								Text item=FF_LivingRoom_sHumidity_02
-								Text item=FF_LivingRoom_sHumidity_02_Min
-								Text item=FF_LivingRoom_sHumidity_02_Max
-								Text item=FF_LivingRoom_sHumidity_02_LastUpdate
-							}						
-						}	
-						Text item=BLE3_Device_Hum  label="BLE Hum"
-						Text item=gHumidity_FF_LivingRoom_Min label="Минимальная" 
-						Text item=gHumidity_FF_LivingRoom_Max label="Максимальная"
-						Text item=FF_LivingRoom_Humidity_LastUpdate	
-					}
+								Text item=FF_LivingRoom_sHumidity
+								Text item=FF_LivingRoom_sHumidity_Min
+								Text item=FF_LivingRoom_sHumidity_Max
+								Text item=FF_LivingRoom_sHumidity_LastUpdate
+						}		
 					Frame label="Графики" {
 						Switch item=Chart_Period label="График" icon="chart" mappings=[0="Час", 1="День", 2="Неделя", 3="Месяц"]
 						Chart item=FF_LivingRoom_Humidity_Chart period=h refresh=3600 visibility=[Chart_Period==0, Chart_Period=="NULL"]
@@ -383,7 +352,6 @@ sitemap dacha2 label="Dacha2"
 				Text item=FF_BathRoom_sHumidity icon="bath" {
 					Frame label="Влажность" {
 						Text item=FF_BathRoom_sHumidity  label="Сейчас"
-						Text item=BLE5_Device_Hum  label="BLE Hum"
 						Text item=FF_BathRoom_sHumidity_Min
 						Text item=FF_BathRoom_sHumidity_Max
 						Text item=FF_BathRoom_sHumidity_LastUpdate					
@@ -416,7 +384,6 @@ sitemap dacha2 label="Dacha2"
 				Text item=SF_Room1_sHumidity icon="bedroom_orange" {
 					Frame label="Влажность" {
 						Text item=SF_Room1_sHumidity  label="Сейчас"
-						Text item=BLE1_Device_Hum  label="BLE Hum"
 						Text item=SF_Room1_sHumidity_Min
 						Text item=SF_Room1_sHumidity_Max
 						Text item=SF_Room1_sHumidity_LastUpdate					
@@ -432,7 +399,6 @@ sitemap dacha2 label="Dacha2"
 				Text item=SF_Room2_sHumidity icon="bedroom_red" {
 					Frame label="Влажность" {
 						Text item=SF_Room2_sHumidity  label="Сейчас"
-						Text item=BLE2_Device_Hum  label="BLE Hum"
 						Text item=SF_Room2_sHumidity_Min
 						Text item=SF_Room2_sHumidity_Max
 						Text item=SF_Room2_sHumidity_LastUpdate					
@@ -448,7 +414,6 @@ sitemap dacha2 label="Dacha2"
 				Text item=SF_Room3_sHumidity icon="bedroom_blue" {
 					Frame label="Влажность" {
 						Text item=SF_Room3_sHumidity  label="Сейчас"
-						Text item=BLE4_Device_Hum  label="BLE Hum"
 						Text item=SF_Room3_sHumidity_Min
 						Text item=SF_Room3_sHumidity_Max
 						Text item=SF_Room3_sHumidity_LastUpdate					
@@ -796,8 +761,8 @@ sitemap dacha2 label="Dacha2"
 				Group item=gFF_Heaters
 				Group item=FF_Lights label="Освещение"
 				Text item=vFF_LivingRoom {
-					Text label="Температура" icon="temperature" item=gTemp_FF_LivingRoom_Avg
-					Text label="Влажность" icon="humidity"	item=gHumidity_FF_LivingRoom_Avg
+					Text label="Температура" icon="temperature" item=FF_LivingRoom_sTemp
+					Text label="Влажность" icon="humidity"	item=FF_LivingRoom_sHumidity
 					Group label="Обогреватель" icon="heating" item=FF_LivingRoom_Heater
 					Group label="Освещение" icon="light" item=FF_LivingRoom_Light
 				}

@@ -53,7 +53,7 @@ Number BLE2_Device_LastTime  "Данные обновлены [%d сек]" <last
 String BLE2_Device_MAC "MAC-адрес [%s]" (gBLE2_Device) { channel="mqtt:topic:mosquitto:ble-hub:BLE2_MAC" }
 
 // =========================================================================================================================
-Group gBLE3_Device "BLE3 Device"
+Group gBLE3_Device "BLE3 Device"	// Гостинная
 Number BLE3_Device_Temp 		"Температура [%.1f °C]" <temperature> (gMinMax, gLastUpdate, gBLE3_Device, gChart) 
 							{ channel="mqtt:topic:mosquitto:ble-hub:BLE3_Temperature" }
 Number 	BLE3_Device_Temp_Min "Минимальная температура [%.1f °C]" <temperature_cold> (gBLE3_Device)					

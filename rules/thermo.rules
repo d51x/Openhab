@@ -247,9 +247,9 @@ then
 
 	FF_BathRoom_Heater_Mode.sendCommand( state )
 
-	val t1 = (FF_LivingRoom01_sTemp.state as DecimalType).doubleValue
-	val t2 = (FF_LivingRoom02_sTemp.state as DecimalType).doubleValue
-	val t3 = (SF_Room1_sTemp.state as DecimalType).doubleValue
+	val t1 = (FF_LivingRoom_sTemp.state as DecimalType).doubleValue
+	val t2 = (SF_Room1_sTemp.state as DecimalType).doubleValue
+	val t3 = (FF_BathRoom_sTemp.state as DecimalType).doubleValue	
 	var t = t1
 	if (t > t2 ) t = t2
 	if (t > t3 ) t = t3
